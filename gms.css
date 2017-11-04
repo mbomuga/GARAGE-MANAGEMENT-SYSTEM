@@ -1,0 +1,26 @@
+#drape{background-color: #C0C0C0;}
+#frame{width: 50%; border: 0;}
+#sector{width: 50%; float: left; position: absolute; top: 50%;}
+#position{width: 50%; background-color: #C0C0C0;}
+#stationary{width: 50%; left: 50%; position: absolute;}
+#primary{width: 100%; border: 0;}
+#extend{height: 50px; width: 50%; border: 0;}
+#default{column-span: 1;}
+#indent{float: left;}
+#reverse{width: 100px; float: right;}
+#revise{float: right;}
+#scale{width: 50px; height: 50px;}
+#page{width: 100px; height: 100px;}
+#double{column-span: 2;}
+#log{width: 12.5%; column-span: 1;}
+#narrative{width: 20%; column-span: 1;}
+#field{width: 10%; column-span: 1;}
+#entry{width: 25%; column-span: 1;}
+#extent{width: 25%; height: 100px;}
+#dimensions{width: 50%;}
+#modify{width: 25%;}
+a:hover{background-color: #FF0000;}
+#footnote{background-color: #009900;}
+#refine{background-color: #009900; width: 50%;}
+#adapt{position: absolute; width: 100%; top: 139.25%;}
+#misc{column-span: 1; height: 50px;}
