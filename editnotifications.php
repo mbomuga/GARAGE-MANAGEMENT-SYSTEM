@@ -89,7 +89,7 @@
 			<tr>
 				<td id = "default">
 					<center>
-						<img src = "insert icon.png" alt = "insert icon" width = "100" height = "100">
+						<img src = "insert icon.png" alt = "insert icon" id = "page">
 						<a href = "insertnotifications.php" target = "_self">
 						Add Notification
 						</a>
@@ -98,7 +98,7 @@
 				<td id = "default">
 					<center>
 						<a href = "updatenotifications.php" target = "_self">
-						<img src = "update icon.png" alt = "update icon" width = "100" height = "100">
+						<img src = "update icon.png" alt = "update icon" id = "page">
 						Update Notification
 						</a>
 					</center>
@@ -106,7 +106,7 @@
 				<td id = "default">
 					<center>
 						<a href = "deletenotifications.php" target = "_self">
-						<img src = "delete icon.png" alt = "delete icon" width = "100" height = "100">
+						<img src = "delete icon.png" alt = "delete icon" id = "page">
 						Delete Notification
 						</a>
 					</center>

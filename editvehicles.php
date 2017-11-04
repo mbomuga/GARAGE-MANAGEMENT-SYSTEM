@@ -90,7 +90,7 @@
 				<td id = "default">
 					<center>
 						<a href = "insertvehicles.php" target = "_self">
-						<img src = "insert icon.png" alt = "insert icon" width = "100" height = "100">
+						<img src = "insert icon.png" alt = "insert icon" id = "page">
 						Add Vehicle
 						</a>
 					</center>
@@ -98,7 +98,7 @@
 				<td id = "default">
 					<center>
 						<a href = "updatevehicles.php" target = "_self">
-						<img src = "update icon.png" alt = "update icon" width = "100" height = "100">
+						<img src = "update icon.png" alt = "update icon" id = "page">
 						Update Vehicle
 						</a>
 					</center>
@@ -106,7 +106,7 @@
 				<td id = "default">
 					<center>
 						<a href = "deletevehicles.php" target = "_self">
-						<img src = "delete icon.png" alt = "delete icon" width = "100" height = "100">
+						<img src = "delete icon.png" alt = "delete icon" id = "page">
 						Delete Vehicle
 						</a>
 					</center>

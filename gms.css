@@ -10,6 +10,7 @@
 #reverse{width: 100px; float: right;}
 #revise{float: right;}
 #scale{width: 50px; height: 50px;}
+#narrow{width: 25px; height: 25px;}
 #page{width: 100px; height: 100px;}
 #double{column-span: 2;}
 #log{width: 12.5%; column-span: 1;}

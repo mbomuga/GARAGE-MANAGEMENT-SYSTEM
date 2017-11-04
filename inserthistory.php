@@ -56,7 +56,7 @@
 		$lapse = mysqli_real_escape_string($c, $_POST['lapse']);
 		$report = mysqli_real_escape_string($c, $_POST['report']);
 		$quota = mysqli_real_escape_string($c, $_POST['quota']);
-		$arrears = mysqli_real_escape_string($c, $_POST['arrears']);
+		$arrears = "pending";
 		$direction = mysqli_real_escape_string($c, $_POST['direction']);
 
 		if (isset($_POST['submit']))
@@ -126,7 +126,7 @@
 
 				    if($review != 0)
 				    {
-				    	$query5 = "INSERT INTO `history`(`serialno`, `registration`, `period`, `lapse`, `description`, `expense`, `charge`, `username`, `email`) VALUES ('$entry', '$label', '$period', '$lapse', '$report', '$manner', '$arrears', '$designate', '$direction')";
+				    	$query5 = "INSERT INTO `history`(`serialno`, `registration`, `period`, `lapse`, `description`, `expense`, `charge`, `username`, `email`) VALUES ('$entry', '$label', '$period', '$lapse', '$report', '$quota', '$arrears', '$designate', '$direction')";
 
 						$ps6 = mysqli_query($c, $query5);
 
@@ -208,100 +208,104 @@
 			<center>
 				<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 				  <ul class="navbar-nav">
-				    <li class="nav-item">
+				    <li class="navbar-brand">
 				    <a class="nav-link" href="home.php">
 						<img src = "home.png" alt = "home" id = "scale">
 						Home
 					</a>
 				    </li>
-				    <li class="nav-item">
-				      <a class="nav-link" href="profile.php">
-						<img src = "Profile Picture.png" alt = "profile" id = "scale">
-						Profile
+				    <li class="nav-item dropdown navbar-brand">
+				      <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
+						<img src = "details.png" alt = "profile" id = "scale">
+							Profile
+							<div class="dropdown-menu">
+						        <a class="dropdown-item" href="userprofile.php">
+									<img src = "Profile Picture.png" alt = "profile" id = "scale">
+									User Profile
+								</a>
+						        <a class="dropdown-item" href="adminprofile.php">
+									<img src = "group icon.png" alt = "group" id = "scale">
+									View Users
+								</a>
+							</div>
 						</a>
 				    </li>
-				    <li class="nav-item">
+				    <li class="navbar-brand">
 				      <a class="nav-link" href="vehicles.php">
 						<img src = "vehicle icon.png" alt = "vehicle" id = "scale">
 						Vehicles</a>
 				    </li>
-					<li class="nav-item">
+					<li class="navbar-brand">
 				      <a class="nav-link" href="notifications.php">
 						<img src = "notifications.png" alt = "notification" id = "scale">
 						Notifications
 						</a>
 				    </li>
-					<li class="nav-item">
+					<li class="navbar-brand">
 				      <a class="nav-link" href="schedule.php">
 						<img src = "schedule icon.png" alt = "schedule" id = "scale">
 						Schedule
 						</a>
 				    </li>
-					<li class="nav-item">
+					<li class="navbar-brand">
 				      <a class="nav-link" href="payment.php">
 						<img src = "payment icon.png" alt = "payment" id = "scale">
 						Payment</a>
 				    </li>
-					<li class="nav-item">
+					<li class="navbar-brand nav-item active">
 				      <a class="nav-link" href="history.php">
 						<img src = "history icon.png" alt = "history" id = "scale">
-						Service History</a>
+						Service History
+					</a>
 				    </li>
 				  </ul>
 				</nav>
 			</center>			
 		</div>
-	<div id = "drape">
-		<center>
-		<fieldset>
-		<form method = "post" action = "inserthistory.php" onsubmit = "return inserthistory()">
-			<div class = "form-group">
-				<h1><strong><center>Insert Entry</center></strong></h1>
-			</div>
-			<div class="form-group">
-		    <label>Registration:</label>
-		    <input type="text" class="form-control" name = "label" id = "modify">
-			<?php echo $negative; ?>
-		  </div>
-		  <div class="form-group">
-		    <label>Date:</label>
-		    <input type="date" class="form-control" name = "period" id = "modify">
-		  </div>
-			<div class="form-group">
-		    <label>Time:</label>
-		    <input type="time" class="form-control" name = "lapse" id = "modify">
-		  </div>
-			<div class="form-group">
-		    <label>Description:</label>
-			<textarea class = "form-control" id = "extent" name = "report"></textarea>
-		  </div>
-			<div class="form-group">
-		    <label>Value:</label>
-		    <input type="text" class="form-control" name = "quota" id = "modify">
-		  </div>
-			<div class="form-group">
-			    <label>Payment:</label>
-			    <select class="form-control" name = "arrears" id = "modify">
-					<option value = "confirmed">Confirmed</option>
-					<option value = "pending">Pending</option>
-				</select>
-			  </div>
-			<div class="form-group">
-		    <label>Email Address:</label>
-		    <input type="text" class="form-control" name = "direction" id = "modify">
-			<?php echo $inventory; ?>
-			</div>
-		  <button type="submit" class="btn btn-primary" name = "submit">Add</button>
-		</form>
-		</fieldset>
-		</center>
-	</div>
-	<div>
-		<footer id = "footnote">
+		<div id = "drape">
 			<center>
-				<h1> (C). 2017 All Rights Reserved</h1>
+			<fieldset>
+			<form method = "post" action = "inserthistory.php" onsubmit = "return inserthistory()">
+				<div class = "form-group">
+					<h1><strong><center>Insert Entry</center></strong></h1>
+				</div>
+				<div class="form-group">
+			    <label>Registration:</label>
+			    <input type="text" class="form-control" name = "label" id = "modify">
+				<?php echo $negative; ?>
+			  </div>
+			  <div class="form-group">
+			    <label>Date:</label>
+			    <input type="date" class="form-control" name = "period" id = "modify">
+			  </div>
+				<div class="form-group">
+			    <label>Time:</label>
+			    <input type="time" class="form-control" name = "lapse" id = "modify">
+			  </div>
+				<div class="form-group">
+			    <label>Description:</label>
+				<textarea class = "form-control" id = "extent" name = "report"></textarea>
+			  </div>
+				<div class="form-group">
+			    <label>Value:</label>
+			    <input type="text" class="form-control" name = "quota" id = "modify">
+			  </div>
+				<div class="form-group">
+			    <label>Email Address:</label>
+			    <input type="text" class="form-control" name = "direction" id = "modify">
+				<?php echo $inventory; ?>
+				</div>
+			  <button type="submit" class="btn btn-primary" name = "submit">Add</button>
+			</form>
+			</fieldset>
 			</center>
-		</footer>
-	</div>
-</body>
+		</div>
+		<div>
+			<footer id = "footnote">
+				<center>
+					<h1> (C). 2017 All Rights Reserved</h1>
+				</center>
+			</footer>
+		</div>
+	</body>
 </html>

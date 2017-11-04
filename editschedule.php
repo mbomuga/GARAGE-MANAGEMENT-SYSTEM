@@ -90,14 +90,14 @@
 				<td id = "default">
 					<center>
 						<a href = "insertschedule.php" target = "_self">
-						<img src = "insert icon.png" alt = "insert icon" width = "100" height = "100">
+						<img src = "insert icon.png" alt = "insert icon" id = "page">
 						Add Entry
 						</a>
 					</center>
 				</td>
 				<td id = "default">
 					<center>
-						<img src = "update icon.png" alt = "update icon" width = "100" height = "100">
+						<img src = "update icon.png" alt = "update icon" id = "page">
 						<a href = "updateschedule.php" target = "_self">
 						Update Entry
 						</a>

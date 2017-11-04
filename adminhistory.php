@@ -385,44 +385,55 @@
 			<center>
 				<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 				  <ul class="navbar-nav">
-				    <li class="nav-item">
+				    <li class="navbar-brand">
 				    <a class="nav-link" href="home.php">
 						<img src = "home.png" alt = "home" id = "scale">
 						Home
 					</a>
 				    </li>
-				    <li class="nav-item">
-				      <a class="nav-link" href="profile.php">
-						<img src = "Profile Picture.png" alt = "profile" id = "scale">
-						Profile
+				    <li class="nav-item dropdown navbar-brand">
+				      <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
+						<img src = "details.png" alt = "profile" id = "scale">
+							Profile
+							<div class="dropdown-menu">
+						        <a class="dropdown-item" href="userprofile.php">
+									<img src = "Profile Picture.png" alt = "profile" id = "scale">
+									User Profile
+								</a>
+						        <a class="dropdown-item" href="adminprofile.php">
+									<img src = "group icon.png" alt = "group" id = "scale">
+									View Users
+								</a>
+							</div>
 						</a>
 				    </li>
-				    <li class="nav-item">
+				    <li class="navbar-brand">
 				      <a class="nav-link" href="vehicles.php">
 						<img src = "vehicle icon.png" alt = "vehicle" id = "scale">
 						Vehicles</a>
 				    </li>
-					<li class="nav-item">
+					<li class="navbar-brand">
 				      <a class="nav-link" href="notifications.php">
 						<img src = "notifications.png" alt = "notification" id = "scale">
 						Notifications
 						</a>
 				    </li>
-					<li class="nav-item">
+					<li class="navbar-brand">
 				      <a class="nav-link" href="schedule.php">
 						<img src = "schedule icon.png" alt = "schedule" id = "scale">
 						Schedule
 						</a>
 				    </li>
-					<li class="nav-item">
+					<li class="navbar-brand">
 				      <a class="nav-link" href="payment.php">
 						<img src = "payment icon.png" alt = "payment" id = "scale">
 						Payment</a>
 				    </li>
-					<li class="nav-item">
+					<li class="navbar-brand nav-item active">
 				      <a class="nav-link" href="history.php">
 						<img src = "history icon.png" alt = "history" id = "scale">
-						Service History</a>
+						Service History
+					</a>
 				    </li>
 				  </ul>
 				</nav>
@@ -456,6 +467,7 @@
 					<option value = "value">Cost</option>
 					<option value = "username">Username</option>
 					<option value = "email">Email</option>
+					<option value = "none">None</option>
 					</select>
 					<label>Value:</label>
 				  <input type="text" class="form-control" name = "field">

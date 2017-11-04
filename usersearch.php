@@ -39,6 +39,7 @@
     }
 
     $archives = "";
+    $currency = "Ksh";
 
 	 if($_SERVER['REQUEST_METHOD'] == 'POST')
 	 {
@@ -54,7 +55,7 @@
 				if(!$ps3)
 			    {
 			        die("Failed to retrieve data:" . mysqli_error($c));
-			        header("location: viewschedule.php");
+			        header("location: usersearch.php");
 			        exit();
 			    }
 
@@ -62,6 +63,11 @@
 
 			}
 		}
+	 }
+	 else
+	 {
+	 	header("location: home.php");
+		exit();
 	 }
 
 	 mysqli_close($c);
@@ -113,51 +119,62 @@
 			<center>
 				<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 				  <ul class="navbar-nav">
-				    <li class="nav-item">
+				    <li class="navbar-brand">
 				    <a class="nav-link" href="home.php">
 						<img src = "home.png" alt = "home" id = "scale">
 						Home
 					</a>
 				    </li>
-				    <li class="nav-item">
-				      <a class="nav-link" href="profile.php">
-						<img src = "Profile Picture.png" alt = "profile" id = "scale">
-						Profile
+				    <li class="nav-item dropdown navbar-brand">
+				      <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
+						<img src = "details.png" alt = "profile" id = "scale">
+							Profile
+							<div class="dropdown-menu">
+						        <a class="dropdown-item" href="userprofile.php">
+									<img src = "Profile Picture.png" alt = "profile" id = "scale">
+									User Profile
+								</a>
+						        <a class="dropdown-item" href="adminprofile.php">
+									<img src = "group icon.png" alt = "group" id = "scale">
+									View Users
+								</a>
+							</div>
 						</a>
 				    </li>
-				    <li class="nav-item">
+				    <li class="navbar-brand">
 				      <a class="nav-link" href="vehicles.php">
 						<img src = "vehicle icon.png" alt = "vehicle" id = "scale">
 						Vehicles</a>
 				    </li>
-					<li class="nav-item">
+					<li class="navbar-brand">
 				      <a class="nav-link" href="notifications.php">
 						<img src = "notifications.png" alt = "notification" id = "scale">
 						Notifications
 						</a>
 				    </li>
-					<li class="nav-item">
+					<li class="navbar-brand">
 				      <a class="nav-link" href="schedule.php">
 						<img src = "schedule icon.png" alt = "schedule" id = "scale">
 						Schedule
 						</a>
 				    </li>
-					<li class="nav-item">
+					<li class="navbar-brand">
 				      <a class="nav-link" href="payment.php">
 						<img src = "payment icon.png" alt = "payment" id = "scale">
 						Payment</a>
 				    </li>
-					<li class="nav-item">
+					<li class="navbar-brand nav-item active">
 				      <a class="nav-link" href="history.php">
 						<img src = "history icon.png" alt = "history" id = "scale">
-						Service History</a>
+						Service History
+					</a>
 				    </li>
 				  </ul>
 				</nav>
 			</center>			
 		</div>
 		<div>
-			<h1><strong>History</strong></h1>
+			<h1><strong>Vehicle History</strong></h1>
 		</div>
 		<div>
 			<center>
@@ -217,8 +234,9 @@
 											$report = $rs2['description'];
 											$quota = $rs2['expense'];
 											$tender = $rs2['charge'];
+											$manner = $currency . " " . $quota;
 
-											echo "<tr><td id = 'log'><center>" . $entry . "</center></td><td id = 'log'><center>" . $label . "</center></td><td id = 'log'><center>" . $period . "</center></td><td id = 'log'><center>" . $lapse . "</center></td><td id = 'entry'><center>" . $report . "</center></td><td id = 'log'><center>" . $quota . "</center></td><td id = 'log'><center>" . $tender . "</center></td></tr>";
+											echo "<tr><td id = 'log'><center>" . $entry . "</center></td><td id = 'log'><center>" . $label . "</center></td><td id = 'log'><center>" . $period . "</center></td><td id = 'log'><center>" . $lapse . "</center></td><td id = 'entry'><center>" . $report . "</center></td><td id = 'log'><center>" . $manner . "</center></td><td id = 'log'><center>" . $tender . "</center></td></tr>";
 										}
 									}
 									else

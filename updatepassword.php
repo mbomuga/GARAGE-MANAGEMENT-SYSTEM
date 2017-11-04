@@ -128,78 +128,89 @@
       <center>
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
           <ul class="navbar-nav">
-            <li class="nav-item">
+            <li class="navbar-brand">
             <a class="nav-link" href="home.php">
             <img src = "home.png" alt = "home" id = "scale">
             Home
           </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="profile.php">
-            <img src = "Profile Picture.png" alt = "profile" id = "scale">
-            Profile
+            <li class="nav-item active dropdown navbar-brand">
+              <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
+            <img src = "details.png" alt = "profile" id = "scale">
+              Profile
+              <div class="dropdown-menu">
+                    <a class="dropdown-item" href="userprofile.php">
+                  <img src = "Profile Picture.png" alt = "profile" id = "scale">
+                  User Profile
+                </a>
+                    <a class="dropdown-item" href="adminprofile.php">
+                  <img src = "group icon.png" alt = "group" id = "scale">
+                  View Users
+                </a>
+              </div>
             </a>
             </li>
-            <li class="nav-item">
+            <li class="navbar-brand">
               <a class="nav-link" href="vehicles.php">
             <img src = "vehicle icon.png" alt = "vehicle" id = "scale">
             Vehicles</a>
             </li>
-          <li class="nav-item">
+          <li class="navbar-brand">
               <a class="nav-link" href="notifications.php">
             <img src = "notifications.png" alt = "notification" id = "scale">
             Notifications
             </a>
             </li>
-          <li class="nav-item">
+          <li class="navbar-brand">
               <a class="nav-link" href="schedule.php">
             <img src = "schedule icon.png" alt = "schedule" id = "scale">
             Schedule
             </a>
             </li>
-          <li class="nav-item">
+          <li class="navbar-brand">
               <a class="nav-link" href="payment.php">
             <img src = "payment icon.png" alt = "payment" id = "scale">
             Payment</a>
             </li>
-          <li class="nav-item">
+          <li class="navbar-brand">
               <a class="nav-link" href="history.php">
             <img src = "history icon.png" alt = "history" id = "scale">
-            Service History</a>
+            Service History
+          </a>
             </li>
           </ul>
         </nav>
       </center>     
     </div>
-  <div id = "drape">
-    <center>
-    <fieldset>
-    <form method = "post" action = "updatepassword.php" onsubmit = "return updatepassword()">
-        <div class="form-group">
-        <label>Current Password:</label>
-          <input type="password" class="form-control" id = "modify" name = "regulate">
-        </div>
-        <div class="form-group">
-        <label>New Password:</label>
-          <input type="password" class="form-control" id = "modify" name = "adjust">
-        </div>
-        <div class="form-group">
-        <label>Verify Password:</label>
-          <input type="password" class="form-control" id = "modify" name = "examine">
-        </div>
-      <button type="submit" class="btn btn-primary" name = "submit">Update</button>
-    </form>
-    </fieldset>
-    </center>
-  </div>
-  <div>
-    <center>
-      <footer id = "footnote">
-        <center>
-          <h1> (C). 2017 All Rights Reserved</h1>
-        </center>
-      </footer>
-    </center>
-  </div>
-</body>
+    <div id = "drape">
+      <center>
+      <fieldset>
+      <form method = "post" action = "updatepassword.php" onsubmit = "return updatepassword()">
+          <div class="form-group">
+          <label>Current Password:</label>
+            <input type="password" class="form-control" id = "modify" name = "regulate">
+          </div>
+          <div class="form-group">
+          <label>New Password:</label>
+            <input type="password" class="form-control" id = "modify" name = "adjust">
+          </div>
+          <div class="form-group">
+          <label>Verify Password:</label>
+            <input type="password" class="form-control" id = "modify" name = "examine">
+          </div>
+        <button type="submit" class="btn btn-primary" name = "submit">Update</button>
+      </form>
+      </fieldset>
+      </center>
+    </div>
+    <div>
+      <center>
+        <footer id = "footnote">
+          <center>
+            <h1> (C). 2017 All Rights Reserved</h1>
+          </center>
+        </footer>
+      </center>
+    </div>
+  </body>
 </html>

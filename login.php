@@ -58,7 +58,7 @@
 			}
 			else
 			{
-				$access = "*Access Denied";
+				$access = "Access Denied";
 			}
 		}
 		mysqli_close($c);
