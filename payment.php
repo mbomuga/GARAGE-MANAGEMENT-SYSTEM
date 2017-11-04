@@ -40,30 +40,27 @@
 	 }
     }
 
-    $inventory = "";
-    $negative = "";
+    if ($authority == "admin")
+	 {
+	 	header("location:home.php");
+	    exit();
+	 }
 
-     if ($authority != "admin")
-     {
-     	header("location:home.php");
-        exit();
-     }
+	 /*Prevents the admin from accessing the page*/
+
+    $futile = "";
+    $success = "";
+    $fiction = "";
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
-		$label = mysqli_real_escape_string($c, $_POST['label']);
-		$period = mysqli_real_escape_string($c, $_POST['period']);
-		$lapse = mysqli_real_escape_string($c, $_POST['lapse']);
-		$report = mysqli_real_escape_string($c, $_POST['report']);
-		$quota = mysqli_real_escape_string($c, $_POST['quota']);
-		$arrears = mysqli_real_escape_string($c, $_POST['arrears']);
-		$direction = mysqli_real_escape_string($c, $_POST['direction']);
+		$scenario = mysqli_real_escape_string($c, $_POST['scenario']);
 
 		if (isset($_POST['submit']))
 		{
-			if (!empty($label) && !empty($period) && !empty($lapse) && !empty($report) && !empty($quota) && !empty($direction))
+			if (!empty($scenario))
 			{
-				$query4  = "SELECT * FROM history";
+				$query4  = "SELECT * FROM history WHERE serialno = '$scenario'";
 
 				$ps5 = mysqli_query($c, $query4);
 
@@ -74,88 +71,63 @@
 			        exit();
 			    }
 
-			    $rs4 = mysqli_fetch_assoc($ps5);
+			    $instance = $rs4['serialno'];
+			    
+			    $total = mysqli_num_rows($ps5);
 
-			    $reference = $rs4['serialno'];
-			    $list = mysqli_num_rows($ps5);
-
-			    if($list == 0)
+			    if($total != 0)
 			    {
-			    	$entry = 1;
+			    	while ($rs4 = mysqli_fetch_assoc($ps5))
+			    	{
+			    		$revenue = $rs4['expense'];
+			    		$phase = $rs4['charge'];
+
+			    		if ($phase != "confirmed")
+			    		{
+			    			/* Perform call to Paypal at this point. Use the variable '$revenue' as the amount */
+
+			    			$state = "";
+
+			    			/* The variable '$state' and the subsequent block is a templete to execute the Transaction is sucessful. You'll perfoem the neccessary modifications on your side */
+
+			    			if($state == "successful")
+			    			{
+			    				$query5 = "UPDATE history SET charge = 'confirmed' WHERE serialno = '$scenario'";
+								$ps6 = mysqli_query($c, $query5);
+
+								if(!$ps6)
+							    {
+							        die("Failed to update data:" . mysqli_error($c));
+							        header("location: updatehistory.php");
+							        exit();
+							    }
+							    else
+							    {
+							    	header("location: history.php");
+							    	exit();
+							    }
+			    			}
+			    			else
+			    			{
+			    				$futile = "Transaction Failed";
+			    				exit();
+			    			}
+			    		}
+			    		else
+			    		{
+			    			$success = "Payment Complete";
+			    		}
+			    	}
 			    }
 			    else
 			    {
-			    	$entry = $list + 1;
+			    	$fiction = "Entry Unavailable";
 			    }
-
-			    $query6  = "SELECT * FROM accounts WHERE email = '$direction'";
-
-				$ps7 = mysqli_query($c, $query6);
-
-				if(!$ps7)
-			    {
-			        die("Failed to retrieve data:" . mysqli_error($c));
-			        header("location: inserthistory.php");
-			        exit();
-			    }
-
-			    $reading = mysqli_num_rows($ps7);
-
-			    if($reading != 0)
-			    {
-				    while ($rs6 = mysqli_fetch_assoc($ps7))
-				    {
-				    	$directory = $rs6['first'];
-				    	$surname = $rs6['last'];
-
-				    	$designate = $directory . " " . $surname;
-				    }
-
-				    $query7 = "SELECT * FROM vehicles WHERE registration = '$label'";
-
-				    $ps8 = mysqli_query($c, $query7);
-
-				    if(!$ps7)
-				    {
-				        die("Failed to retrieve data:" . mysqli_error($c));
-				        header("location: inserthistory.php");
-				        exit();
-				    }
-
-				    $review = mysqli_num_rows($ps8);
-
-				    if($review != 0)
-				    {
-				    	$query5 = "INSERT INTO `history`(`serialno`, `registration`, `period`, `lapse`, `description`, `expense`, `charge`, `username`, `email`) VALUES ('$entry', '$label', '$period', '$lapse', '$report', '$manner', '$arrears', '$designate', '$direction')";
-
-						$ps6 = mysqli_query($c, $query5);
-
-						if(!$ps6)
-					    {
-					        die("Failed to insert data:" . mysqli_error($c));
-					        header("location: inserthistory.php");
-					        exit();
-					    }
-					    else
-					    {
-					    	header("location: history.php");
-					    	exit();
-					    }
-					}
-					else
-					{
-						$negative = "Vehicle Unavailable";
-					}
-			    }
-			    else
-			    {
-			    	$inventory = "User does not Exist";
-			    }			
 			}
 			else
 			{
-				header("location: inserthistory.php");
-			    exit();
+				header("location: payment.php");
+				exit();
 			}
 		}
 	}
@@ -164,7 +136,7 @@
 ?>
 <html>
 <head>
-	<title>Add History</title>
+	<title>Payment</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="gms.css">
 	<script src="gms.js"></script>
@@ -254,43 +226,16 @@
 	<div id = "drape">
 		<center>
 		<fieldset>
-		<form method = "post" action = "inserthistory.php" onsubmit = "return inserthistory()">
+		<form method = "post" action = "payment.php" onsubmit = "return payment()">
 			<div class = "form-group">
-				<h1><strong><center>Insert Entry</center></strong></h1>
+				<h1><strong><center>Payment</center></strong></h1>
 			</div>
 			<div class="form-group">
-		    <label>Registration:</label>
-		    <input type="text" class="form-control" name = "label" id = "modify">
-			<?php echo $negative; ?>
-		  </div>
-		  <div class="form-group">
-		    <label>Date:</label>
-		    <input type="date" class="form-control" name = "period" id = "modify">
-		  </div>
-			<div class="form-group">
-		    <label>Time:</label>
-		    <input type="time" class="form-control" name = "lapse" id = "modify">
-		  </div>
-			<div class="form-group">
-		    <label>Description:</label>
-			<textarea class = "form-control" id = "extent" name = "report"></textarea>
-		  </div>
-			<div class="form-group">
-		    <label>Value:</label>
-		    <input type="text" class="form-control" name = "quota" id = "modify">
-		  </div>
-			<div class="form-group">
-			    <label>Payment:</label>
-			    <select class="form-control" name = "arrears" id = "modify">
-					<option value = "confirmed">Confirmed</option>
-					<option value = "pending">Pending</option>
-				</select>
-			  </div>
-			<div class="form-group">
-		    <label>Email Address:</label>
-		    <input type="text" class="form-control" name = "direction" id = "modify">
-			<?php echo $inventory; ?>
-			</div>
+		    <label>Reference No:</label>
+		    <input type="text" class="form-control" name = "scenario" id = "modify">
+			<?php echo $futile; ?>
+			<?php echo $success; ?>
+			<?php echo $fiction; ?>
 		  <button type="submit" class="btn btn-primary" name = "submit">Add</button>
 		</form>
 		</fieldset>

@@ -166,12 +166,12 @@
 						<thead class = "thead-dark">
 							<th id = "log">
 								<center>
-									<strong>Reference No.</strong>
+									<strong>Reference No.:</strong>
 								</center>
 							</th>
 							<th id = "log">
 								<center>
-									<strong>Registration:</strong>
+									<strong>Registration No.:</strong>
 								</center>
 							</th>
 							<th id = "log">

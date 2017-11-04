@@ -44,6 +44,8 @@ $server = "localhost";
         exit();
      }
 
+    $archives = "";
+
    $query2 = "SELECT * FROM accounts";
 
    $ps2 = mysqli_query($c, $query2);
@@ -56,6 +58,160 @@ $server = "localhost";
  	}
 
    	$reading2 = mysqli_num_rows($ps2);
+
+   	if ($_SERVER['REQUEST_METHOD'] == 'POST')
+	{
+		$decision = mysqli_real_escape_string($c, $_POST['decision']);
+		$index = mysqli_real_escape_string($c, $_POST['index']);
+		$privilege = mysqli_real_escape_string($c, $_POST['privilege']);
+
+		if (isset($_POST['submit']))
+		{
+			if(!empty($index))
+			{
+				if($decision == "first" && $privilege != "none")
+				{
+					$query3 = "SELECT * FROM accounts WHERE first = '$index' AND usertype = '$privilege'";
+
+					$ps = mysqli_query($c, $query3);
+ 	
+				 	if(!$ps)
+				 	{
+				 		die("Failed to retrieve data:" . mysqli_error($c));
+				    	header("location: login.php");
+				    	exit();
+				 	}
+
+				 	$reading = mysqli_num_rows($ps);
+				}
+				elseif ($decision == "last" && $privilege != "none")
+				{
+					$query4 = "SELECT * FROM accounts WHERE last = '$index' AND usertype = '$privilege'";
+
+					$ps = mysqli_query($c, $query4);
+ 	
+				 	if(!$ps)
+				 	{
+				 		die("Failed to retrieve data:" . mysqli_error($c));
+				    	header("location: login.php");
+				    	exit();
+				 	}
+
+				 	$reading = mysqli_num_rows($ps);
+				}
+				elseif ($decision == "email" && $privilege != "none")
+				{
+					$query5 = "SELECT * FROM accounts WHERE email = '$index' AND usertype = '$privilege'";
+
+					$ps = mysqli_query($c, $query5);
+ 	
+				 	if(!$ps)
+				 	{
+				 		die("Failed to retrieve data:" . mysqli_error($c));
+				    	header("location: login.php");
+				    	exit();
+				 	}
+
+				 	$reading = mysqli_num_rows($ps);
+				}
+				elseif ($decision == "phone" && $privilege != "none")
+				{
+					$query6 = "SELECT * FROM accounts WHERE phone = '$index' AND usertype = '$privilege'";
+
+					$ps = mysqli_query($c, $query6);
+ 	
+				 	if(!$ps)
+				 	{
+				 		die("Failed to retrieve data:" . mysqli_error($c));
+				    	header("location: login.php");
+				    	exit();
+				 	}
+
+				 	$reading = mysqli_num_rows($ps);
+				}
+				elseif ($decision == "none" && $privilege != "none")
+				{
+					$query7 = "SELECT * FROM accounts WHERE usertype = '$privilege'";
+
+					$ps = mysqli_query($c, $query7);
+ 	
+				 	if(!$ps)
+				 	{
+				 		die("Failed to retrieve data:" . mysqli_error($c));
+				    	header("location: login.php");
+				    	exit();
+				 	}
+
+				 	$reading = mysqli_num_rows($ps);
+				}
+				elseif ($decision == "first" && $privilege == "none")
+				{
+					$query8 = "SELECT * FROM accounts WHERE first = '$index'";
+
+					$ps = mysqli_query($c, $query8);
+ 	
+				 	if(!$ps)
+				 	{
+				 		die("Failed to retrieve data:" . mysqli_error($c));
+				    	header("location: login.php");
+				    	exit();
+				 	}
+
+				 	$reading = mysqli_num_rows($ps);
+				}
+				elseif ($decision == "last" && $privilege == "none")
+				{
+					$query9 = "SELECT * FROM accounts WHERE last = '$index'";
+
+					$ps = mysqli_query($c, $query9);
+ 	
+				 	if(!$ps)
+				 	{
+				 		die("Failed to retrieve data:" . mysqli_error($c));
+				    	header("location: login.php");
+				    	exit();
+				 	}
+
+				 	$reading = mysqli_num_rows($ps);
+				}
+				elseif ($decision == "email" && $privilege == "none")
+				{
+					$query10 = "SELECT * FROM accounts WHERE email = '$index'";
+
+					$ps = mysqli_query($c, $query10);
+ 	
+				 	if(!$ps)
+				 	{
+				 		die("Failed to retrieve data:" . mysqli_error($c));
+				    	header("location: login.php");
+				    	exit();
+				 	}
+
+				 	$reading = mysqli_num_rows($ps);
+				}
+				else
+				{
+					$query11 = "SELECT * FROM accounts WHERE email = '$index'";
+
+					$ps = mysqli_query($c, $query11);
+ 	
+				 	if(!$ps)
+				 	{
+				 		die("Failed to retrieve data:" . mysqli_error($c));
+				    	header("location: login.php");
+				    	exit();
+				 	}
+
+				 	$reading = mysqli_num_rows($ps);
+				}
+			}
+			else
+			{
+				header("location: adminprofile.php");
+    			exit();
+			}
+		}
+	}
 
 	mysqli_close($c);
 ?>
@@ -149,7 +305,31 @@ $server = "localhost";
 			</center>			
 		</div>
 		<div>
-			<h1><strong>Profile</strong></h1>
+			<h1><strong>User List</strong></h1>
+		</div>
+		<div>
+			<fieldset>
+				<form class="form-inline" method = "post" action = "adminprofile.php" onsubmit = "return adminhistory()">
+				  <label>Category:</label>
+				  <select name = "decision" class = "form-control">
+					<option value = "first">First Name</option>
+					<option value = "last">Last name</option>
+					<option value = "email">Email Address</option>
+					<option value = "phone">Phone Number</option>
+					<option value = "none">None</option>
+					</select>
+					<label>Keyword:</label>
+				   <input type="text" class="form-control" name = "index">
+					<label>Access Level:</label>
+					<select name = "privilege" class = "form-control">
+					<option value = "regular">Regular</option>
+					<option value = "manager">Manager</option>
+					<option value = "owner">Owner</option>
+					<option value = "none">None</option>
+					</select>
+				  <button type="submit" class="btn btn-primary" name = "submit">Filter</button>
+				</form> 
+			</fieldset>
 		</div>
 		<div>
 			<center>
@@ -176,18 +356,46 @@ $server = "localhost";
 									<strong>Phone Number:</strong>
 								</center>
 							</th>
+							<th id = "default">
+								<center>
+									<strong>Access Level:</strong>
+								</center>
+							</th>
 						</thead>
 						<?php 
-							if($reading2>0)
-						    {
-							   	while($rs2 = mysqli_fetch_assoc($ps2))
+							if ($_SERVER['REQUEST_METHOD'] == 'POST')
+							{
+								if (isset($_POST['submit']))
 								{
-								    $designate = $rs2['first'];
-									$surname =  $rs2['last'];
-									$key = $rs2['email'];
-									$contact = "0" . $rs2['phone'];
+									if($reading>0)
+								    {
+									   	while($rs = mysqli_fetch_assoc($ps))
+										{
+										    $designate = $rs['first'];
+											$surname =  $rs['last'];
+											$key = $rs['email'];
+											$contact = $rs['phone'];
+											$access = $rs['usertype'];
 
-									echo "<tr><td id = 'default'><center>" . $designate . "</center></td><td id = 'default'><center>" . $surname . "</center></td><td id = 'default'><center>" . $key . "</center></td><td id = 'default'><center>" . $contact . "</center></td></tr>";
+											echo "<tr><td id = 'default'><center>" . $designate . "</center></td><td id = 'default'><center>" . $surname . "</center></td><td id = 'default'><center>" . $key . "</center></td><td id = 'default'><center>" . $contact . "</center></td><td id = 'default'><center>" . $access . "</center></td></tr>";
+										}
+									}
+									else
+									{
+										$archives = "No Entry Available";
+
+										echo "<tr><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td></tr>";
+									}
+								}
+							}
+							else
+							{
+								if($reading2>0)
+								{
+									while($rs2 = mysqli_fetch_assoc($ps2))
+									{
+										echo "<tr><td id = 'default'><center>" . $rs2['first'] . "</center></td><td id = 'default'><center>" . $rs2['last'] . "</center></td><td id = 'default'><center>" . $rs2['email'] . "</center></td><td id = 'default'><center>" . $rs2['phone'] . "</center></td><td id = 'default'><center>" . $rs2['usertype'] . "</center></td></tr>";
+									}
 								}
 							}
 						 ?>

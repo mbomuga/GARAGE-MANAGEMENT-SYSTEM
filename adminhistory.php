@@ -39,6 +39,7 @@
     }
 
     $archives = "";
+    $currency = "Ksh";
 
      if ($authority != "admin")
      {
@@ -56,7 +57,6 @@
         exit();
     }
     $reading2 = mysqli_num_rows($ps3);
-
 
 	if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
@@ -463,7 +463,7 @@
 				  <input type="date" class="form-control" name ="opening">
 					<label>Time:</label>
 				  <input type="time" class="form-control" name ="slot">
-				  <button type="submit" class="btn btn-primary" name = "submit">Submit</button>
+				  <button type="submit" class="btn btn-primary" name = "submit">Filter</button>
 				</form> 
 			</fieldset>
 		</div>
@@ -474,12 +474,12 @@
 						<thead class = "thead-dark">
 							<th id = "field">
 								<center>
-									<strong>Reference No.</strong>
+									<strong>Reference No.:</strong>
 								</center>
 							</th>
 							<th id = "field">
 								<center>
-									<strong>Registration:</strong>
+									<strong>Registration No.:</strong>
 								</center>
 							</th>
 							<th id = "field">
@@ -537,8 +537,9 @@
 											$tender = $rs['charge'];
 											$title = $rs['username'];
 											$tag = $rs['email'];
+											$manner = $currency . " " . $quota;
 
-											echo "<tr><td id = 'log'><center>" . $entry . "</center></td><td id = 'log'><center>" . $label . "</center></td><td id = 'log'><center>" . $period . "</center></td><td id = 'log'><center>" . $lapse . "</center></td><td id = 'narrative'><center>" . $report . "</center></td><td id = 'log'><center>" . $quota . "</center></td><td id = 'log'><center>" . $tender . "</center></td><td id = 'log'><center>" . $title . "</center></td><td id = 'log'><center>" . $archives . $tag . "</center></td></tr>";
+											echo "<tr><td id = 'log'><center>" . $entry . "</center></td><td id = 'log'><center>" . $label . "</center></td><td id = 'log'><center>" . $period . "</center></td><td id = 'log'><center>" . $lapse . "</center></td><td id = 'narrative'><center>" . $report . "</center></td><td id = 'log'><center>" . $manner . "</center></td><td id = 'log'><center>" . $tender . "</center></td><td id = 'log'><center>" . $title . "</center></td><td id = 'log'><center>" . $archives . $tag . "</center></td></tr>";
 										}
 									}
 									else
@@ -555,7 +556,7 @@
 							    {
 									while($rs2 = mysqli_fetch_assoc($ps3))
 									{
-										echo "<tr><td id = 'log'><center>" . $rs2['serialno'] . "</center></td><td id = 'log'><center>" . $rs2['registration'] . "</center></td><td id = 'log'><center>" . $rs2['period'] . "</center></td><td id = 'log'><center>" . $rs2['lapse'] . "</center></td><td id = 'narrative'><center>" . $rs2['description'] . "</center></td><td id = 'log'><center>" . $rs2['expense'] . "</center></td><td id = 'log'><center>" . $rs2['charge'] . "</center></td><td id = 'log'><center>" . $rs2['username'] . "</center></td><td id = 'log'><center>" . $rs2['email'] . "</center></td></tr>";
+										echo "<tr><td id = 'log'><center>" . $rs2['serialno'] . "</center></td><td id = 'log'><center>" . $rs2['registration'] . "</center></td><td id = 'log'><center>" . $rs2['period'] . "</center></td><td id = 'log'><center>" . $rs2['lapse'] . "</center></td><td id = 'narrative'><center>" . $rs2['description'] . "</center></td><td id = 'log'><center>" . $currency . " " . $rs2['expense'] . "</center></td><td id = 'log'><center>" . $rs2['charge'] . "</center></td><td id = 'log'><center>" . $rs2['username'] . "</center></td><td id = 'log'><center>" . $rs2['email'] . "</center></td></tr>";
 									}
 								}
 								else

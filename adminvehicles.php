@@ -229,18 +229,18 @@
 		</div>
 		<div>
 			<center>
-				<fieldset id = "position">
+				<fieldset id = "drape">
 					<form method = "post" action = "adminsearch.php" onsubmit = "return searchadmin()">
 						<div class = "form-group">
 							<h2><strong><center>Vehicle History</center></strong></h2>
 						</div>
 						<div class="form-group">
 					    <label>Vehicle Registration:</label>
-					    <input type="text" class="form-control" name = "key" id = "dimensions">
+					    <input type="text" class="form-control" name = "key" id = "modify">
 					  </div>
 					  <div class="form-group">
 					    <label>Email Address:</label>
-					    <input type="text" class="form-control" name = "direction" id = "dimensions">
+					    <input type="text" class="form-control" name = "direction" id = "modify">
 					  </div>
 					<button type="submit" class="btn btn-primary" name = "submit">Search History</button>
 				</fieldset>

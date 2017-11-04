@@ -196,12 +196,12 @@ $server = "localhost";
 						<thead class = "thead-dark">
 							<th id = "field">
 								<center>
-									<strong>Reference No.</strong>
+									<strong>Reference No.:</strong>
 								</center>
 							</th>
 							<th id = "field">
 								<center>
-									<strong>Registration:</strong>
+									<strong>Registration No.:</strong>
 								</center>
 							</th>
 							<th id = "field">

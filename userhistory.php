@@ -39,6 +39,7 @@
     }
 
     $archives = "";
+    $currency = "Ksh";
 
 	$query2 = "SELECT * FROM history WHERE email = '$heading'";
 
@@ -76,7 +77,7 @@
 
 				    $reading = mysqli_num_rows($ps);
 				}
-				else
+				elseif ($group == 'fund')
 				{
 					$query4 = "SELECT * FROM history WHERE expense = '$field' AND (period = '$opening' AND (lapse = '$slot' AND email = '$heading'))";
 
@@ -89,6 +90,19 @@
 				    }
 				    $reading = mysqli_num_rows($ps);
 
+				}
+				else
+				{
+					$query14 = "SELECT * FROM history WHERE period = '$opening' AND (lapse = '$slot' AND email = '$heading')";
+
+					$ps = mysqli_query($c, $query14);
+					if(!$ps)
+				    {
+				        die("Failed to retrieve data:" . mysqli_error($c));
+				        header("location: userhistory.php");
+				        exit();
+				    }
+				    $reading = mysqli_num_rows($ps);
 				}	
 			}
 			elseif (!empty($field) && !empty($opening))
@@ -108,11 +122,25 @@
 				    $reading = mysqli_num_rows($ps);
 
 				}
-				else
+				elseif ($group == 'fund')
 				{
 					$query6 = "SELECT * FROM history WHERE expense = '$field' AND (period = '$opening' AND email = '$heading')";
 
 					$ps = mysqli_query($c, $query6);
+					if(!$ps)
+				    {
+				        die("Failed to retrieve data:" . mysqli_error($c));
+				        header("location: userhistory.php");
+				        exit();
+				    }
+
+				    $reading = mysqli_num_rows($ps);
+				}
+				else
+				{
+					$query15 = "SELECT * FROM history WHERE period = '$opening' AND email = '$heading'";
+
+					$ps = mysqli_query($c, $query15);
 					if(!$ps)
 				    {
 				        die("Failed to retrieve data:" . mysqli_error($c));
@@ -140,7 +168,7 @@
 				    $reading = mysqli_num_rows($ps);
 
 				}
-				else
+				elseif($group == 'fund')
 				{
 					$query8 = "SELECT * FROM history WHERE expense = '$field' AND (lapse = '$slot' AND email = '$heading')";
 
@@ -152,9 +180,22 @@
 				        exit();
 				    }
 				    $reading = mysqli_num_rows($ps);
-				}	
+				}
+				else
+				{
+					$query16 = "SELECT * FROM history WHERE lapse = '$slot' AND email = '$heading'";
+
+					$ps = mysqli_query($c, $query16);
+					if(!$ps)
+				    {
+				        die("Failed to retrieve data:" . mysqli_error($c));
+				        header("location: userhistory.php");
+				        exit();
+				    }
+				    $reading = mysqli_num_rows($ps);	
+				}
 			}
-			elseif(!empty($opening) && !empty($slot))
+			elseif(!empty($opening) && !empty($slot) && $group == 'none')
 			{
 				$query9 = "SELECT * FROM history WHERE period = '$opening' AND (lapse = '$slot' AND email = '$heading')";
 
@@ -169,7 +210,33 @@
 			    $reading = mysqli_num_rows($ps);
 
 			}
-			elseif (!empty($group))
+			elseif (!empty($opening) && $group == 'none')
+			{
+				$query12 = "SELECT * FROM history WHERE period = '$opening' AND email = '$heading'";
+
+				$ps = mysqli_query($c, $query12);
+				if(!$ps)
+			    {
+			        die("Failed to retrieve data:" . mysqli_error($c));
+			        header("location: userhistory.php");
+			        exit();
+			    }
+			    $reading = mysqli_num_rows($ps);
+			}
+			elseif (!empty($slot) && $group == "none")
+			{
+				$query13 = "SELECT * FROM history WHERE lapse = '$slot' AND email = '$heading'";
+
+				$ps = mysqli_query($c, $query13);
+				if(!$ps)
+			    {
+			        die("Failed to retrieve data:" . mysqli_error($c));
+			        header("location: userhistory.php");
+			        exit();
+			    }
+			    $reading = mysqli_num_rows($ps);
+			}
+			else
 			{
 				if ($group == 'registration')
 				{
@@ -186,7 +253,7 @@
 				    $reading = mysqli_num_rows($ps);
 
 				}
-				else
+				elseif ($group == 'fund')
 				{
 					$query11 = "SELECT * FROM history WHERE expense = '$field' AND email = '$heading'";
 
@@ -199,34 +266,21 @@
 				    }
 
 				    $reading = mysqli_num_rows($ps);
-
 				}
-			}
-			elseif (!empty($opening))
-			{
-				$query12 = "SELECT * FROM history WHERE period = '$opening' AND email = '$heading'";
+				else
+				{
+					$query17 = "SELECT * FROM history WHERE email = '$heading'";
 
-				$ps = mysqli_query($c, $query12);
-				if(!$ps)
-			    {
-			        die("Failed to retrieve data:" . mysqli_error($c));
-			        header("location: userhistory.php");
-			        exit();
-			    }
-			    $reading = mysqli_num_rows($ps);
-			}
-			else
-			{
-				$query13 = "SELECT * FROM history WHERE lapse = '$slot' AND email = '$heading'";
+					$ps = mysqli_query($c, $query17);
+					if(!$ps)
+				    {
+				        die("Failed to retrieve data:" . mysqli_error($c));
+				        header("location: userhistory.php");
+				        exit();
+				    }
 
-				$ps = mysqli_query($c, $query13);
-				if(!$ps)
-			    {
-			        die("Failed to retrieve data:" . mysqli_error($c));
-			        header("location: userhistory.php");
-			        exit();
-			    }
-			    $reading = mysqli_num_rows($ps);
+				    $reading = mysqli_num_rows($ps);
+				}
 			}
 		}
 	}
@@ -331,7 +385,8 @@
 				  <label>Category:</label>
 				  <select name = "group" class = "form-control">
 					<option value = "registration">Registration</option>
-					<option value = "value">Cost</option>
+					<option value = "fund">Cost</option>
+					<option value = "none">None</option>
 					</select>
 					<label>Value:</label>
 				  <input type="text" class="form-control" name = "field">
@@ -339,7 +394,7 @@
 				  <input type="date" class="form-control" name ="opening">
 					<label>Time:</label>
 				  <input type="time" class="form-control" name ="slot">
-				  <button type="submit" class="btn btn-primary" name = "submit">Submit</button>
+				  <button type="submit" class="btn btn-primary" name = "submit">Filter</button>
 				</form> 
 			</fieldset>
 		</div>
@@ -350,12 +405,12 @@
 						<thead class = "thead-dark">
 							<th id = "log">
 								<center>
-									<strong>Reference No.</strong>
+									<strong>Reference No.:</strong>
 								</center>
 							</th>
 							<th id = "log">
 								<center>
-									<strong>Registration:</strong>
+									<strong>Registration No.:</strong>
 								</center>
 							</th>
 							<th id = "log">
@@ -401,8 +456,10 @@
 											$report = $rs['description'];
 											$quota = $rs['expense'];
 											$tender = $rs['charge'];
+											$manner = $currency . " " . $quota;
 
-											echo "<tr><td id = 'log'><center>" . $entry . "</center></td><td id = 'log'><center>" . $label . "</center></td><td id = 'log'><center>" . $period . "</center></td><td id = 'log'><center>" . $lapse . "</center></td><td id = 'entry'><center>" . $report . "</center></td><td id = 'log'><center>" . $quota . "</center></td><td id = 'log'><center>" . $tender . "</center></td></tr>";
+
+											echo "<tr><td id = 'log'><center>" . $entry . "</center></td><td id = 'log'><center>" . $label . "</center></td><td id = 'log'><center>" . $period . "</center></td><td id = 'log'><center>" . $lapse . "</center></td><td id = 'entry'><center>" . $report . "</center></td><td id = 'log'><center>" . $manner . "</center></td><td id = 'log'><center>" . $tender . "</center></td></tr>";
 										}
 									}
 									else
@@ -419,7 +476,7 @@
 							    {
 									while($rs2 = mysqli_fetch_assoc($ps3))
 									{
-										echo "<tr><td id = 'log'><center>" . $rs2['serialno'] . "</center></td><td id = 'log'><center>" . $rs2['registration'] . "</center></td><td id = 'log'><center>" . $rs2['period'] . "</center></td><td id = 'log'><center>" . $rs2['lapse'] . "</center></td><td id = 'entry'><center>" . $rs2['description'] . "</center></td><td id = 'log'><center>" . $rs2['expense'] . "</center></td><td id = 'log'><center>" . $rs2['charge'] . "</center></td></tr>";
+										echo "<tr><td id = 'log'><center>" . $rs2['serialno'] . "</center></td><td id = 'log'><center>" . $rs2['registration'] . "</center></td><td id = 'log'><center>" . $rs2['period'] . "</center></td><td id = 'log'><center>" . $rs2['lapse'] . "</center></td><td id = 'entry'><center>" . $rs2['description'] . "</center></td><td id = 'log'><center>" . $currency . " " . $rs2['expense'] . "</center></td><td id = 'log'><center>" . $rs2['charge'] . "</center></td></tr>";
 									}
 								}
 								else

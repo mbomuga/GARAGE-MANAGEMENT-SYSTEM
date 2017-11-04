@@ -31,7 +31,7 @@
     }
     else
     {  
-	 if(!isset($_SESSION['name']) || !isset($_SESSION['email']) || !isset($_SESSION['conduct']))
+	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
 	 {
 	    header("location:login.php");
 	    exit();
@@ -209,14 +209,14 @@
 		</div>
 		<div>
 			<center>
-				<fieldset id = "position">
+				<fieldset id = "drape">
 					<form method = "post" action = "usersearch.php" onsubmit = "return searchuser()">
 						<div class = "form-group">
 							<h1><strong><center>Vehicle History</center></strong></h1>
 						</div>
 						<div class="form-group">
 					    <label>Vehicle Registration:</label>
-					    <input type="text" class="form-control" name = "key" id = "dimensions">
+					    <input type="text" class="form-control" name = "key" id = "modify">
 					  </div>
 					  <button type="submit" class="btn btn-primary" name = "submit">Search History</button>
 					</form>

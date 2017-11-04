@@ -159,7 +159,7 @@
 			</fieldset>
 		</div>
 		<div>
-			<h1><strong>Profile</strong></h1>
+			<h1><strong>User Profile</strong></h1>
 		</div>
 		<div>
 			<center>
