@@ -1,68 +1,86 @@
 <!DOCTYPE html>
 <?php
 	
-	session_start();
-	
-	$access = "";
+	$server = "localhost";
+	$user = "root";
+	$password = "";
+	$db = "garage";
 
-	if($_SERVER['REQUEST_METHOD'] == 'POST')
+	$c = mysqli_connect($server, $user, $password, $db);
+
+	if(mysqli_connect_errno())
 	{
-		$server = "localhost";
-		$user = "root";
-		$password = "";
-		$db = "garage";
+		die("Connection error:" . mysqli_connect_error());
+		header("location: login.php");
+		exit();
+	}
+	else
+	{
+		session_start();
+		
+		$access = "";
 
-		$c = mysqli_connect($server, $user, $password, $db);
-
-		if(mysqli_connect_errno())
+		if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
 		{
-			die("Connection error:" . mysqli_connect_error());
-			header("location: login.php");
+			if($_SERVER['REQUEST_METHOD'] == 'POST')
+			{
+				$email = mysqli_real_escape_string($c, $_POST['email']);
+				$p = mysqli_real_escape_string($c, $_POST['key']);
+				
+				if(isset($_POST['submit']))
+				{
+
+					if (empty($email) && empty($p))
+					{
+						header("location: login.php");
+						exit();
+					}
+					else
+					{
+						$query = "SELECT * FROM accounts WHERE email = '$email' AND password1 = '$p'";
+						
+						$ps = mysqli_query($c, $query);
+
+						if(!$ps)
+						{
+							die("Failed to retrieve data:" . mysqli_error($c));
+							header("location: registration.php");
+							exit();
+						}
+						else
+						{
+							$rs = mysqli_fetch_assoc($ps);
+
+							$tally = mysqli_num_rows($ps);
+
+							if($tally == 1)
+							{
+								$first = $rs['first'];
+								$last =  $rs['last'];
+								$credentials = $first . " " . $last;
+								$_SESSION['name'] = $credentials;
+								$_SESSION['email'] = $rs['email'];
+								$_SESSION['conduct'] = $rs['usertype'];
+								header("location: home.php");
+								exit();
+							}
+							else
+							{
+								$access = "Access Denied";
+							}
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			header("location: home.php");
 			exit();
 		}
-
-		if(isset($_POST['submit']))
-		{
-			$email = mysqli_real_escape_string($c, $_POST['email']);
-			$p = mysqli_real_escape_string($c, $_POST['key']);
-
-			if (empty($email) || empty($p))
-			{
-				header("location: login.php");
-				exit();
-			}
-			$query = "SELECT * FROM accounts WHERE email = '$email' AND password1 = '$p'";
-			
-			$ps = mysqli_query($c, $query);
-
-			if(!$ps)
-			{
-				die("Failed to retrieve data:" . mysqli_error($c));
-				header("location: registration.php");
-				exit();
-			}
-			$rs = mysqli_fetch_assoc($ps);
-
-			$tally = mysqli_num_rows($ps);
-
-			if($tally == 1)
-			{
-				$first = $rs['first'];
-				$last =  $rs['last'];
-				$credentials = $first . " " . $last;
-				$_SESSION['name'] = $credentials;
-				$_SESSION['email'] = $rs['email'];
-				$_SESSION['conduct'] = $rs['usertype'];
-				header("location: home.php");
-				exit();
-			}
-			else
-			{
-				$access = "Access Denied";
-			}
-		}
-		mysqli_close($c);
 	}
+
+	mysqli_close($c);
 ?>
 <html>
 <head>
