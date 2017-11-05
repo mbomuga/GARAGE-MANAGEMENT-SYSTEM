@@ -91,7 +91,7 @@
 								<tr>
 									<td colspan = "2">
 									<center>
-										<img src = "lock.png" alt = "locked">
+										<img src = "lock.png" alt = "locked" class = "rounded">
 									</center>
 									</td>
 								</tr>

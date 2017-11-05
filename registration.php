@@ -86,7 +86,7 @@
 		</div>
 		<div id = "sector">
 				<center>
-					<img src = "registration.jpg" alt = "Registration">
+					<img src = "registration.jpg" alt = "Registration" class = "rounded">
 					<h1><strong>Registration</strong></h1>
 				</center>
 		</div>
