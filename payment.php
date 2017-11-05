@@ -244,7 +244,7 @@
 					<?php echo $success; ?>
 					<?php echo $fiction; ?>
 				  <button type="submit" class="btn btn-warning" name = "submit">
-					<img src = "paypal icon.png" alt = "paypal icon" id = "scale">
+					<img src = "paypal icon.png" alt = "paypal icon" id = "scale" class = "rounded">
 					Transact
 				</button>
 				</form>

@@ -151,7 +151,7 @@
 							<td id = "misc">
 							<center>
 								<a href = "vehicles.php" target = "_self">
-									<img src = "vehicle icon.png" alt = "vehicle" id = "scale">
+									<img src = "vehicle icon.png" alt = "vehicle" id = "scale" class = "rounded">
 									Vehicles
 								</a>
 							</center>
@@ -159,7 +159,7 @@
 							<td id = "misc">
 								<center>
 									<a href = "userprofile.php" target = "_self">
-										<img src = "details.png" alt = "profile" id = "scale">
+										<img src = "details.png" alt = "profile" id = "scale" class = "rounded">
 										Profile
 									</a>
 								</center>
@@ -167,7 +167,7 @@
 							<td id = "misc">
 								<center>
 									<a href = "notifications.php" target = "_self">
-										<img src = "notifications.png" alt = "notification" id = "scale">
+										<img src = "notifications.png" alt = "notification" id = "scale" class = "rounded">
 										Notifications
 									</a>
 								</center>
@@ -177,7 +177,7 @@
 							<td id = "misc">
 							<center>
 								<a href = "schedule.php" target = "_self">
-									<img src = "schedule icon.png" alt = "schedule" id = "scale">
+									<img src = "schedule icon.png" alt = "schedule" id = "scale" class = "rounded">
 									Schedule
 								</a>
 							</center>
@@ -185,15 +185,15 @@
 						<td id = "misc">
 							<center>
 								<a href = "payment.php" target = "_self">
-									<img src = "payment icon.png" alt = "payment" id = "scale">
+									<img src = "payment icon.png" alt = "payment" id = "scale" class = "rounded">
 									Payment
 								</a>
 							</center>
 						</td>
 						<td id = "misc">
 							<center>
-								<a href = "history.php" target = "_self">
-									<img src = "history icon.png" alt = "history" id = "scale">
+								<a href = "history.php" target = "_self" class = "rounded">
+									<img src = "history icon.png" alt = "history" id = "scale" class = "rounded">
 									Service History
 								</a>
 							</center>
