@@ -60,7 +60,7 @@
 		{
 			if (!empty($scenario))
 			{
-				$query4  = "SELECT * FROM history WHERE serialno = '$scenario'";
+				$query4  = "SELECT * FROM history WHERE serialno = '$scenario'  AND email = '$heading'";
 
 				$ps5 = mysqli_query($c, $query4);
 
@@ -92,7 +92,7 @@
 
 			    			if($state == "successful")
 			    			{
-			    				$query5 = "UPDATE history SET charge = 'confirmed' WHERE serialno = '$scenario'";
+			    				$query5 = "UPDATE history SET charge = 'confirmed' WHERE serialno = '$scenario' AND email = '$heading'";
 								$ps6 = mysqli_query($c, $query5);
 
 								if(!$ps6)
@@ -148,28 +148,24 @@
 </head>
 	<body>
 		<div>
-		    <center>
-		      <table id = "primary">
-		        <tr>
-		          <td id = "default">
-		            <center>
-		              <strong>Welcome: <?php echo $identity; ?></strong>
-		            </center>
-		          </td>
-		          <td id = "default">
-		            <center>
-		              <strong><a href = "logout.php">Logout</a></strong>
-		            </center>
-		          </td>
-		        </tr>
-		      </table>
-		    </center>
-	  	</div>
-	  	<div id = "reverse">
-			<a href = "login.php" target = "_self">
-			<img src = "id icon.png" alt = "Login" id = "scale">
-			<strong>Login</strong>
-			</a>
+			<ul class= "nav justify-content-end">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown">
+					<img src = "id icon.png" alt = "Login" id = "scale">						
+					<strong><?php echo $identity; ?></strong>
+					</a>
+				    <div class="dropdown-menu">
+				      <a class="dropdown-item" href="login.php">
+						<img src = "unlock.png" alt = "unlock" id = "scale">
+						Login
+						</a>
+				      <a class="dropdown-item" href="logout.php">
+						<img src = "lock.png" alt = "lock" id = "scale">
+						Logout
+						</a>
+				    </div>
+				</li>
+			</ul>
 		</div>
 		<div>
 			<center>
@@ -247,7 +243,10 @@
 					<?php echo $futile; ?>
 					<?php echo $success; ?>
 					<?php echo $fiction; ?>
-				  <button type="submit" class="btn btn-primary" name = "submit">Transact</button>
+				  <button type="submit" class="btn btn-warning" name = "submit">
+					<img src = "paypal icon.png" alt = "paypal icon" id = "scale">
+					Transact
+				</button>
 				</form>
 			</fieldset>
 		</center>

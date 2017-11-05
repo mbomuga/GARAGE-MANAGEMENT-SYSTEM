@@ -31,7 +31,7 @@
     }
     else
     {  
-	 if(!isset($_SESSION['name']) || !isset($_SESSION['email']) || !isset($_SESSION['conduct']))
+	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
 	 {
 	    header("location:login.php");
 	    exit();
@@ -85,28 +85,24 @@
 </head>
 	<body>
 		<div>
-		    <center>
-		      <table id = "primary">
-		        <tr>
-		          <td id = "default">
-		            <center>
-		              <strong>Welcome: <?php echo $identity; ?></strong>
-		            </center>
-		          </td>
-		          <td id = "default">
-		            <center>
-		              <strong><a href = "logout.php">Logout</a></strong>
-		            </center>
-		          </td>
-		        </tr>
-		      </table>
-		    </center>
-	  	</div>
-	  	<div id = "reverse">
-			<a href = "login.php" target = "_self">
-			<img src = "id icon.png" alt = "Login" id = "scale">
-			<strong>Login</strong>
-			</a>
+			<ul class= "nav justify-content-end">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown">
+					<img src = "id icon.png" alt = "Login" id = "scale">						
+					<strong><?php echo $identity; ?></strong>
+					</a>
+				    <div class="dropdown-menu">
+				      <a class="dropdown-item" href="login.php">
+						<img src = "unlock.png" alt = "unlock" id = "scale">
+						Login
+						</a>
+				      <a class="dropdown-item" href="logout.php">
+						<img src = "lock.png" alt = "lock" id = "scale">
+						Logout
+						</a>
+				    </div>
+				</li>
+			</ul>
 		</div>
 		<div>
 			<center>
@@ -177,10 +173,26 @@
 					<tr>
 						<td id = "default">
 							<center>
-								<a href="editnotifications.php" target = "_self">
-									<img src = "edit icon.png" alt = "edit icon" id = "scale">
+								<div class="btn-group">
+								  <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown">
+									<img src = "edit icon.png" alt = "edit icon" id = "narrow">
 									Edit
-								</a>
+									</button>
+								  <div class="dropdown-menu dropdown-menu right">
+								    <a class="dropdown-item" href="insertnotifications.php">
+									<img src = "insert icon.png" alt = "insert icon" id = "scale">
+									Add
+									</a>
+								    <a class="dropdown-item" href="updatenotifications.php">
+									<img src = "update icon.png" alt = "update icon" id = "scale">
+									Update
+									</a>
+									<a class="dropdown-item" href="deletenotifications.php">
+									<img src = "delete icon.png" alt = "delete icon" id = "scale">
+									Delete
+									</a>
+								  </div>
+								</div>
 							</center>
 						</td>
 					</tr>

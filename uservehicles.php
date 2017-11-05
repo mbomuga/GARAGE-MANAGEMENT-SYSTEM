@@ -68,28 +68,24 @@
 </head>
 	<body>
 		<div>
-		    <center>
-		      <table id = "primary">
-		        <tr>
-		          <td id = "default">
-		            <center>
-		              <strong>Welcome: <?php echo $identity; ?></strong>
-		            </center>
-		          </td>
-		          <td id = "default">
-		            <center>
-		              <strong><a href = "logout.php">Logout</a></strong>
-		            </center>
-		          </td>
-		        </tr>
-		      </table>
-		    </center>
-	  	</div>
-		<div id = "reverse">
-			<a href = "login.php" target = "_self">
-			<img src = "id icon.png" alt = "Login" id = "scale">
-			<strong>Login</strong>
-			</a>
+			<ul class= "nav justify-content-end">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown">
+					<img src = "id icon.png" alt = "Login" id = "scale">						
+					<strong><?php echo $identity; ?></strong>
+					</a>
+				    <div class="dropdown-menu">
+				      <a class="dropdown-item" href="login.php">
+						<img src = "unlock.png" alt = "unlock" id = "scale">
+						Login
+						</a>
+				      <a class="dropdown-item" href="logout.php">
+						<img src = "lock.png" alt = "lock" id = "scale">
+						Logout
+						</a>
+				    </div>
+				</li>
+			</ul>
 		</div>
 		<div>
 			<center>
@@ -160,10 +156,26 @@
 					<tr>
 						<td id = "default">
 							<center>
-								<a href="editvehicles.php" target = "_self">
-									<img src = "edit icon.png" alt = "edit icon" id = "scale">
+								<div class="btn-group">
+								  <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown">
+									<img src = "edit icon.png" alt = "edit icon" id = "narrow">
 									Edit
-								</a>
+									</button>
+								  <div class="dropdown-menu dropdown-menu right">
+								    <a class="dropdown-item" href="insertvehicles.php">
+									<img src = "insert icon.png" alt = "insert icon" id = "scale">
+									Add
+									</a>
+								    <a class="dropdown-item" href="updatevehicles.php">
+									<img src = "update icon.png" alt = "update icon" id = "scale">
+									Update
+									</a>
+									<a class="dropdown-item" href="deletevehicles.php">
+									<img src = "delete icon.png" alt = "delete icon" id = "scale">
+									Delete
+									</a>
+								  </div>
+								</div>
 							</center>
 						</td>
 					</tr>
@@ -228,7 +240,7 @@
 					    <label>Vehicle Registration:</label>
 					    <input type="text" class="form-control" name = "key" id = "modify">
 					  </div>
-					  <button type="submit" class="btn btn-primary" name = "submit">Search History</button>
+					  <button type="submit" class="btn btn-dark" name = "submit">Search History</button>
 					</form>
 				</fieldset>
 			</center>

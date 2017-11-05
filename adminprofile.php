@@ -31,7 +31,7 @@ $server = "localhost";
     }
     else
     {  
-	 if(!isset($_SESSION['name']) || !isset($_SESSION['email']) || !isset($_SESSION['conduct']))
+	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
 	 {
 	    header("location:login.php");
 	    exit();
@@ -229,33 +229,24 @@ $server = "localhost";
 </head>
 	<body>
 		<div>
-		    <center>
-		      <table id = "primary">
-		        <tr>
-		          <td id = "default">
-		            <center>
-		              <strong>Welcome: <?php echo $identity; ?></strong>
-		            </center>
-		          </td>
-		          <td id = "default">
-		            <center>
-		              <strong><a href = "logout.php">Logout</a></strong>
-		            </center>
-		          </td>
-		        </tr>
-		      </table>
-		    </center>
-	  	</div>
-	  	<div id = "reverse">
-			<a href = "login.php" target = "_self">
-			<img src = "id icon.png" alt = "Login" id = "scale">
-			<strong>Login</strong>
-			</a>
-		</div>
-		<div>
-			<center>
-				<a href = "home.php"><h1><strong>GARAGE MANAGEMENT SYSTEM</strong></h1></a>
-			</center>
+			<ul class= "nav justify-content-end">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown">
+					<img src = "id icon.png" alt = "Login" id = "scale">						
+					<strong><?php echo $identity; ?></strong>
+					</a>
+				    <div class="dropdown-menu">
+				      <a class="dropdown-item" href="login.php">
+						<img src = "unlock.png" alt = "unlock" id = "scale">
+						Login
+						</a>
+				      <a class="dropdown-item" href="logout.php">
+						<img src = "lock.png" alt = "lock" id = "scale">
+						Logout
+						</a>
+				    </div>
+				</li>
+			</ul>
 		</div>
 		<div>
 			<center>
@@ -338,7 +329,7 @@ $server = "localhost";
 					<option value = "owner">Owner</option>
 					<option value = "none">None</option>
 					</select>
-				  <button type="submit" class="btn btn-primary" name = "submit">Filter</button>
+				  <button type="submit" class="btn btn-dark" name = "submit">Filter</button>
 				</form> 
 			</fieldset>
 		</div>

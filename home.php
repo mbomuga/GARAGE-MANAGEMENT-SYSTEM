@@ -16,27 +16,31 @@
 
   session_start();
    
-   $identity = $_SESSION['name'];
-   $heading = $_SESSION['email'];
-   $authority = $_SESSION['conduct'];
-   
-   $query =  "SELECT * FROM accounts WHERE email = '$heading'";
-   $ps = mysqli_query($c, $query);
+   $identity = "";
+   $passion = "";
 
-    if(!$ps)
-    {
-        die("Failed to retrieve data:" . mysqli_error($c));
-        header("location: login.php");
-        exit();
-    }
-    else
-    {  
-	 if(!isset($_SESSION['name']) || !isset($_SESSION['email']) || !isset($_SESSION['conduct']))
-	 {
-	    header("location:login.php");
-	    exit();
-	 }
-    }
+	if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
+	{
+		$passion = "Sign in";
+	}
+	else
+	{
+		$identity = $_SESSION['name'];
+		$heading = $_SESSION['email'];
+		$authority = $_SESSION['conduct'];
+
+		$query =  "SELECT * FROM accounts WHERE email = '$heading'";
+		$ps = mysqli_query($c, $query);
+
+		if(!$ps)
+		{
+		    die("Failed to retrieve data:" . mysqli_error($c));
+		    header("location: login.php");
+		    exit();
+		}
+	}
+
+
    mysqli_close($c);
 ?>
 <html>
@@ -53,28 +57,25 @@
 </head>
 	<body>
 		<div>
-		    <center>
-		      <table id = "primary">
-		        <tr>
-		          <td id = "default">
-		            <center>
-		              <strong>Welcome: <?php echo $identity; ?></strong>
-		            </center>
-		          </td>
-		          <td id = "default">
-		            <center>
-		              <strong><a href = "logout.php">Logout</a></strong>
-		            </center>
-		          </td>
-		        </tr>
-		      </table>
-		    </center>
-	  	</div>
-		<div id = "reverse">
-			<a href = "login.php" target = "_self">
-			<img src = "id icon.png" alt = "Login" id = "scale">
-			<strong>Login</strong>
-			</a>
+			<ul class= "nav justify-content-end">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown">
+					<img src = "id icon.png" alt = "Login" id = "scale">						
+					<strong><?php echo $identity; ?></strong>
+					<strong><?php echo $passion; ?></strong>
+					</a>
+				    <div class="dropdown-menu">
+				      <a class="dropdown-item" href="login.php">
+						<img src = "unlock.png" alt = "unlock" id = "scale">
+						Login
+						</a>
+				      <a class="dropdown-item" href="logout.php">
+						<img src = "lock.png" alt = "lock" id = "scale">
+						Logout
+						</a>
+				    </div>
+				</li>
+			</ul>
 		</div>
 		<div>
 			<center>
@@ -157,8 +158,8 @@
 							</td>
 							<td id = "misc">
 								<center>
-									<a href = "profile.php" target = "_self">
-										<img src = "Profile Picture.png" alt = "profile" id = "scale">
+									<a href = "userprofile.php" target = "_self">
+										<img src = "details.png" alt = "profile" id = "scale">
 										Profile
 									</a>
 								</center>

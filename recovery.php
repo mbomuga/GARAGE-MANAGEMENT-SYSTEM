@@ -117,7 +117,7 @@
 	<body>
 		<div>
 			<center>
-				<h1><strong>GARAGE MANAGEMENT SYSTEM</strong></h1>
+				<a href = "home.php"><h1><strong>GARAGE MANAGEMENT SYSTEM</strong></h1></a>
 			</center>
 		</div>
 		<div>

@@ -31,7 +31,7 @@
     }
     else
     {  
-	 if(!isset($_SESSION['name']) || !isset($_SESSION['email']) || !isset($_SESSION['conduct']))
+	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
 	 {
 	    header("location:login.php");
 	    exit();
@@ -66,7 +66,7 @@
 	 }
 	 else
 	 {
-	 	header("location: home.php");
+	 	header("location: uservehicles.php");
 		exit();
 	 }
 
@@ -87,28 +87,24 @@
 </head>
 	<body>
 		<div>
-		    <center>
-		      <table id = "primary">
-		        <tr>
-		          <td id = "default">
-		            <center>
-		              <strong>Welcome: <?php echo $identity; ?></strong>
-		            </center>
-		          </td>
-		          <td id = "default">
-		            <center>
-		              <strong><a href = "logout.php">Logout</a></strong>
-		            </center>
-		          </td>
-		        </tr>
-		      </table>
-		    </center>
-	  	</div>
-	  	<div id = "reverse">
-			<a href = "login.php" target = "_self">
-			<img src = "id icon.png" alt = "Login" id = "scale">
-			<strong>Login</strong>
-			</a>
+			<ul class= "nav justify-content-end">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown">
+					<img src = "id icon.png" alt = "Login" id = "scale">						
+					<strong><?php echo $identity; ?></strong>
+					</a>
+				    <div class="dropdown-menu">
+				      <a class="dropdown-item" href="login.php">
+						<img src = "unlock.png" alt = "unlock" id = "scale">
+						Login
+						</a>
+				      <a class="dropdown-item" href="logout.php">
+						<img src = "lock.png" alt = "lock" id = "scale">
+						Logout
+						</a>
+				    </div>
+				</li>
+			</ul>
 		</div>
 		<div>
 			<center>
@@ -223,20 +219,29 @@
 							{
 								if(isset($_POST['submit']))
 								{
-									if($reading2>0)
-								    {
-										while($rs2 = mysqli_fetch_assoc($ps3))
-										{
-											$entry = $rs2['serialno'];
-											$label = $rs2['registration'];
-											$period = $rs2['period'];
-											$lapse = $rs2['lapse'];
-											$report = $rs2['description'];
-											$quota = $rs2['expense'];
-											$tender = $rs2['charge'];
-											$manner = $currency . " " . $quota;
+									if(!empty($key))
+									{
+										if($reading2>0)
+									    {
+											while($rs2 = mysqli_fetch_assoc($ps3))
+											{
+												$entry = $rs2['serialno'];
+												$label = $rs2['registration'];
+												$period = $rs2['period'];
+												$lapse = $rs2['lapse'];
+												$report = $rs2['description'];
+												$quota = $rs2['expense'];
+												$tender = $rs2['charge'];
+												$manner = $currency . " " . $quota;
 
-											echo "<tr><td id = 'log'><center>" . $entry . "</center></td><td id = 'log'><center>" . $label . "</center></td><td id = 'log'><center>" . $period . "</center></td><td id = 'log'><center>" . $lapse . "</center></td><td id = 'entry'><center>" . $report . "</center></td><td id = 'log'><center>" . $manner . "</center></td><td id = 'log'><center>" . $tender . "</center></td></tr>";
+												echo "<tr><td id = 'log'><center>" . $entry . "</center></td><td id = 'log'><center>" . $label . "</center></td><td id = 'log'><center>" . $period . "</center></td><td id = 'log'><center>" . $lapse . "</center></td><td id = 'entry'><center>" . $report . "</center></td><td id = 'log'><center>" . $manner . "</center></td><td id = 'log'><center>" . $tender . "</center></td></tr>";
+											}
+										}
+										else
+										{
+											$archives = "No Entry Available";
+											
+											echo "<tr><td id = 'log'><center>" . $archives . "</center></td><td id = 'log'><center>" . $archives . "</center></td><td id = 'log'><center>" . $archives . "</center></td><td id = 'log'><center>" . $archives . "</center></td><td id = 'entry'><center>" . $archives . "</center></td><td id = 'log'><center>" . $archives . "</center></td><td id = 'log'><center>" . $archives . "</center></td></tr>";
 										}
 									}
 									else
@@ -247,7 +252,6 @@
 									}
 								}
 							}
-
 						?>
 					</table>
 				</fieldset>

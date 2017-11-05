@@ -81,7 +81,7 @@
 	<body>
 		<div>
 		<center>
-			<h1><strong>GARAGE MANAGEMENT SYSTEM</strong></h1>
+			<a href = "home.php"><h1><strong>GARAGE MANAGEMENT SYSTEM</strong></h1></a>
 		</center>
 		</div>
 		<div id = "sector">
@@ -131,7 +131,7 @@
 					    <label>Phone Number:</label>
 					    <input type="text" class="form-control" name="phone" id = "dimensions">
 					  </div>
-					  <button type="submit" class="btn btn-primary" name = "submit">Submit</button>
+					  <button type="submit" class="btn btn-dark" name = "submit">Submit</button>
 					</form>
 				</fieldset>
 			</center>

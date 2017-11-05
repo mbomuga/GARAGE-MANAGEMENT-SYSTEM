@@ -79,7 +79,7 @@
 	<body>
 		<div>
 		<center>
-			<h1><strong>GARAGE MANAGEMENT SYSTEM</strong></h1>
+			<a href = "home.php"><h1><strong>GARAGE MANAGEMENT SYSTEM</strong></h1></a>
 		</center>
 		</div>
 		<div>
@@ -106,7 +106,7 @@
 				    <input type="password" class="form-control" name="key" id = "dimensions">
 					<?php echo $access; ?>
 				  </div>
-				  <button type="submit" class="btn btn-primary" name = "submit">Submit</button>
+				  <button type="submit" class="btn btn-dark" name = "submit">Submit</button>
 						<div class = "form-group">
 							<table id = "frame">							
 								<tr>
