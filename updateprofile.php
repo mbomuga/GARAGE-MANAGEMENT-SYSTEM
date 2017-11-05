@@ -141,16 +141,16 @@ $server = "localhost";
       <ul class= "nav justify-content-end">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown">
-          <img src = "id icon.png" alt = "Login" id = "scale">            
+          <img src = "id icon.png" alt = "Login" id = "scale" class = "rounded">            
           <strong><?php echo $identity; ?></strong>
           </a>
             <div class="dropdown-menu">
               <a class="dropdown-item" href="login.php">
-            <img src = "unlock.png" alt = "unlock" id = "scale">
+            <img src = "unlock.png" alt = "unlock" id = "scale" class = "rounded">
             Login
             </a>
               <a class="dropdown-item" href="logout.php">
-            <img src = "lock.png" alt = "lock" id = "scale">
+            <img src = "lock.png" alt = "lock" id = "scale" class = "rounded">
             Logout
             </a>
             </div>
@@ -159,7 +159,7 @@ $server = "localhost";
     </div>
     <div>
       <center>
-        <a href = "home.html" target = "_self"><h1><strong>GARAGE MANAGEMENT SYSTEM</strong></h1></a>
+        <a href = "home.php"><h1><strong>GARAGE MANAGEMENT SYSTEM</strong></h1></a>
       </center>
     </div>
     <div>
@@ -168,21 +168,21 @@ $server = "localhost";
           <ul class="navbar-nav">
             <li class="navbar-brand nav-item active">
             <a class="nav-link" href="home.php">
-            <img src = "home.png" alt = "home" id = "scale">
+            <img src = "home.png" alt = "home" id = "scale" class = "rounded">
             Home
           </a>
             </li>
-            <li class="nav-item active dropdown navbar-brand">
+            <li class="nav-item dropdown navbar-brand">
               <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
             <img src = "details.png" alt = "profile" id = "scale">
               Profile
               <div class="dropdown-menu">
                     <a class="dropdown-item" href="userprofile.php">
-                  <img src = "Profile Picture.png" alt = "profile" id = "scale">
+                  <img src = "Profile Picture.png" alt = "profile" id = "scale" class = "rounded">
                   User Profile
                 </a>
                     <a class="dropdown-item" href="adminprofile.php">
-                  <img src = "group icon.png" alt = "group" id = "scale">
+                  <img src = "group icon.png" alt = "group" id = "scale" class = "rounded">
                   View Users
                 </a>
               </div>
@@ -190,35 +190,35 @@ $server = "localhost";
             </li>
             <li class="navbar-brand">
               <a class="nav-link" href="vehicles.php">
-            <img src = "vehicle icon.png" alt = "vehicle" id = "scale">
+            <img src = "vehicle icon.png" alt = "vehicle" id = "scale" class = "rounded">
             Vehicles</a>
             </li>
           <li class="navbar-brand">
               <a class="nav-link" href="notifications.php">
-            <img src = "notifications.png" alt = "notification" id = "scale">
+            <img src = "notifications.png" alt = "notification" id = "scale" class = "rounded">
             Notifications
             </a>
             </li>
           <li class="navbar-brand">
               <a class="nav-link" href="schedule.php">
-            <img src = "schedule icon.png" alt = "schedule" id = "scale">
+            <img src = "schedule icon.png" alt = "schedule" id = "scale" class = "rounded">
             Schedule
             </a>
             </li>
           <li class="navbar-brand">
               <a class="nav-link" href="payment.php">
-            <img src = "payment icon.png" alt = "payment" id = "scale">
+            <img src = "payment icon.png" alt = "payment" id = "scale" class = "rounded">
             Payment</a>
             </li>
           <li class="navbar-brand">
               <a class="nav-link" href="history.php">
-            <img src = "history icon.png" alt = "history" id = "scale">
+            <img src = "history icon.png" alt = "history" id = "scale" class = "rounded">
             Service History
           </a>
             </li>
           </ul>
         </nav>
-      </center>     
+      </center>
     </div>
     <div id = "drape">
       <center>
