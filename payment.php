@@ -49,7 +49,6 @@
 	 /*Prevents the admin from accessing the page*/
 
     $futile = "";
-    $success = "";
     $fiction = "";
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST')
@@ -70,8 +69,6 @@
 			        header("location: inserthistory.php");
 			        exit();
 			    }
-
-			    $instance = $rs4['serialno'];
 			    
 			    $total = mysqli_num_rows($ps5);
 
@@ -79,6 +76,7 @@
 			    {
 			    	while ($rs4 = mysqli_fetch_assoc($ps5))
 			    	{
+			    		$instance = $rs4['serialno'];
 			    		$revenue = $rs4['expense'];
 			    		$phase = $rs4['charge'];
 
@@ -110,12 +108,12 @@
 			    			else
 			    			{
 			    				$futile = "Transaction Failed";
-			    				exit();
 			    			}
 			    		}
 			    		else
 			    		{
-			    			$success = "Payment Complete";
+			    			header("location: history.php");
+							exit();
 			    		}
 			    	}
 			    }
@@ -241,8 +239,8 @@
 				    <label>Reference No:</label>
 				    <input type="text" class="form-control" name = "scenario" id = "modify">
 					<?php echo $futile; ?>
-					<?php echo $success; ?>
 					<?php echo $fiction; ?>
+					<br>
 				  <button type="submit" class="btn btn-warning" name = "submit">
 					<img src = "paypal icon.png" alt = "paypal icon" id = "scale" class = "rounded">
 					Transact
@@ -250,6 +248,26 @@
 				</form>
 			</fieldset>
 		</center>
+	</div>
+	<div>
+		<?php 
+			if ($_SERVER['REQUEST_METHOD'] == 'POST')
+			{
+				if (isset($_POST['submit']))
+				{
+					if (!empty($scenario))
+					{
+						if($total != 0)
+			    		{
+							while ($rs4 = mysqli_fetch_assoc($ps5))
+			    			{
+								$amount = $revenue;
+							}
+						}
+					}
+				}
+			}
+		 ?>
 	</div>
 	<div>
 		<footer id = "footnote">

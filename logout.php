@@ -10,12 +10,12 @@
 		unset($_SESSION['email']);
 		unset($_SESSION['conduct']);
 
-      	header("Location: login.php");
+      	header("Location: home.php");
       	exit();
    	}
    	else
    	{
-   		header("Location: home.php");
+   		header("Location: login.php");
    		exit();
    	}
 ?>

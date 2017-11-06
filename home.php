@@ -21,7 +21,7 @@
 
 	if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
 	{
-		$passion = "Sign in";
+		$passion = "Sign In";
 	}
 	else
 	{
