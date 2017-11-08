@@ -49,24 +49,47 @@
 						}
 						else
 						{
-							$rs = mysqli_fetch_assoc($ps);
 
 							$tally = mysqli_num_rows($ps);
 
 							if($tally == 1)
 							{
-								$first = $rs['first'];
-								$last =  $rs['last'];
-								$credentials = $first . " " . $last;
-								$_SESSION['name'] = $credentials;
-								$_SESSION['email'] = $rs['email'];
-								$_SESSION['conduct'] = $rs['usertype'];
+								while ($rs = mysqli_fetch_assoc($ps))
+								{
+									$authority = $rs['usertype'];
+
+									if($authority == "manager")
+									{
+										$_SESSION['name'] = "Garage Manager";
+										$_SESSION['email'] = $rs['email'];
+										$_SESSION['line'] = $rs['phone'];
+										$_SESSION['conduct'] = $authority;
+									}
+									elseif ($authority == "owner")
+									{
+										$_SESSION['name'] = "Owner";
+										$_SESSION['email'] = $rs['email'];
+										$_SESSION['line'] = $rs['phone'];
+										$_SESSION['conduct'] = $authority;
+									}
+									else
+									{
+										$first = $rs['first'];
+										$last =  $rs['last'];
+										$credentials = $first . " " . $last;
+										$_SESSION['name'] = $credentials;
+										$_SESSION['email'] = $rs['email'];
+										$_SESSION['line'] = $rs['phone'];
+										$_SESSION['conduct'] = $authority;
+									}
+								}
+								
 								header("location: home.php");
 								exit();
 							}
 							else
 							{
-								$access = "Access Denied";
+								$access = "*Access Denied";
 							}
 						}
 					}
@@ -109,7 +132,7 @@
 								<tr>
 									<td colspan = "2">
 									<center>
-										<img src = "lock.png" alt = "locked" class = "rounded">
+										<img src = "unlock.png" alt = "unlock" class = "rounded">
 									</center>
 									</td>
 								</tr>
@@ -136,13 +159,6 @@
 									<td id = "default">
 										<center>
 											<a href = "registration.php" target = "_self">Sign Up</a>
-										</center>
-									</td>
-								</tr>
-								<tr>
-									<td colspan = "2">
-										<center>
-											<a href = "recovery.php" target = "_self">Forgot Password?</a>
 										</center>
 									</td>
 								</tr>

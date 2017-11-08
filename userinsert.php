@@ -14,7 +14,7 @@
     exit();
   }
 
-  session_start();
+	session_start();
    
    $identity = $_SESSION['name'];
    $heading = $_SESSION['email'];
@@ -39,97 +39,99 @@
 	 }
     }
 
-     if ($authority != "manager")
-     {
-     	header("location:home.php");
-        exit();
-     }
+    if($authority == "manager" || $authority == "owner")
+    {
+    	header("location:home.php");
+	    exit();
+    }
 
-     $inventory = "";
-     $disconnect = "";
-
-    if($_SERVER['REQUEST_METHOD'] == 'POST')
+     if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
-		$alert = mysqli_real_escape_string($c, $_POST['alert']);
-		$nature = mysqli_real_escape_string($c, $_POST['nature']);
-		$relevance = mysqli_real_escape_string($c, $_POST['relevance']);
-		$direction = mysqli_real_escape_string($c, $_POST['direction']);
+		$label = mysqli_real_escape_string($c, $_POST['label']);
+		$type = mysqli_real_escape_string($c, $_POST['type']);
+		$duration = mysqli_real_escape_string($c, $_POST['duration']);
 
 		if (isset($_POST['submit']))
 		{
-
-			if(!empty($alert) && !empty($direction))
+			if (!empty($label) && !empty($type) && !empty($duration))
 			{
-				$query6 = "SELECT * FROM notifications";
+				$query5 = "INSERT INTO `vehicles`(`registration`, `model`, `year`, `username`,  `phone`,`email`) VALUES ('$label','$type','$duration', '$identity',  '$line','$heading')";
+				$ps6 = mysqli_query($c, $query5);
 
-				$ps7 = mysqli_query($c, $query6);
-				if(!$ps7)
+				if(!$ps6)
 			    {
-			        die("Failed to retrieve data:" . mysqli_error($c));
-			        header("location: notifications.php");
+			        die("Failed to insert data:" . mysqli_error($c));
+			        header("location: insertvehicles.php");
 			        exit();
 			    }
-			    $recording = mysqli_num_rows($ps7);
+				else
+				{
+					$query6 = "SELECT * FROM notifications";
 
-			    if($recording == 0)
-			    {
-			    	$index = 1;
-			    }
-			    else
-			    {
-			    	$index = $recording + 1;
-			    }
+					$ps7 = mysqli_query($c, $query6);
+					if(!$ps7)
+				    {
+				        die("Failed to retrieve data:" . mysqli_error($c));
+				        header("location: userinsert.php");
+				        exit();
+				    }
+				    $iteration = mysqli_num_rows($ps7);
 
-				$query6  = "SELECT * FROM accounts WHERE email = '$direction'";
-
-				$ps7 = mysqli_query($c, $query6);
-
-				if(!$ps7)
-			    {
-			        die("Failed to retrieve data:" . mysqli_error($c));
-			        header("location: insertnotifications.php");
-			        exit();
-			    }
-			    
-			    $reading = mysqli_num_rows($ps7);
-
-			    if($reading != 0)
-			    {
-			    	while ($rs6 = mysqli_fetch_assoc($ps7))
-			    	{
-				    	$reference = $rs6['serialno'];
-				    	$directory = $rs6['first'];
-				    	$surname = $rs6['last'];
-				    	$contact = $rs6['phone'];
-
-				    	$designate = $directory . " " . $surname;
+				    if($iteration == 0)
+				    {
+				    	$source = 1;
+				    }
+				    else
+				    {
+				    	$source = $iteration + 1;
 				    }
 
-			    	$query7 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$index','$alert', '$nature', '$relevance', '$designate', '$contact' ,'$direction')";
-						
+				    $query7  = "SELECT * FROM accounts WHERE email = '$heading'";
+
 					$ps8 = mysqli_query($c, $query7);
 
 					if(!$ps8)
-					{
-						die("Failed to insert data:" . mysqli_error($c));
-						header("location: insertnotifications.php");
-						exit();
-					}
-					else
-					{
-						header("location: notifications.php");
-						exit();
-					}
-			    }
-			    else
-			    {
-			    	$inventory = "User does not Exist";
-			    }			    
+				    {
+				        die("Failed to retrieve data:" . mysqli_error($c));
+				        header("location: insertnotifications.php");
+				        exit();
+				    }
+				    
+				    $reading = mysqli_num_rows($ps8);
+
+				    if($reading != 0)
+				    {
+				    	while ($rs7 = mysqli_fetch_assoc($ps8))
+				    	{
+					    	$reference = $rs7['serialno'];
+					    	$directory = $rs7['first'];
+					    	$surname = $rs7['last'];
+					    	$beacon = $rs7['email'];
+					    	$contact = $rs7['phone'];
+
+					    	$designate = $directory . " " . $surname;
+					    }
+
+						$query8 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','New Vehicle', 'vehicle', 'high', '$designate', '$contact' ,'$beacon')";
+								
+						$ps9 = mysqli_query($c, $query8);
+
+						if(!$ps9)
+						{
+							die("Failed to insert data:" . mysqli_error($c));
+							header("location: userinsert.php");
+							exit();
+						}
+
+						header("location: vehicles.php");
+				    	exit();
+				    }
+				}
 			}
 			else
 			{
-				header("location: insertnotifications.php");
-				exit();
+				header("location: insertvehicles.php");
+			    exit();
 			}
 		}
 	}
@@ -138,7 +140,7 @@
 ?>
 <html>
 <head>
-	<title>Add Notification</title>
+	<title>Add Vehicle</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="gms.css">
 	<script src="gms.js"></script>
@@ -196,12 +198,12 @@
 							</div>
 						</a>
 				    </li>
-				    <li class="navbar-brand">
+				    <li class="navbar-brand nav-item active">
 				      <a class="nav-link" href="vehicles.php">
 						<img src = "vehicle icon.png" alt = "vehicle" id = "scale" class = "rounded">
 						Vehicles</a>
 				    </li>
-					<li class="navbar-brand nav-item active">
+					<li class="navbar-brand">
 				      <a class="nav-link" href="notifications.php">
 						<img src = "notifications.png" alt = "notification" id = "scale" class = "rounded">
 						Notifications
@@ -231,40 +233,26 @@
 		<div id = "drape">
 			<center>
 				<fieldset>
-					<form method = "post" action = "insertnotifications.php" onsubmit = "return insertnotifications()">
+					<form method = "post" action = "userinsert.php" onsubmit = "return insertvehicles()">
 						<div class = "form-group">
-						<h1><strong><center>Insert Notification</center></strong></h1>
+							<h1><strong><center>Insert Vehicle</center></strong></h1>
 						</div>
 						<div class="form-group">
-					    <label>Reminder:</label>
-					    <input type="text" class="form-control" name = "alert" id = "modify">
-					  </div>
-						<div class="form-group">
-					    <label>Category:</label>
-					    <select class="form-control" name = "nature" id = "modify">
-							<option value = "repairs">Repairs</option>
-							<option value = "promotion">Promotion</option>
-						</select>
+					    <label>Registration:</label>
+					    <input type="text" class="form-control" name = "label" id = "modify">
 					  </div>
 					  <div class="form-group">
-					    <label>Priority:</label>
-					    <select class="form-control" name = "relevance" id = "modify">
-							<option value = "low">Low</option>
-							<option value = "medium">Medium</option>
-							<option value = "high">High</option>
-						</select>
+					    <label>Model:</label>
+					    <input type="text" class="form-control" name = "type" id = "modify">
 					  </div>
 						<div class="form-group">
-					    <label>Email Address:</label>
-					    <input type="text" class="form-control" name = "direction" id = "modify">
-						<?php echo $inventory; ?>
-						<?php echo $disconnect; ?>
+					    <label>Year of Manufacture:</label>
+					    <input type="text" class="form-control" name = "duration" id = "modify">
 					  </div>
 					  <button type="submit" class="btn btn-dark" name = "submit">Add</button>
 					</form>
 				</fieldset>
 			</center>
-		</div>
 		<div>
 		<footer id = "footnote">
 			<center>
@@ -272,5 +260,5 @@
 			</center>
 		</footer>
 	</div>
-	</body>
+</body>
 </html>

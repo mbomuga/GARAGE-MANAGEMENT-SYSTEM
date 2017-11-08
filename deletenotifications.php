@@ -19,6 +19,7 @@
    $identity = $_SESSION['name'];
    $heading = $_SESSION['email'];
    $authority = $_SESSION['conduct'];
+   $line = $_SESSION['line'];
    
    $query =  "SELECT * FROM accounts WHERE email = '$heading'";
    $ps = mysqli_query($c, $query);
@@ -31,18 +32,23 @@
     }
     else
     {  
-	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
+	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']) && !isset($_SESSION['line']))
 	 {
 	    header("location:login.php");
 	    exit();
 	 }
     }
 
-     if ($authority != "admin")
+     if ($authority != "manager")
      {
      	header("location:home.php");
         exit();
      }
+
+     $invalid = "";
+     $absent = "";
+     $disconnect = "";
+
      if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
 		$report = mysqli_real_escape_string($c, $_POST['report']);
@@ -50,27 +56,84 @@
 
 		if (isset($_POST['submit']))
 		{
-			if(!empty($report) || !empty($directory))
-			{
-				$query3 = "DELETE FROM notifications WHERE reminder = '$report' AND email = '$direction'";
-				$ps3 = mysqli_query($c, $query3);
 
-				if(!$ps3)
-			    {
-			        die("Failed to delete data:" . mysqli_error($c));
-			        header("location: deletenotifications.php");
-			        exit();
-			    }
-			    else
-			    {
-			    	header("location: notifications.php");
-			        exit();
-			    }
-			}
-			else
+			if(!empty($direction) && !empty($report))
 			{
-				header("location: deletenotifications.php");
-			    exit();
+				$query4 = "SELECT * FROM notifications WHERE reminder = '$report' AND email = '$direction'";
+
+				$ps4 = mysqli_query($c, $query4);
+				if(!$ps4)
+			    {
+			        die("Failed to retrieve data:" . mysqli_error($c));
+			        header("location: notifications.php");
+			        exit();
+			    }
+
+			    $record = mysqli_num_rows($ps4);
+
+			    if ($record != 0)
+			    {
+					$query4 = "SELECT * FROM notifications WHERE reminder = '$report'";
+
+					$ps4 = mysqli_query($c, $query4);
+					if(!$ps4)
+				    {
+				        die("Failed to retrieve data:" . mysqli_error($c));
+				        header("location: notifications.php");
+				        exit();
+				    }
+
+				    $reading = mysqli_num_rows($ps4);
+
+				    if ($reading != 0)
+				    {
+				     	while($rs2 = mysqli_fetch_assoc($ps4))
+						{
+							$nature = $rs2['category'];
+						}
+
+						if(!empty($report))
+						{
+							if($nature != "payment")
+							{
+								if(!empty($direction))
+								{
+									$query4 = "DELETE FROM notifications WHERE reminder = '$report' AND email = '$direction'";
+									$ps4 = mysqli_query($c, $query4);
+
+									if(!$ps4)
+								    {
+								        die("Failed to delete data:" . mysqli_error($c));
+								        header("location: deletenotifications.php");
+								        exit();
+								    }
+								    else
+								    {
+								    	header("location: notifications.php");
+								        exit();
+								    }
+								}
+								else
+								{
+									$peculiar = "*Email Required";
+								}
+							}
+							else
+							{
+								$invalid = "*Cannot Delete Entry";
+							}
+						}
+						else
+						{
+							$absent = "*No Entry Available";
+						}		
+					}
+					else
+					{
+						header("location: deletenotifications.php");
+					    exit();
+					}
+				}
 			}
 		}
 	}
@@ -98,10 +161,6 @@
 	          <strong><?php echo $identity; ?></strong>
 	          </a>
 	            <div class="dropdown-menu">
-	              <a class="dropdown-item" href="login.php">
-	            <img src = "unlock.png" alt = "unlock" id = "scale">
-	            Login
-	            </a>
 	              <a class="dropdown-item" href="logout.php">
 	            <img src = "lock.png" alt = "lock" id = "scale">
 	            Logout
@@ -183,10 +242,13 @@
 						<div class="form-group">
 						<label>Reminder:</label>
 					    <input type="text" class="form-control" name = "report" id = "modify">
+						<?php echo $absent; ?>
+						<?php echo $invalid; ?>
 					  </div>
 						<div class="form-group">
 					    <label>Email Address:</label>
 					    <input type="text" class="form-control" name = "direction" id = "modify">
+						<?php echo $disconnect; ?>
 					  </div>
 						<button type="submit" class="btn btn-dark" name = "submit">Delete</button>
 					</form>

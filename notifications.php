@@ -18,6 +18,7 @@
    $identity = $_SESSION['name'];
    $heading = $_SESSION['email'];
    $authority = $_SESSION['conduct'];
+   $line = $_SESSION['line'];
    
    $query =  "SELECT * FROM accounts WHERE email = '$heading'";
    $ps = mysqli_query($c, $query);
@@ -30,22 +31,28 @@
     }
     else
     {  
-     if(!isset($_SESSION['name']) || !isset($_SESSION['email']) || !isset($_SESSION['conduct']))
+     if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']) && !isset($_SESSION['line']))
      {
         header("location:login.php");
         exit();
      }
     }
 
-     if ($authority != "admin")
-     {
-     	  header("location:usernotifications.php");
-        exit();
-     }
-     else
-     {
-     	  header("location:adminnotifications.php");
-        exit();	
-     }
+     if ($authority == "regular")
+   {
+    header("location:usernotifications.php");
+    exit();
+   }
+   elseif ($authority == "manager")
+   {
+    header("location:adminnotifications.php");
+      exit();  
+   }
+   else
+  {
+    header("location:home.php");
+    exit();
+  }
+
    mysqli_close($c);
 ?>

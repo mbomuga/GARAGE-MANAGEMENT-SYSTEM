@@ -39,36 +39,34 @@
 	 }
     }
 
-     if ($authority != "manager")
-     {
-     	header("location:home.php");
-        exit();
-     }
-
-     $disconnect = "";
-
      if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
-		$progress = mysqli_real_escape_string($c, $_POST['progress']);
-		$direction = mysqli_real_escape_string($c, $_POST['direction']);
+		$label = mysqli_real_escape_string($c, $_POST['label']);
 
 		if (isset($_POST['submit']))
-		{	
+		{
+			if(!empty($label))
+			{
+				$query3 = "DELETE FROM vehicles WHERE registration = '$label' AND email = '$heading'";
+				$ps3 = mysqli_query($c, $query3);
 
-    		$query3 = "UPDATE schedule SET status = '$progress' WHERE email = '$direction'";
-			$ps3 = mysqli_query($c, $query3);
-
-			if(!$ps3)
-		    {
-		        die("Failed to update data:" . mysqli_error($c));
-		        header("location: updateschedule.php");
-		        exit();
-		    }
-		    else
-		    {
-		    	header("location: schedule.php");
-		        exit();
-		    }
+				if(!$ps3)
+			    {
+			        die("Failed to delete data:" . mysqli_error($c));
+			        header("location: deletevehicles.php");
+			        exit();
+			    }
+			    else
+			    {
+			    	header("location: vehicles.php");
+			        exit();
+			    }
+			}
+			else
+			{
+				header("location: deletevehicles.php");
+			    exit();
+			}
 		}
 	}
 
@@ -76,7 +74,7 @@
 ?>
 <html>
 <head>
-	<title>Update Schedule</title>
+	<title>Delete Vehicle</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="gms.css">
 	<script src="gms.js"></script>
@@ -88,21 +86,21 @@
 </head>
 	<body>
 		<div>
-			<ul class= "nav justify-content-end">
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" data-toggle="dropdown">
-					<img src = "id icon.png" alt = "Login" id = "scale" class = "rounded">						
-					<strong><?php echo $identity; ?></strong>
-					</a>
-				    <div class="dropdown-menu">
-				      <a class="dropdown-item" href="logout.php">
-						<img src = "lock.png" alt = "lock" id = "scale" class = "rounded">
-						Logout
-						</a>
-				    </div>
-				</li>
-			</ul>
-		</div>
+	      <ul class= "nav justify-content-end">
+	        <li class="nav-item dropdown">
+	          <a class="nav-link dropdown-toggle" data-toggle="dropdown">
+	          <img src = "id icon.png" alt = "Login" id = "scale">            
+	          <strong><?php echo $identity; ?></strong>
+	          </a>
+	          <div class="dropdown-menu">
+	              <a class="dropdown-item" href="logout.php">
+	            <img src = "lock.png" alt = "lock" id = "scale">
+	            Logout
+	            </a>
+	            </div>
+	        </li>
+	      </ul>
+	    </div>
 		<div>
 			<center>
 				<a href = "home.php"><h1><strong>GARAGE MANAGEMENT SYSTEM</strong></h1></a>
@@ -114,7 +112,7 @@
 				  <ul class="navbar-nav">
 				    <li class="navbar-brand">
 				    <a class="nav-link" href="home.php">
-						<img src = "home.png" alt = "home" id = "scale" class = "rounded">
+						<img src = "home.png" alt = "home" id = "scale">
 						Home
 					</a>
 				    </li>
@@ -124,71 +122,62 @@
 							Profile
 							<div class="dropdown-menu">
 						        <a class="dropdown-item" href="userprofile.php">
-									<img src = "Profile Picture.png" alt = "profile" id = "scale" class = "rounded">
+									<img src = "Profile Picture.png" alt = "profile" id = "scale">
 									User Profile
 								</a>
 						        <a class="dropdown-item" href="adminprofile.php">
-									<img src = "group icon.png" alt = "group" id = "scale" class = "rounded">
+									<img src = "group icon.png" alt = "group" id = "scale">
 									View Users
 								</a>
 							</div>
 						</a>
 				    </li>
-				    <li class="navbar-brand">
+				    <li class="navbar-brand nav-item active">
 				      <a class="nav-link" href="vehicles.php">
-						<img src = "vehicle icon.png" alt = "vehicle" id = "scale" class = "rounded">
+						<img src = "vehicle icon.png" alt = "vehicle" id = "scale">
 						Vehicles</a>
 				    </li>
 					<li class="navbar-brand">
 				      <a class="nav-link" href="notifications.php">
-						<img src = "notifications.png" alt = "notification" id = "scale" class = "rounded">
+						<img src = "notifications.png" alt = "notification" id = "scale">
 						Notifications
 						</a>
 				    </li>
-					<li class="navbar-brand nav-item active">
+					<li class="navbar-brand">
 				      <a class="nav-link" href="schedule.php">
-						<img src = "schedule icon.png" alt = "schedule" id = "scale" class = "rounded">
+						<img src = "schedule icon.png" alt = "schedule" id = "scale">
 						Schedule
 						</a>
 				    </li>
 					<li class="navbar-brand">
 				      <a class="nav-link" href="payment.php">
-						<img src = "payment icon.png" alt = "payment" id = "scale" class = "rounded">
+						<img src = "payment icon.png" alt = "payment" id = "scale">
 						Payment</a>
 				    </li>
 					<li class="navbar-brand">
 				      <a class="nav-link" href="history.php">
-						<img src = "history icon.png" alt = "history" id = "scale" class = "rounded">
+						<img src = "history icon.png" alt = "history" id = "scale">
 						Service History
 					</a>
 				    </li>
 				  </ul>
 				</nav>
-			</center>
+			</center>			
 		</div>
-		<div id = "drape">
+		<div>
 			<center>
-				<fieldset>
-					<form method = "post" action = "updateschedule.php" onsubmit = "return updateschedule()">
+			<fieldset id = "drape">
+			<form method = "post" action = "userdelete.php" onsubmit = "return deletevehicles()">
 					<div class = "form-group">
-						<h1><strong><center>Update Entry</center></strong></h1>
+						<h1><strong><center>Delete Vehicle</center></strong></h1>
 					</div>
 					<div class="form-group">
-							<div class="form-group">
-							    <label>Status:</label>
-							    <select class="form-control" name = "progress" id = "modify">
-									<option value = "approved">Approved</option>
-									<option value = "rejected">Rejected</option>
-								</select>
-							  </div>
-							<div class="form-group">
-						    <label>Email Address:</label>
-						    <input type="text" class="form-control" name = "direction" id = "modify">
-							<?php echo $disconnect; ?>
-						  </div>
-						<button type="submit" class="btn btn-dark" name = "submit">Update</button>
-					</form>
-				</fieldset>
+				    <label>Vehicle Registration:</label>
+				    <input type="text" class="form-control" name = "label" id = "modify">
+				  </div>
+				<button type="submit" class="btn btn-dark" name = "submit">Delete</button>
+			</form>
+			</fieldset>
 			</center>
 		</div>
 		<div>

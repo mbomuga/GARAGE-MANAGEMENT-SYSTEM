@@ -21,6 +21,7 @@
    $identity = $_SESSION['name'];
    $heading = $_SESSION['email'];
    $authority = $_SESSION['conduct'];
+   $line = $_SESSION['line'];
    
    $query =  "SELECT * FROM accounts WHERE email = '$heading'";
    $ps = mysqli_query($c, $query);
@@ -33,14 +34,14 @@
     }
     else
     {  
-	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
+	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']) && !isset($_SESSION['line']))
 	 {
 	    header("location:login.php");
 	    exit();
 	 }
     }
 
-    if ($authority == "admin")
+    if ($authority == "manager" || $authority == "owner")
 	 {
 	 	header("location:home.php");
 	    exit();
@@ -104,6 +105,67 @@
 							    	header("location: history.php");
 							    	exit();
 							    }
+
+							    $query6 = "SELECT * FROM notifications";
+
+								$ps7 = mysqli_query($c, $query6);
+								if(!$ps7)
+							    {
+							        die("Failed to retrieve data:" . mysqli_error($c));
+							        header("location: userinsert.php");
+							        exit();
+							    }
+							    $iteration = mysqli_num_rows($ps7);
+
+							    if($iteration == 0)
+							    {
+							    	$source = 1;
+							    }
+							    else
+							    {
+							    	$source = $iteration + 1;
+							    }
+
+							    $query7  = "SELECT * FROM accounts WHERE usertype = 'manager'";
+
+								$ps8 = mysqli_query($c, $query7);
+
+								if(!$ps8)
+							    {
+							        die("Failed to retrieve data:" . mysqli_error($c));
+							        header("location: insertnotifications.php");
+							        exit();
+							    }
+							    
+							    $reading = mysqli_num_rows($ps8);
+
+							    if($reading != 0)
+							    {
+							    	while ($rs7 = mysqli_fetch_assoc($ps8))
+							    	{
+								    	$reference = $rs7['serialno'];
+								    	$directory = $rs7['first'];
+								    	$surname = $rs7['last'];
+								    	$beacon = $rs7['email'];
+								    	$contact = $rs7['phone'];
+
+								    	$designate = $directory . " " . $surname;
+								    }
+
+									$query8 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','New Vehicle', 'vehicle', 'high', '$designate', '$contact' ,'$beacon')";
+											
+									$ps9 = mysqli_query($c, $query8);
+
+									if(!$ps9)
+									{
+										die("Failed to insert data:" . mysqli_error($c));
+										header("location: userinsert.php");
+										exit();
+									}
+
+									header("location: vehicles.php");
+							    	exit();
+							    }
 			    			}
 			    			else
 			    			{
@@ -153,10 +215,6 @@
 					<strong><?php echo $identity; ?></strong>
 					</a>
 				    <div class="dropdown-menu">
-				      <a class="dropdown-item" href="login.php">
-						<img src = "unlock.png" alt = "unlock" id = "scale" class = "rounded">
-						Login
-						</a>
 				      <a class="dropdown-item" href="logout.php">
 						<img src = "lock.png" alt = "lock" id = "scale" class = "rounded">
 						Logout
@@ -174,27 +232,16 @@
 			<center>
 				<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 				  <ul class="navbar-nav">
-				    <li class="navbar-brand nav-item active">
+				    <li class="navbar-brand">
 				    <a class="nav-link" href="home.php">
 						<img src = "home.png" alt = "home" id = "scale" class = "rounded">
 						Home
 					</a>
 				    </li>
-				    <li class="nav-item dropdown navbar-brand">
-				      <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
-						<img src = "details.png" alt = "profile" id = "scale">
-							Profile
-							<div class="dropdown-menu">
-						        <a class="dropdown-item" href="userprofile.php">
-									<img src = "Profile Picture.png" alt = "profile" id = "scale" class = "rounded">
-									User Profile
-								</a>
-						        <a class="dropdown-item" href="adminprofile.php">
-									<img src = "group icon.png" alt = "group" id = "scale" class = "rounded">
-									View Users
-								</a>
-							</div>
-						</a>
+				    <li class="navbar-brand">
+				      <a class="nav-link" href="userprofile.php">
+						<img src = "Profile Picture.png" alt = "profilr" id = "scale" class = "rounded">
+						Profile</a>
 				    </li>
 				    <li class="navbar-brand">
 				      <a class="nav-link" href="vehicles.php">
@@ -213,7 +260,7 @@
 						Schedule
 						</a>
 				    </li>
-					<li class="navbar-brand">
+					<li class="navbar-brand nav-item active">
 				      <a class="nav-link" href="payment.php">
 						<img src = "payment icon.png" alt = "payment" id = "scale" class = "rounded">
 						Payment</a>

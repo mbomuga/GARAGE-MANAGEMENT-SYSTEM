@@ -19,6 +19,7 @@
    $identity = $_SESSION['name'];
    $heading = $_SESSION['email'];
    $authority = $_SESSION['conduct'];
+   $line = $_SESSION['line'];
    
    $query =  "SELECT * FROM accounts WHERE email = '$heading'";
    $ps = mysqli_query($c, $query);
@@ -31,7 +32,7 @@
     }
     else
     {  
-	 if(!isset($_SESSION['name']) || !isset($_SESSION['email']) || !isset($_SESSION['conduct']))
+	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']) && !isset($_SESSION['line']))
 	 {
 	    header("location:login.php");
 	    exit();
@@ -39,6 +40,12 @@
     }
 
     $archives = "";
+
+    if ($authority == "manager" || $authority == "owner")
+	{
+		header("location:home.php");
+		exit();
+	}
 
 	$query2 = "SELECT * FROM schedule WHERE email = '$heading'";
 
@@ -75,10 +82,6 @@
 					<strong><?php echo $identity; ?></strong>
 					</a>
 				    <div class="dropdown-menu">
-				      <a class="dropdown-item" href="login.php">
-						<img src = "unlock.png" alt = "unlock" id = "scale" class = "rounded">
-						Login
-						</a>
 				      <a class="dropdown-item" href="logout.php">
 						<img src = "lock.png" alt = "lock" id = "scale" class = "rounded">
 						Logout
@@ -96,13 +99,13 @@
 			<center>
 				<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 				  <ul class="navbar-nav">
-				    <li class="navbar-brand nav-item active">
+				    <li class="navbar-brand">
 				    <a class="nav-link" href="home.php">
 						<img src = "home.png" alt = "home" id = "scale" class = "rounded">
 						Home
 					</a>
 				    </li>
-				    <li class="nav-item dropdown navbar-brand">
+					<li class="nav-item dropdown navbar-brand">
 				      <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
 						<img src = "details.png" alt = "profile" id = "scale">
 							Profile
@@ -129,7 +132,7 @@
 						Notifications
 						</a>
 				    </li>
-					<li class="navbar-brand">
+					<li class="navbar-brand nav-item active">
 				      <a class="nav-link" href="schedule.php">
 						<img src = "schedule icon.png" alt = "schedule" id = "scale" class = "rounded">
 						Schedule

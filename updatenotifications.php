@@ -19,6 +19,7 @@
    $identity = $_SESSION['name'];
    $heading = $_SESSION['email'];
    $authority = $_SESSION['conduct'];
+   $line = $_SESSION['line'];
    
    $query =  "SELECT * FROM accounts WHERE email = '$heading'";
    $ps = mysqli_query($c, $query);
@@ -31,68 +32,156 @@
     }
     else
     {  
-	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
+	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']) && !isset($_SESSION['line']))
 	 {
 	    header("location:login.php");
 	    exit();
 	 }
     }
 
-	if ($authority != "admin")
+	if ($authority != "manager")
 	{
 		header("location:home.php");
 		exit();
 	}
 
+	$peculiar = "";
+	$clause = "";
+	$disconnect = "";
+
+
      if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
+		$report = mysqli_real_escape_string($c, $_POST['report']);
 		$group = mysqli_real_escape_string($c, $_POST['updatetype']);
+		$receive = mysqli_real_escape_string($c, $_POST['receive']);
+		$category = mysqli_real_escape_string($c, $_POST['nature']);
+		$importance = mysqli_real_escape_string($c, $_POST['importance']);
 		$alter = mysqli_real_escape_string($c, $_POST['updatevalue']);
 		$direction = mysqli_real_escape_string($c, $_POST['direction']);
 
 		if (isset($_POST['submit']))
 		{
-			if(!empty($alter) || !empty($direction))
-			{
-				if($group == "report")
-				{
-					$query2 = "UPDATE notifications SET reminder = '$alter' WHERE email = '$direction'";
-					$ps2 = mysqli_query($c, $query2);
+			$query4 =  "SELECT * FROM accounts WHERE email = '$direction'";
+			$ps4 = mysqli_query($c, $query4);
 
-					if(!$ps2)
-				    {
-				        die("Failed to update data:" . mysqli_error($c));
-				        header("location: updatenotifications.php");
-				        exit();
-				    }
-				    else
-				    {
-				    	header("location: notifications.php");
-				    	exit();
-				    }
-				}
-				else
-				{
-					$query2 = "UPDATE notifications SET priority = '$alter' WHERE email = '$direction'";
-					$ps2 = mysqli_query($c, $query2);
 
-					if(!$ps2)
-				    {
-				        die("Failed to update data:" . mysqli_error($c));
-				        header("location: updatenotifications.php");
-				        exit();
-				    }
-				    else
-				    {
-				    	header("location: notifications.php");
-				    	exit();
-				    }
+			if(!$ps4)
+		    {
+		        die("Failed to retrieve data:" . mysqli_error($c));
+		        header("location: updateschedule.php");
+		        exit();
+		    }
+
+		    $feedback = mysqli_num_rows($ps4);
+
+		    if ($feedback>0)
+		    {
+		    	while ($rs4 = mysqli_fetch_assoc($ps4))
+		    	{
+		    		$access = $rs4['usertype'];
+
+			    	if($access != "owner" || $access != "manager")
+			    	{
+						if(!empty($alter) && !empty($report))
+						{
+							$query4 = "SELECT * FROM notifications WHERE reminder = '$report' AND email = '$direction'";
+
+							$ps4 = mysqli_query($c, $query4);
+							if(!$ps4)
+						    {
+						        die("Failed to retrieve data:" . mysqli_error($c));
+						        header("location: notifications.php");
+						        exit();
+						    }
+
+						    $record = mysqli_num_rows($ps4);
+
+						    if ($record != 0)
+						    {
+						     	while($rs2 = mysqli_fetch_assoc($ps3))
+								{
+									$nature = $rs2['category'];
+								}
+
+								if($nature != "payment" || $nature != "vehicle")
+								{
+									if($group == "report")
+									{
+										if (!empty($alter))
+										{
+											$query2 = "UPDATE notifications SET reminder = '$alter' WHERE reminder = '$report' AND email = '$direction'";
+											$ps2 = mysqli_query($c, $query2);
+
+											if(!$ps2)
+										    {
+										        die("Failed to update data:" . mysqli_error($c));
+										        header("location: updatenotifications.php");
+										        exit();
+										    }
+										    else
+										    {
+										    	header("location: notifications.php");
+										    	exit();
+										    }
+										}
+										else
+										{
+											$absent = "Reminder Required";
+										}
+									}
+									elseif($group == "category")
+									{
+										$query3 = "UPDATE notifications SET category = '$nature' WHERE reminder = '$report' AND email = '$direction'";
+										$ps3 = mysqli_query($c, $query3);
+
+										if(!$ps3)
+									    {
+									        die("Failed to update data:" . mysqli_error($c));
+									        header("location: updatenotifications.php");
+									        exit();
+									    }
+									    else
+									    {
+									    	header("location: notifications.php");
+									    	exit();
+									    }	
+									}
+									else
+									{
+										$query3 = "UPDATE notifications SET priority = '$importance' WHERE reminder = '$report' AND email = '$direction'";
+										$ps3 = mysqli_query($c, $query3);
+
+										if(!$ps3)
+									    {
+									        die("Failed to update data:" . mysqli_error($c));
+									        header("location: updatenotifications.php");
+									        exit();
+									    }
+									    else
+									    {
+									    	header("location: notifications.php");
+									    	exit();
+									    }
+									}
+								}
+								else
+								{
+									$peculiar = "Record Unavailabla";
+								}
+							}
+						}
+						else
+						{
+							header("location: updatenotifications.php");
+							exit();
+						}
+					}
 				}
 			}
 			else
 			{
-				header("location: updatenotifications.php");
-				exit();
+				$disconnect = "User is Not a Client";
 			}
 		}
 	}
@@ -101,7 +190,7 @@
 ?>
 <html>
 <head>
-	<title>Update Notifications</title>
+	<title>Update Notification</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="gms.css">
 	<script src="gms.js"></script>
@@ -120,10 +209,6 @@
 					<strong><?php echo $identity; ?></strong>
 					</a>
 				    <div class="dropdown-menu">
-				      <a class="dropdown-item" href="login.php">
-						<img src = "unlock.png" alt = "unlock" id = "scale" class = "rounded">
-						Login
-						</a>
 				      <a class="dropdown-item" href="logout.php">
 						<img src = "lock.png" alt = "lock" id = "scale" class = "rounded">
 						Logout
@@ -141,7 +226,7 @@
 			<center>
 				<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 				  <ul class="navbar-nav">
-				    <li class="navbar-brand nav-item active">
+				    <li class="navbar-brand">
 				    <a class="nav-link" href="home.php">
 						<img src = "home.png" alt = "home" id = "scale" class = "rounded">
 						Home
@@ -168,7 +253,7 @@
 						<img src = "vehicle icon.png" alt = "vehicle" id = "scale" class = "rounded">
 						Vehicles</a>
 				    </li>
-					<li class="navbar-brand">
+					<li class="navbar-brand nav-item active">
 				      <a class="nav-link" href="notifications.php">
 						<img src = "notifications.png" alt = "notification" id = "scale" class = "rounded">
 						Notifications
@@ -206,16 +291,39 @@
 				    <label>Update:</label>
 				    <select class="form-control" name = "updatetype" id = "modify">
 						<option value = "report">Reminder</option>
+						<option value = "category">Category</option>
 						<option value = "relevance">Priority</option>
 					</select>
 				  </div>
 					<div class="form-group">
-					<label>Update Value:</label>
+					<label>Reminder Update:</label>
 				    <input type="text" class="form-control" name = "updatevalue" id = "modify">
+					<?php echo $peculiar; ?>
 				  </div>
-					<div class="form-group">
+				<div class="form-group">
+				    <label>Category:</label>
+					<select class="form-control" name = "nature" id = "modify">
+						<option value = "repairs">Repairs</option>
+						<option value = "promotion">Promotion</option>
+					</select>
+				  </div>
+				<div class="form-group">
+				    <label>Priority Level:</label>
+					<select class="form-control" name = "importance" id = "modify">
+						<option value = "high">High</option>
+						<option value = "medium">Medium</option>
+						<option value = "low">Low</option>
+					</select>
+				  </div>
+				<div class="form-group">
+					<label>Reminder:</label>
+				    <input type="text" class="form-control" name = "report" id = "modify">
+				  </div>
+				<div class="form-group">
 				    <label>Email Address:</label>
 				    <input type="text" class="form-control" name = "direction" id = "modify">
+					<?php echo $clause; ?>
+					<?php echo $disconnect; ?>
 				  </div>
 					<button type="submit" class="btn btn-dark" name = "submit">Update</button>
 				</form>

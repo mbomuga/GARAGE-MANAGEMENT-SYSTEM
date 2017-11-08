@@ -19,6 +19,7 @@
    $identity = $_SESSION['name'];
    $heading = $_SESSION['email'];
    $authority = $_SESSION['conduct'];
+   $line = $_SESSION['line'];
    
    $query =  "SELECT * FROM accounts WHERE email = '$heading'";
    $ps = mysqli_query($c, $query);
@@ -31,14 +32,14 @@
     }
     else
     {  
-	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
+	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']) && !isset($_SESSION['line']))
 	 {
 	    header("location:login.php");
 	    exit();
 	 }
     }
 
-     if ($authority != "admin")
+     if ($authority != "manager")
      {
      	header("location:home.php");
         exit();
@@ -52,7 +53,7 @@
 
 		if (isset($_POST['submit']))
 		{
-			if (!empty($alter) || !empty($index) || !empty($direction))
+			if (!empty($alter) && !empty($index) && !empty($direction))
 			{
 				if($group == "licence")
 				{
@@ -122,29 +123,12 @@
 				    	exit();
 				    }
 				}
-				elseif ($group == "amount")
+				else
 				{
 					$query6 = "UPDATE history SET expense = '$alter' WHERE serialno = '$index' AND email = '$direction'";
 					$ps6 = mysqli_query($c, $query6);
 
 					if(!$ps6)
-				    {
-				        die("Failed to update data:" . mysqli_error($c));
-				        header("location: updatehistory.php");
-				        exit();
-				    }
-				    else
-				    {
-				    	header("location: history.php");
-				    	exit();
-				    }
-				}
-				else
-				{
-					$query7 = "UPDATE history SET description = '$alter' WHERE serialno = '$index' AND email = '$direction'";
-					$ps7 = mysqli_query($c, $query7);
-
-					if(!$ps7)
 				    {
 				        die("Failed to update data:" . mysqli_error($c));
 				        header("location: updatehistory.php");
@@ -169,7 +153,7 @@
 ?>
 <html>
 <head>
-	<title>Update Vehicle</title>
+	<title>Update History</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="gms.css">
 	<script src="gms.js"></script>
@@ -188,10 +172,6 @@
 					<strong><?php echo $identity; ?></strong>
 					</a>
 				    <div class="dropdown-menu">
-				      <a class="dropdown-item" href="login.php">
-						<img src = "unlock.png" alt = "unlock" id = "scale" class = "rounded">
-						Login
-						</a>
 				      <a class="dropdown-item" href="logout.php">
 						<img src = "lock.png" alt = "lock" id = "scale" class = "rounded">
 						Logout
@@ -209,7 +189,7 @@
 			<center>
 				<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 				  <ul class="navbar-nav">
-				    <li class="navbar-brand nav-item active">
+				    <li class="navbar-brand">
 				    <a class="nav-link" href="home.php">
 						<img src = "home.png" alt = "home" id = "scale" class = "rounded">
 						Home
@@ -253,7 +233,7 @@
 						<img src = "payment icon.png" alt = "payment" id = "scale" class = "rounded">
 						Payment</a>
 				    </li>
-					<li class="navbar-brand">
+					<li class="navbar-brand nav-item active">
 				      <a class="nav-link" href="history.php">
 						<img src = "history icon.png" alt = "history" id = "scale" class = "rounded">
 						Service History
@@ -277,8 +257,7 @@
 						<option value = "period">Date</option>
 						<option value = "lapse">Time</option>
 						<option value = "report">Status</option>
-						<option value = "amount">Value</option>
-						<option value = "arrears">Payment</option>
+						<option value = "amount">Cost</option>
 					</select>
 				  </div>
 					<div class="form-group">

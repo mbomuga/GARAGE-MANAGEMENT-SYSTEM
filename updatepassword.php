@@ -18,6 +18,7 @@
    $identity = $_SESSION['name'];
    $heading = $_SESSION['email'];
    $authority = $_SESSION['conduct'];
+   $line = $_SESSION['line'];
    
    $query =  "SELECT * FROM accounts WHERE email = '$heading'";
    $ps = mysqli_query($c, $query);
@@ -30,7 +31,7 @@
     }
     else
     {  
-     if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
+     if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']) && !isset($_SESSION['line']))
      {
         header("location:login.php");
         exit();
@@ -45,22 +46,15 @@
 
         if (isset($_POST['submit']))
         {
-          if (!empty($regulate) || !empty($adjust) || !empty($examine) || $adjust != $examine)
+          if (!empty($regulate) && !empty($adjust) && !empty($examine) && $adjust == $examine && $regulate != $adjust)
           {
-            $query2 = "UPDATE accounts SET password1 = '$adjust' WHERE password1 = '$regulate' AND first = '$directory'";
+            $query2 = "UPDATE accounts SET password1 = '$adjust' WHERE password1 = '$regulate' AND email = '$heading'";
             $ps2 = mysqli_query($c, $query2);
 
-            if(!$ps2)
-            {
-                die("Failed to update data:" . mysqli_error($c));
-                header("location: editpassword.php");
-                exit();
-            }
-
-            $query3 = "UPDATE accounts SET password2 = '$examine' WHERE password1 = '$regulate' AND first = '$directory'";
+            $query3 = "UPDATE accounts SET password2 = '$examine' WHERE password1 = '$regulate' AND email = '$heading'";
             $ps3 = mysqli_query($c, $query2);
 
-            if(!$ps3)
+            if(!$ps2 || !$ps3)
             {
                 die("Failed to update data:" . mysqli_error($c));
                 header("location: editpassword.php");
@@ -68,13 +62,13 @@
             }
             else
             {
-              header("location: profile.php");
+              header("location: logout.php");
               exit();
             }
           }
           else
           {
-            header("location: editpassword.php");
+            header("location: updatepassword.php");
             exit(); 
           }
         }
@@ -103,10 +97,6 @@
           <strong><?php echo $identity; ?></strong>
           </a>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="login.php">
-            <img src = "unlock.png" alt = "unlock" id = "scale" class = "rounded">
-            Login
-            </a>
               <a class="dropdown-item" href="logout.php">
             <img src = "lock.png" alt = "lock" id = "scale" class = "rounded">
             Logout
@@ -124,13 +114,13 @@
       <center>
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
           <ul class="navbar-nav">
-            <li class="navbar-brand nav-item active">
+            <li class="navbar-brand">
             <a class="nav-link" href="home.php">
             <img src = "home.png" alt = "home" id = "scale" class = "rounded">
             Home
           </a>
             </li>
-            <li class="nav-item dropdown navbar-brand">
+            <li class="nav-item dropdown navbar-brand nav-item active">
               <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
             <img src = "details.png" alt = "profile" id = "scale">
               Profile
@@ -182,6 +172,9 @@
       <center>
       <fieldset>
       <form method = "post" action = "updatepassword.php" onsubmit = "return updatepassword()">
+          <div class = "form-group">
+            <h1><strong><center>Update Password</center></strong></h1>
+          </div>
           <div class="form-group">
           <label>Current Password:</label>
             <input type="password" class="form-control" id = "modify" name = "regulate">

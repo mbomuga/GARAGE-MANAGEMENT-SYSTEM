@@ -19,7 +19,7 @@
    $identity = "";
    $passion = "";
 
-	if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
+	if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']) && !isset($_SESSION['line']))
 	{
 		$passion = "Sign In";
 	}
@@ -28,6 +28,7 @@
 		$identity = $_SESSION['name'];
 		$heading = $_SESSION['email'];
 		$authority = $_SESSION['conduct'];
+		$line = $_SESSION['line'];
 
 		$query =  "SELECT * FROM accounts WHERE email = '$heading'";
 		$ps = mysqli_query($c, $query);
@@ -65,11 +66,11 @@
 					<strong><?php echo $passion; ?></strong>
 					</a>
 				    <div class="dropdown-menu">
-				      <a class="dropdown-item" href="login.php">
+						<a class="dropdown-item" href="login.php">
 						<img src = "unlock.png" alt = "unlock" id = "scale" class = "rounded">
 						Login
 						</a>
-				      <a class="dropdown-item" href="logout.php">
+					      <a class="dropdown-item" href="logout.php">
 						<img src = "lock.png" alt = "lock" id = "scale" class = "rounded">
 						Logout
 						</a>

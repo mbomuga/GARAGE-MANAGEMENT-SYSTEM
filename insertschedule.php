@@ -19,6 +19,7 @@
    $identity = $_SESSION['name'];
    $heading = $_SESSION['email'];
    $authority = $_SESSION['conduct'];
+   $line = $_SESSION['line'];
    
    $query =  "SELECT * FROM accounts WHERE email = '$heading'";
    $ps = mysqli_query($c, $query);
@@ -31,14 +32,22 @@
     }
     else
     {  
-	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
+	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']) && !isset($_SESSION['line']))
 	 {
 	    header("location:login.php");
 	    exit();
 	 }
     }
 
+    if ($authority != "regular")
+     {
+     	header("location:home.php");
+        exit();
+     }
+
     $reservation = "";
+    $present = "";
+    $disconnect = "";
 
      if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
@@ -50,71 +59,127 @@
 		if (isset($_POST['submit']))
 		{
 			if (!empty($period) && !empty($lapse))
-			{
-				$query2 = "SELECT * FROM schedule WHERE status = '$progress2' AND email = '$heading'";
+			{	
+				$query6 = "SELECT * FROM history WHERE charge = 'pending'";
 
-				$ps2 = mysqli_query($c, $query2);
-				if(!$ps2)
+				$ps7 = mysqli_query($c, $query6);
+				if(!$ps7)
 			    {
 			        die("Failed to retrieve data:" . mysqli_error($c));
-			        header("location: insertschedule.php");
+			        header("location: userhistory.php");
 			        exit();
 			    }
-				
-				$rs2 = mysqli_fetch_assoc($ps2);
+			    
+			    $reading = mysqli_num_rows($ps7);
 
-				$report = mysqli_num_rows($ps2);
+			    if($reading == 0)
+			    {
 
-				if($report != 0)
-				{
-					$query3 = "DELETE FROM schedule WHERE status = '$progress2' AND email = '$heading'";
-					$ps3 = mysqli_query($c, $query3);
+					$query2 = "SELECT * FROM schedule WHERE status = '$progress2' AND email = '$heading'";
 
-					if(!$ps3)
+					$ps2 = mysqli_query($c, $query2);
+					if(!$ps2)
 				    {
-				        die("Failed to delete data:" . mysqli_error($c));
+				        die("Failed to retrieve data:" . mysqli_error($c));
 				        header("location: insertschedule.php");
 				        exit();
 				    }
-				}
+					
+					$rs2 = mysqli_fetch_assoc($ps2);
 
-				$query4 = "SELECT * FROM schedule WHERE period = '$period' AND lapse = '$lapse'";
+					$report = mysqli_num_rows($ps2);
 
-				$ps4 = mysqli_query($c, $query4);
-				if(!$ps4)
-			    {
-			        die("Failed to retrieve data:" . mysqli_error($c));
-			        header("location: insertschedule.php");
-			        exit();
-			    }
+					if($report != 0)
+					{
+						$query3 = "DELETE FROM schedule WHERE status = '$progress2' AND email = '$heading'";
+						$ps3 = mysqli_query($c, $query3);
 
-			    $rs4 = mysqli_fetch_assoc($ps4);
+						if(!$ps3)
+					    {
+					        die("Failed to delete data:" . mysqli_error($c));
+					        header("location: insertschedule.php");
+					        exit();
+					    }
+					}
 
-			    $report2 = mysqli_num_rows($ps4);
+					$query4 = "SELECT * FROM schedule WHERE period = '$period' AND lapse = '$lapse'";
 
-			    if($report2 != 0)
-			    {
-			    	$reservation = "*Appointment Request Already Made";
-			    	header("location: insertschedule.php");
-			        exit();
-			    }
-			    else
-			    {
-
-					$query5 = "INSERT INTO `schedule`(`period`, `lapse`, `status`, `username`, `email`) VALUES ('$period','$lapse','$progress','$identity', '$heading')";
-					$ps6 = mysqli_query($c, $query5);
-
-					if(!$ps6)
+					$ps4 = mysqli_query($c, $query4);
+					if(!$ps4)
 				    {
-				        die("Failed to insert data:" . mysqli_error($c));
+				        die("Failed to retrieve data:" . mysqli_error($c));
 				        header("location: insertschedule.php");
 				        exit();
+				    }
+
+				    $rs4 = mysqli_fetch_assoc($ps4);
+
+				    $report2 = mysqli_num_rows($ps4);
+
+				    if($report2 != 0)
+				    {
+				    	$reservation = "*Appointment Request Already Made";
 				    }
 				    else
 				    {
-				    	header("location: schedule.php");
-				    	exit();
-				    }
+				    	$query8 = "SELECT * FROM schedule WHERE (status = 'pending' AND status = 'approved') AND email = '$heading'";
+
+						$ps9 = mysqli_query($c, $query8);
+						if(!$ps9)
+					    {
+					        die("Failed to retrieve data:" . mysqli_error($c));
+					        header("location: schedule.php");
+					        exit();
+					    }
+					    $instance = mysqli_num_rows($ps9);
+
+					    if ($instance == 0)
+					    {
+					    	$query7 = "SELECT * FROM schedule";
+
+							$ps8 = mysqli_query($c, $query7);
+							if(!$ps8)
+						    {
+						        die("Failed to retrieve data:" . mysqli_error($c));
+						        header("location: schedule.php");
+						        exit();
+						    }
+						    $recording = mysqli_num_rows($ps8);
+
+						    if ($recording == 0)
+						    {
+						    	$index = 1;
+						    }
+						    else
+						    {
+						    	$index = $recording + 1;
+						    }
+
+							$query5 = "INSERT INTO `schedule`(`serialno`,`period`, `lapse`, `status`, `username`, `phone`, `email`) VALUES ('$index','$period','$lapse','$progress','$identity', '$line','$heading')";
+							$ps6 = mysqli_query($c, $query5);
+
+							if(!$ps6)
+						    {
+						        die("Failed to insert data:" . mysqli_error($c));
+						        header("location: insertschedule.php");
+						        exit();
+						    }
+						    else
+						    {
+						    	header("location: schedule.php");
+						    	exit();
+						    }
+						}
+						else
+						{
+							$present = "*You Already Have an Appointment";
+						}
+					}
+				}
+				else
+				{
+					header("location: payment.php");
+			    	exit();
 				}
 			}
 			else
@@ -148,10 +213,6 @@
 					<strong><?php echo $identity; ?></strong>
 					</a>
 				    <div class="dropdown-menu">
-				      <a class="dropdown-item" href="login.php">
-						<img src = "unlock.png" alt = "unlock" id = "scale" class = "rounded">
-						Login
-						</a>
 				      <a class="dropdown-item" href="logout.php">
 						<img src = "lock.png" alt = "lock" id = "scale" class = "rounded">
 						Logout
@@ -169,7 +230,7 @@
 			<center>
 				<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 				  <ul class="navbar-nav">
-				    <li class="navbar-brand nav-item active">
+				    <li class="navbar-brand">
 				    <a class="nav-link" href="home.php">
 						<img src = "home.png" alt = "home" id = "scale" class = "rounded">
 						Home
@@ -202,7 +263,7 @@
 						Notifications
 						</a>
 				    </li>
-					<li class="navbar-brand">
+					<li class="navbar-brand nav-item active">
 				      <a class="nav-link" href="schedule.php">
 						<img src = "schedule icon.png" alt = "schedule" id = "scale" class = "rounded">
 						Schedule
@@ -238,6 +299,8 @@
 					    <label>Time:</label>
 					    <input type="time" class="form-control" name = "lapse" id = "modify">
 						<?php echo $reservation; ?>
+						<?php echo $present; ?>
+						<?php echo $disconnect; ?>
 					  </div>
 				  	<button type="submit" class="btn btn-dark" name = "submit">Add</button>
 					</form>

@@ -19,6 +19,7 @@
    $identity = $_SESSION['name'];
    $heading = $_SESSION['email'];
    $authority = $_SESSION['conduct'];
+   $line = $_SESSION['line'];
    
    $query =  "SELECT * FROM accounts WHERE email = '$heading'";
    $ps = mysqli_query($c, $query);
@@ -31,7 +32,7 @@
     }
     else
     {  
-	 if(!isset($_SESSION['name']) || !isset($_SESSION['email']) || !isset($_SESSION['conduct']))
+	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']) && !isset($_SESSION['line']))
 	 {
 	    header("location:login.php");
 	    exit();
@@ -39,8 +40,14 @@
     }
 
     $archives = "";
+
+    if ($authority == "manager" || $authority == "owner")
+	{
+		header("location:home.php");
+		exit();
+	}
     
-	$query2 = "SELECT * FROM notifications WHERE email = '$heading'";
+	$query2 = "SELECT * FROM notifications WHERE email = '$heading' AND NOT category = 'vehicle'";
 
 	$ps3 = mysqli_query($c, $query2);
 	if(!$ps3)
@@ -74,10 +81,6 @@
 					<strong><?php echo $identity; ?></strong>
 					</a>
 				    <div class="dropdown-menu">
-				      <a class="dropdown-item" href="login.php">
-						<img src = "unlock.png" alt = "unlock" id = "scale" class = "rounded">
-						Login
-						</a>
 				      <a class="dropdown-item" href="logout.php">
 						<img src = "lock.png" alt = "lock" id = "scale" class = "rounded">
 						Logout
@@ -95,7 +98,7 @@
 			<center>
 				<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 				  <ul class="navbar-nav">
-				    <li class="navbar-brand nav-item active">
+				    <li class="navbar-brand">
 				    <a class="nav-link" href="home.php">
 						<img src = "home.png" alt = "home" id = "scale" class = "rounded">
 						Home
@@ -122,7 +125,7 @@
 						<img src = "vehicle icon.png" alt = "vehicle" id = "scale" class = "rounded">
 						Vehicles</a>
 				    </li>
-					<li class="navbar-brand">
+					<li class="navbar-brand nav-item active">
 				      <a class="nav-link" href="notifications.php">
 						<img src = "notifications.png" alt = "notification" id = "scale" class = "rounded">
 						Notifications
@@ -163,6 +166,11 @@
 							</center>
 							</th>
 							<th id = "default">
+							<center>
+								<strong>Category:</strong>
+							</center>
+							</th>
+							<th id = "default">
 								<center>
 									<strong>Priority:</strong>
 								</center>
@@ -175,16 +183,17 @@
 								while($rs2 = mysqli_fetch_assoc($ps3))
 								{
 									$reference = $rs2['reminder'];
+									$nature = $rs2['category'];
 									$entry = $rs2['priority'];
 
-									echo "<tr><td id = 'default'><center>" . $reference . "</center></td><td id = 'default'><center>" . $entry . "</center></td></tr>";
+									echo "<tr><td id = 'default'><center>" . $reference . "</center></td><td id = 'default'><center>" . $nature . "</center></td><td id = 'default'><center>" . $entry . "</center></td></tr>";
 								}
 							}
 							else
 							{
 								$archives = "No Entry Available";
 								
-								echo "<tr><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td></tr>";
+								echo "<tr><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td></tr>";
 							}
 						 ?>
 					</table>

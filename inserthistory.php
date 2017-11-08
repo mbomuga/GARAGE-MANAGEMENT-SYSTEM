@@ -21,6 +21,7 @@
    $identity = $_SESSION['name'];
    $heading = $_SESSION['email'];
    $authority = $_SESSION['conduct'];
+   $line = $_SESSION['line'];
    
    $query =  "SELECT * FROM accounts WHERE email = '$heading'";
    $ps = mysqli_query($c, $query);
@@ -33,7 +34,7 @@
     }
     else
     {  
-	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
+	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']) && !isset($_SESSION['line']))
 	 {
 	    header("location:login.php");
 	    exit();
@@ -43,7 +44,7 @@
     $inventory = "";
     $negative = "";
 
-     if ($authority != "admin")
+     if ($authority != "manager")
      {
      	header("location:home.php");
         exit();
@@ -107,6 +108,7 @@
 				    {
 				    	$directory = $rs6['first'];
 				    	$surname = $rs6['last'];
+				    	$contact = $rs6['phone'];
 
 				    	$designate = $directory . " " . $surname;
 				    }
@@ -126,7 +128,7 @@
 
 				    if($review != 0)
 				    {
-				    	$query5 = "INSERT INTO `history`(`serialno`, `registration`, `period`, `lapse`, `description`, `expense`, `charge`, `username`, `email`) VALUES ('$entry', '$label', '$period', '$lapse', '$report', '$quota', '$arrears', '$designate', '$direction')";
+				    	$query5 = "INSERT INTO `history`(`serialno`, `registration`, `period`, `lapse`, `description`, `expense`, `charge`, `username`, `phone`, `email`) VALUES ('$entry', '$label', '$period', '$lapse', '$report', '$quota', '$arrears', '$designate', '$contact', '$direction')";
 
 						$ps6 = mysqli_query($c, $query5);
 
@@ -183,10 +185,6 @@
 					<strong><?php echo $identity; ?></strong>
 					</a>
 				    <div class="dropdown-menu">
-				      <a class="dropdown-item" href="login.php">
-						<img src = "unlock.png" alt = "unlock" id = "scale" class = "rounded">
-						Login
-						</a>
 				      <a class="dropdown-item" href="logout.php">
 						<img src = "lock.png" alt = "lock" id = "scale" class = "rounded">
 						Logout
@@ -248,7 +246,7 @@
 						<img src = "payment icon.png" alt = "payment" id = "scale" class = "rounded">
 						Payment</a>
 				    </li>
-					<li class="navbar-brand">
+					<li class="navbar-brand nav-item active">
 				      <a class="nav-link" href="history.php">
 						<img src = "history icon.png" alt = "history" id = "scale" class = "rounded">
 						Service History

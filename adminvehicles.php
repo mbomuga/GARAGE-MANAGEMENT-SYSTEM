@@ -19,6 +19,7 @@
    $identity = $_SESSION['name'];
    $heading = $_SESSION['email'];
    $authority = $_SESSION['conduct'];
+   $line = $_SESSION['line'];
    
    $query =  "SELECT * FROM accounts WHERE email = '$heading'";
    $ps = mysqli_query($c, $query);
@@ -31,7 +32,7 @@
     }
     else
     {  
-	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
+	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']) && !isset($_SESSION['line']))
 	 {
 	    header("location:login.php");
 	    exit();
@@ -40,7 +41,7 @@
 
     $archives = "";
 
-     if ($authority != "admin")
+     if ($authority != "manager")
      {
      	header("location:home.php");
         exit();
@@ -81,10 +82,6 @@
 					<strong><?php echo $identity; ?></strong>
 					</a>
 				    <div class="dropdown-menu">
-				      <a class="dropdown-item" href="login.php">
-						<img src = "unlock.png" alt = "unlock" id = "scale" class = "rounded">
-						Login
-						</a>
 				      <a class="dropdown-item" href="logout.php">
 						<img src = "lock.png" alt = "lock" id = "scale" class = "rounded">
 						Logout
@@ -102,7 +99,7 @@
 			<center>
 				<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 				  <ul class="navbar-nav">
-				    <li class="navbar-brand nav-item active">
+				    <li class="navbar-brand">
 				    <a class="nav-link" href="home.php">
 						<img src = "home.png" alt = "home" id = "scale" class = "rounded">
 						Home
@@ -124,7 +121,7 @@
 							</div>
 						</a>
 				    </li>
-				    <li class="navbar-brand">
+				    <li class="navbar-brand nav-item active">
 				      <a class="nav-link" href="vehicles.php">
 						<img src = "vehicle icon.png" alt = "vehicle" id = "scale" class = "rounded">
 						Vehicles</a>
@@ -218,6 +215,10 @@
 							</th>
 							<th id = "default">
 								<center>
+									<strong>Phone Number:</strong>
+								</center>
+							<th id = "default">
+								<center>
 									<strong>Email Address:</strong>
 								</center>
 							</th>
@@ -231,16 +232,17 @@
 									$type = $rs3['model'];
 									$duration = $rs3['year'];
 									$title = $rs3['username'];
+									$contact = $rs3['phone'];
 									$tag = $rs3['email'];
 
-									echo "<tr><td id = 'default'><center>" . $label . "</center></td><td id = 'default'><center>" . $type . "</center></td><td id = 'default'><center>" . $duration . "</center></td><td id = 'default'><center>" . $title . "</center></td><td id = 'default'><center>" . $tag . "</center></td></tr>";
+									echo "<tr><td id = 'default'><center>" . $label . "</center></td><td id = 'default'><center>" . $type . "</center></td><td id = 'default'><center>" . $duration . "</center></td><td id = 'default'><center>" . $title . "</center></td><td id = 'default'><center>" . $contact . "</center></td><td id = 'default'><center>" . $tag . "</center></td></tr>";
 								}
 							}
 							else
 							{
 								$archives = "No Entries Available";
 
-								echo "<tr><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td></tr>";
+								echo "<tr><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td></tr>";
 							}
 						 ?>
 					</table>
@@ -257,10 +259,6 @@
 						<div class="form-group">
 					    <label>Vehicle Registration:</label>
 					    <input type="text" class="form-control" name = "key" id = "modify">
-					  </div>
-					  <div class="form-group">
-					    <label>Email Address:</label>
-					    <input type="text" class="form-control" name = "direction" id = "modify">
 					  </div>
 					<button type="submit" class="btn btn-dark" name = "submit">Search History</button>
 				</fieldset>

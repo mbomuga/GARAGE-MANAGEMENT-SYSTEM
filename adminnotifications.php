@@ -19,6 +19,7 @@
    $identity = $_SESSION['name'];
    $heading = $_SESSION['email'];
    $authority = $_SESSION['conduct'];
+   $line = $_SESSION['line'];
    
    $query =  "SELECT * FROM accounts WHERE email = '$heading'";
    $ps = mysqli_query($c, $query);
@@ -31,7 +32,7 @@
     }
     else
     {  
-	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
+	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']) && !isset($_SESSION['line']))
 	 {
 	    header("location:login.php");
 	    exit();
@@ -40,7 +41,7 @@
 
     $archives = "";
 
-     if ($authority != "admin")
+     if ($authority != "manager")
      {
      	header("location:home.php");
         exit();
@@ -92,10 +93,6 @@
 					<strong><?php echo $identity; ?></strong>
 					</a>
 				    <div class="dropdown-menu">
-				      <a class="dropdown-item" href="login.php">
-						<img src = "unlock.png" alt = "unlock" id = "scale" class = "rounded">
-						Login
-						</a>
 				      <a class="dropdown-item" href="logout.php">
 						<img src = "lock.png" alt = "lock" id = "scale" class = "rounded">
 						Logout
@@ -140,7 +137,7 @@
 						<img src = "vehicle icon.png" alt = "vehicle" id = "scale" class = "rounded">
 						Vehicles</a>
 				    </li>
-					<li class="navbar-brand">
+					<li class="navbar-brand nav-item active">
 				      <a class="nav-link" href="notifications.php">
 						<img src = "notifications.png" alt = "notification" id = "scale" class = "rounded">
 						Notifications
@@ -213,6 +210,11 @@
 							</center>
 							</th>
 							<th id = "default">
+							<center>
+								<strong>Category:</strong>
+							</center>
+							</th>
+							<th id = "default">
 								<center>
 									<strong>Priority:</strong>
 								</center>
@@ -221,6 +223,11 @@
 								<center>
 									<strong>Name:</strong>
 								</center>
+							</th>
+							<th id = "default">
+							<center>
+								<strong>Phone Number:</strong>
+							</center>
 							</th>
 							<th id = "default">
 								<center>
@@ -234,18 +241,20 @@
 								while($rs3 = mysqli_fetch_assoc($ps4))
 								{
 									$reference = $rs3['reminder'];
+									$nature = $rs3['category'];
 									$entry = $rs3['priority'];
 									$title = $rs3['username'];
+									$contact = $rs3['phone'];
 									$tag = $rs3['email'];
 
-									echo "<tr><td id = 'default'><center>" . $reference . "</center></td><td id = 'default'><center>" . $entry . "</center></td><td id = 'default'><center>" . $title . "</center></td><td id = 'default'><center>" . $tag . "</center></td></tr>";
+									echo "<tr><td id = 'default'><center>" . $reference . "</center></td><td id = 'default'><center>" . $nature . "</center></td><td id = 'default'><center>" . $entry . "</center></td><td id = 'default'><center>" . $title . "</center></td><td id = 'default'><center>" . $contact . "</center></td><td id = 'default'><center>" . $tag . "</center></td></tr>";
 								}
 							}
 							else
 							{
 								$archives = "No Entries Available";
 
-								echo "<tr><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td></tr>";
+								echo "<tr><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives .  "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . "</center></td><td id = 'default'><center>" . $archives . "</center></td></tr>";
 							}
 						 ?>
 					</table>
@@ -285,6 +294,11 @@
 							</th>
 							<th id = "default">
 								<center>
+									<strong>Phone Number:</strong>
+								</center>
+							</th>
+							<th id = "default">
+								<center>
 									<strong>Email Address:</strong>
 								</center>
 							</th>
@@ -299,16 +313,17 @@
 									$lapse = $rs4['lapse'];
 									$progress = $rs4['status'];
 									$initials = $rs4['username'];
+									$call = $rs4['phone'];
 									$beacon = $rs4['email'];
 
-									echo "<tr><td id = 'default'><center>" . $period . "</center></td><td id = 'default'><center>" . $lapse . "</center></td><td id = 'default'><center>" . $progress . "</center></td><td id = 'default'><center>" . $initials . "</center></td><td id = 'default'><center>" . $beacon . "</center></td></tr>";
+									echo "<tr><td id = 'default'><center>" . $period . "</center></td><td id = 'default'><center>" . $lapse . "</center></td><td id = 'default'><center>" . $progress . "</center></td><td id = 'default'><center>" . $initials . "</center></td><td id = 'default'><center>" . $call . "</center></td><td id = 'default'><center>" . $beacon . "</center></td></tr>";
 								}
 							}
 							else
 							{
 								$archives = "No Entries Available";
 
-								echo "<tr><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td></tr>";
+								echo "<tr><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>". $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td></tr>";
 							}
 						 ?>
 					</table>

@@ -40,6 +40,12 @@
 
     $archives = "";
 
+    if ($authority == "manager" || $authority == "owner")
+	{
+		header("location:home.php");
+	exit();
+	}
+
 	$query2 = "SELECT * FROM vehicles WHERE email = '$heading'";
 
 	$ps3 = mysqli_query($c, $query2);
@@ -75,10 +81,6 @@
 					<strong><?php echo $identity; ?></strong>
 					</a>
 				    <div class="dropdown-menu">
-				      <a class="dropdown-item" href="login.php">
-						<img src = "unlock.png" alt = "unlock" id = "scale" class = "rounded">
-						Login
-						</a>
 				      <a class="dropdown-item" href="logout.php">
 						<img src = "lock.png" alt = "lock" id = "scale" class = "rounded">
 						Logout
@@ -96,7 +98,7 @@
 			<center>
 				<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 				  <ul class="navbar-nav">
-				    <li class="navbar-brand nav-item active">
+				    <li class="navbar-brand">
 				    <a class="nav-link" href="home.php">
 						<img src = "home.png" alt = "home" id = "scale" class = "rounded">
 						Home
@@ -118,7 +120,7 @@
 							</div>
 						</a>
 				    </li>
-				    <li class="navbar-brand">
+				    <li class="navbar-brand nav-item active">
 				      <a class="nav-link" href="vehicles.php">
 						<img src = "vehicle icon.png" alt = "vehicle" id = "scale" class = "rounded">
 						Vehicles</a>

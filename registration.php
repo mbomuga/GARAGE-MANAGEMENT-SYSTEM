@@ -20,42 +20,65 @@
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
+			$first = mysqli_real_escape_string($c, $_POST['first']);
+			$last = mysqli_real_escape_string($c, $_POST['last']);
+			$email = mysqli_real_escape_string($c, $_POST['email']);
+			$prefix = mysqli_real_escape_string($c, $_POST['prefix']);
+			$phone = mysqli_real_escape_string($c, $_POST['phone']);
+			$p1 = mysqli_real_escape_string($c, $_POST['password1']);
+			$p2 = mysqli_real_escape_string($c, $_POST['password2']);
+			$usertype = "regular";
+
+			$line = $prefix . $phone;
 		
 			if(isset($_POST['submit']))
 			{
+				$query = "SELECT * FROM accounts WHERE email = '$email'";
+						
+				$ps = mysqli_query($c, $query);
 
-				if(empty($first) && empty($last) && empty($email) && empty($prefix) && empty($phone) && empty($p1) && empty($p2) && $p1 != $p2)
+				if(!$ps)
 				{
+					die("Failed to retrieve data:" . mysqli_error($c));
 					header("location: registration.php");
 					exit();
 				}
 				else
 				{
-					
-					$first = mysqli_real_escape_string($c, $_POST['first']);
-					$last = mysqli_real_escape_string($c, $_POST['last']);
-					$email = mysqli_real_escape_string($c, $_POST['email']);
-					$prefix = mysqli_real_escape_string($c, $_POST['prefix']);
-					$phone = mysqli_real_escape_string($c, $_POST['phone']);
-					$p1 = mysqli_real_escape_string($c, $_POST['password1']);
-					$p2 = mysqli_real_escape_string($c, $_POST['password2']);
-					$usertype = "regular";
+					$rs = mysqli_fetch_assoc($ps);
 
-					$line = $prefix . " " . $phone;
+					$instance = mysqli_num_rows($ps);
 
-					$query = "INSERT INTO `accounts` (`first`, `last`, `email`, `password1`, `password2`, `phone`, `usertype`) VALUES ('$first', '$last', '$email', '$p1', '$p2', '$phone', '$usertype')";
-					
-					$ps = mysqli_query($c, $query);
-
-					if(!$ps)
+					if($instance == 0)
 					{
-						die("Failed to insert data:" . mysqli_error($c));
-						header("location: registration.php");
-						exit();
+
+						if(empty($first) || empty($last) || empty($email) || empty($prefix) || empty($phone) || empty($p1) || empty($p2) || $p1 != $p2)
+						{
+							header("location: registration.php");
+							exit();
+						}
+						else
+						{	
+							$query = "INSERT INTO `accounts` (`first`, `last`, `email`, `password1`, `password2`, `phone`, `usertype`) VALUES ('$first', '$last', '$email', '$p1', '$p2', '$line', '$usertype')";
+							
+							$ps = mysqli_query($c, $query);
+
+							if(!$ps)
+							{
+								die("Failed to insert data:" . mysqli_error($c));
+								header("location: registration.php");
+								exit();
+							}
+							else
+							{
+								echo "Transaction Successful";
+								header("location: login.php");
+								exit();
+							}
+						}
 					}
 					else
 					{
-						echo "Transaction Successful";
 						header("location: login.php");
 						exit();
 					}
@@ -87,7 +110,7 @@
 		<div id = "sector">
 				<center>
 					<img src = "registration.jpg" alt = "Registration" class = "rounded">
-					<h1><strong>Registration</strong></h1>
+					<h1><strong>User Registration</strong></h1>
 				</center>
 		</div>
 		<div id = "stationary">

@@ -38,98 +38,94 @@
 	    exit();
 	 }
     }
+    
+    if($authority == "manager" || $authority == "owner")
+    {
+    	header("location:home.php");
+	    exit();
+    }
 
-     if ($authority != "manager")
-     {
-     	header("location:home.php");
-        exit();
-     }
-
-     $inventory = "";
-     $disconnect = "";
-
-    if($_SERVER['REQUEST_METHOD'] == 'POST')
+     if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
-		$alert = mysqli_real_escape_string($c, $_POST['alert']);
-		$nature = mysqli_real_escape_string($c, $_POST['nature']);
-		$relevance = mysqli_real_escape_string($c, $_POST['relevance']);
-		$direction = mysqli_real_escape_string($c, $_POST['direction']);
+		$group = mysqli_real_escape_string($c, $_POST['updatetype']);
+		$alter = mysqli_real_escape_string($c, $_POST['updatevalue']);
+		$label = mysqli_real_escape_string($c, $_POST['label']);
 
 		if (isset($_POST['submit']))
 		{
-
-			if(!empty($alert) && !empty($direction))
+			if ($group == "type")
 			{
-				$query6 = "SELECT * FROM notifications";
+				if(!empty($alter) && !empty($label) && !empty($period))
+				{
+					$query2 = "UPDATE vehicles SET model = '$alter' WHERE registration = '$label' AND email = '$heading'";
+					$ps2 = mysqli_query($c, $query2);
 
-				$ps7 = mysqli_query($c, $query6);
-				if(!$ps7)
-			    {
-			        die("Failed to retrieve data:" . mysqli_error($c));
-			        header("location: notifications.php");
-			        exit();
-			    }
-			    $recording = mysqli_num_rows($ps7);
-
-			    if($recording == 0)
-			    {
-			    	$index = 1;
-			    }
-			    else
-			    {
-			    	$index = $recording + 1;
-			    }
-
-				$query6  = "SELECT * FROM accounts WHERE email = '$direction'";
-
-				$ps7 = mysqli_query($c, $query6);
-
-				if(!$ps7)
-			    {
-			        die("Failed to retrieve data:" . mysqli_error($c));
-			        header("location: insertnotifications.php");
-			        exit();
-			    }
-			    
-			    $reading = mysqli_num_rows($ps7);
-
-			    if($reading != 0)
-			    {
-			    	while ($rs6 = mysqli_fetch_assoc($ps7))
-			    	{
-				    	$reference = $rs6['serialno'];
-				    	$directory = $rs6['first'];
-				    	$surname = $rs6['last'];
-				    	$contact = $rs6['phone'];
-
-				    	$designate = $directory . " " . $surname;
+					if(!$ps2)
+				    {
+				        die("Failed to update data:" . mysqli_error($c));
+				        header("location: updatevehicles.php");
+				        exit();
 				    }
+				    else
+				    {
+				    	header("location: vehicles.php");
+				    	exit();
+				    }
+				}
+				else
+				{
+					header("location: updatevehicles.php");
+				    exit();
+				}
+			}elseif ($group == "duration")
+			{
+				if(!empty($label))
+				{
+					$query2 = "UPDATE vehicles SET year = '$alter' WHERE registration = '$label' AND email = '$heading'";
+					$ps2 = mysqli_query($c, $query2);
 
-			    	$query7 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$index','$alert', '$nature', '$relevance', '$designate', '$contact' ,'$direction')";
-						
-					$ps8 = mysqli_query($c, $query7);
-
-					if(!$ps8)
-					{
-						die("Failed to insert data:" . mysqli_error($c));
-						header("location: insertnotifications.php");
-						exit();
-					}
-					else
-					{
-						header("location: notifications.php");
-						exit();
-					}
-			    }
-			    else
-			    {
-			    	$inventory = "User does not Exist";
-			    }			    
+					if(!$ps2)
+				    {
+				        die("Failed to update data:" . mysqli_error($c));
+				        header("location: updatevehicles.php");
+				        exit();
+				    }
+				    else
+				    {
+				    	header("location: vehicles.php");
+				    	exit();
+				    }
+				}
+				else
+				{
+					header("location: updatevehicles.php");
+				    exit();
+				}
 			}
 			else
 			{
-				header("location: insertnotifications.php");
-				exit();
+				if(!empty($period))
+				{
+					$query2 = "UPDATE vehicles SET registration = '$alter' WHERE registration = '$label' AND email = '$heading'";
+					$ps2 = mysqli_query($c, $query2);
+
+					if(!$ps2)
+				    {
+				        die("Failed to update data:" . mysqli_error($c));
+				        header("location: updatevehicles.php");
+				        exit();
+				    }
+				    else
+				    {
+				    	header("location: vehicles.php");
+				    	exit();
+				    }
+				}
+				else
+				{
+					header("location: updatevehicles.php");
+				    exit();
+				}
 			}
 		}
 	}
@@ -138,7 +134,7 @@
 ?>
 <html>
 <head>
-	<title>Add Notification</title>
+	<title>Update Vehicle</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="gms.css">
 	<script src="gms.js"></script>
@@ -196,12 +192,12 @@
 							</div>
 						</a>
 				    </li>
-				    <li class="navbar-brand">
+				    <li class="navbar-brand nav-item active">
 				      <a class="nav-link" href="vehicles.php">
 						<img src = "vehicle icon.png" alt = "vehicle" id = "scale" class = "rounded">
 						Vehicles</a>
 				    </li>
-					<li class="navbar-brand nav-item active">
+					<li class="navbar-brand">
 				      <a class="nav-link" href="notifications.php">
 						<img src = "notifications.png" alt = "notification" id = "scale" class = "rounded">
 						Notifications
@@ -228,49 +224,40 @@
 				</nav>
 			</center>
 		</div>
-		<div id = "drape">
+		<div>
 			<center>
-				<fieldset>
-					<form method = "post" action = "insertnotifications.php" onsubmit = "return insertnotifications()">
-						<div class = "form-group">
-						<h1><strong><center>Insert Notification</center></strong></h1>
-						</div>
-						<div class="form-group">
-					    <label>Reminder:</label>
-					    <input type="text" class="form-control" name = "alert" id = "modify">
-					  </div>
-						<div class="form-group">
-					    <label>Category:</label>
-					    <select class="form-control" name = "nature" id = "modify">
-							<option value = "repairs">Repairs</option>
-							<option value = "promotion">Promotion</option>
-						</select>
-					  </div>
-					  <div class="form-group">
-					    <label>Priority:</label>
-					    <select class="form-control" name = "relevance" id = "modify">
-							<option value = "low">Low</option>
-							<option value = "medium">Medium</option>
-							<option value = "high">High</option>
-						</select>
-					  </div>
-						<div class="form-group">
-					    <label>Email Address:</label>
-					    <input type="text" class="form-control" name = "direction" id = "modify">
-						<?php echo $inventory; ?>
-						<?php echo $disconnect; ?>
-					  </div>
-					  <button type="submit" class="btn btn-dark" name = "submit">Add</button>
-					</form>
-				</fieldset>
+			<fieldset id = "drape">
+			<form method = "post" action = "userupdate.php" onsubmit = "return updatevehicles()">
+					<div class = "form-group">
+						<h1><strong><center>Update Vehicle</center></strong></h1>
+					</div>
+				  <div class="form-group">
+				    <label>Update:</label>
+				    <select class="form-control" name = "updatetype" id = "modify">
+						<option value = "licence">Registration</option>
+						<option value = "type">Model</option>
+						<option value = "duration">Year</option>
+					</select>
+				  </div>
+					<div class="form-group">
+					<label>Update Value:</label>
+				    <input type="text" class="form-control" name = "updatevalue" id = "modify">
+				  </div>
+					<div class="form-group">
+				    <label>Vehicle Registration:</label>
+				    <input type="text" class="form-control" name = "label" id = "modify">
+				  </div>
+				<button type="submit" class="btn btn-dark" name = "submit">Update</button>
+			</form>
+			</fieldset>
 			</center>
 		</div>
 		<div>
-		<footer id = "footnote">
-			<center>
-				<h1> (C). 2017 All Rights Reserved</h1>
-			</center>
-		</footer>
-	</div>
+			<footer id = "footnote">
+				<center>
+					<h1> (C). 2017 All Rights Reserved</h1>
+				</center>
+			</footer>
+		</div>
 	</body>
 </html>

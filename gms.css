@@ -13,8 +13,8 @@
 #narrow{width: 25px; height: 25px;}
 #page{width: 100px; height: 100px;}
 #double{column-span: 2;}
-#log{width: 12.5%; column-span: 1;}
-#narrative{width: 20%; column-span: 1;}
+#log{width: 8%; column-span: 1;}
+#narrative{width: 16%; column-span: 1;}
 #field{width: 10%; column-span: 1;}
 #entry{width: 25%; column-span: 1;}
 #extent{width: 25%; height: 100px;}

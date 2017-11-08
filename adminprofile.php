@@ -19,6 +19,7 @@ $server = "localhost";
    $identity = $_SESSION['name'];
    $heading = $_SESSION['email'];
    $authority = $_SESSION['conduct'];
+   $line = $_SESSION['line'];
    
    $query =  "SELECT * FROM accounts WHERE email = '$heading'";
    $ps = mysqli_query($c, $query);
@@ -31,14 +32,14 @@ $server = "localhost";
     }
     else
     {  
-	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']))
+	 if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']) && !isset($_SESSION['line']))
 	 {
 	    header("location:login.php");
 	    exit();
 	 }
     }
 
-     if ($authority != "admin")
+     if ($authority == "manager" || $authority != "owner")
      {
      	header("location:home.php");
         exit();
@@ -189,9 +190,9 @@ $server = "localhost";
 
 				 	$reading = mysqli_num_rows($ps);
 				}
-				else
+				elseif ($decision == "phone" && $privilege == "none")
 				{
-					$query11 = "SELECT * FROM accounts WHERE email = '$index'";
+					$query11 = "SELECT * FROM accounts WHERE phone = '$index'";
 
 					$ps = mysqli_query($c, $query11);
  	
@@ -203,6 +204,11 @@ $server = "localhost";
 				 	}
 
 				 	$reading = mysqli_num_rows($ps);
+				}
+				else
+				{
+					header("location: adminprofile.php");
+    				exit();
 				}
 			}
 			else
@@ -236,10 +242,6 @@ $server = "localhost";
 					<strong><?php echo $identity; ?></strong>
 					</a>
 				    <div class="dropdown-menu">
-				      <a class="dropdown-item" href="login.php">
-						<img src = "unlock.png" alt = "unlock" id = "scale" class = "rounded">
-						Login
-						</a>
 				      <a class="dropdown-item" href="logout.php">
 						<img src = "lock.png" alt = "lock" id = "scale" class = "rounded">
 						Logout
@@ -263,7 +265,7 @@ $server = "localhost";
 						Home
 					</a>
 				    </li>
-				    <li class="nav-item dropdown navbar-brand">
+				    <li class="nav-item dropdown navbar-brand nav-item active">
 				      <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
 						<img src = "details.png" alt = "profile" id = "scale">
 							Profile
