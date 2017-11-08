@@ -65,16 +65,16 @@
 					<strong><?php echo $identity; ?></strong>
 					<strong><?php echo $passion; ?></strong>
 					</a>
-				    <div class="dropdown-menu">
-						<a class="dropdown-item" href="login.php">
-						<img src = "unlock.png" alt = "unlock" id = "scale" class = "rounded">
-						Login
-						</a>
-					      <a class="dropdown-item" href="logout.php">
-						<img src = "lock.png" alt = "lock" id = "scale" class = "rounded">
-						Logout
-						</a>
-				    </div>
+				    <?php 
+						if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']) && !isset($_SESSION['line']))
+						{
+							echo "<div class = 'dropdown-menu'><a class = 'dropdown-item' href = 'login.php'><img src = 'unlock.png' alt = 'unlock' id = 'scale' class = 'rounded'>Login</a><a class = 'dropdown-item' href = 'registration.php'><img src = 'registration.jpg' alt = 'register' id = 'scale' class = 'rounded'>Register</a></div>";
+						}
+						else
+						{
+							echo "<div class = 'dropdown-menu'><a class = 'dropdown-item' href = 'logout.php'><img src = 'lock.png' alt = 'lock' id = 'scale' class = 'rounded'>Logout</a></div>";
+						}
+					 ?>
 				</li>
 			</ul>
 		</div>
