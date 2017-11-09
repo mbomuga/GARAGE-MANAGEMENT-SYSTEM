@@ -242,13 +242,17 @@
 						<div class="form-group">
 						<label>Reminder:</label>
 					    <input type="text" class="form-control" name = "report" id = "modify">
-						<?php echo $absent; ?>
-						<?php echo $invalid; ?>
+						<div class = "text-danger">
+							<?php echo $absent; ?>
+							<?php echo $invalid; ?>
+						</div>
 					  </div>
 						<div class="form-group">
 					    <label>Email Address:</label>
 					    <input type="text" class="form-control" name = "direction" id = "modify">
-						<?php echo $disconnect; ?>
+						<div class = "text-danger">
+							<?php echo $disconnect; ?>
+						</div>
 					  </div>
 						<button type="submit" class="btn btn-dark" name = "submit">Delete</button>
 					</form>

@@ -145,7 +145,9 @@
 				  <div class="form-group">
 				    <label>Password:</label>
 				    <input type="password" class="form-control" name="key" id = "dimensions">
-					<?php echo $access; ?>
+					<div class = "text-danger">
+						<?php echo $access; ?>
+					</div>
 				  </div>
 				  <button type="submit" class="btn btn-dark" name = "submit">Submit</button>
 						<div class = "form-group">

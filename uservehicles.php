@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <?php 
   $server = "localhost";
   $user = "root";
@@ -234,7 +235,7 @@
 		<div>
 			<center>
 				<fieldset id = "drape">
-					<form method = "post" action = "usersearch.php" onsubmit = "return searchuser()">
+					<form method = "post" action = "searchhistory.php" onsubmit = "return searchuser()">
 						<div class = "form-group">
 							<h1><strong><center>Vehicle History</center></strong></h1>
 						</div>

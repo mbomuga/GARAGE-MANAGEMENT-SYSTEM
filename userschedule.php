@@ -160,8 +160,8 @@
 						<td id = "default">
 							<center>
 								<a href="insertschedule.php" class="btn btn-dark" role="button">
-								<img src = "edit icon.png" alt = "edit icon" id = "narrow" class = "rounded">
-								Edit
+								<img src = "insert icon.png" alt = "edit icon" id = "narrow" class = "rounded">
+								Add
 								</a>
 							</center>
 						</td>

@@ -39,11 +39,15 @@
 	 }
     }
 
+    $negative = "";
+    $inventory = "";
+
      if ($authority != "manager")
      {
      	header("location:home.php");
         exit();
      }
+
      if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
 		$group = mysqli_real_escape_string($c, $_POST['updatetype']);
@@ -55,90 +59,130 @@
 		{
 			if (!empty($alter) && !empty($index) && !empty($direction))
 			{
-				if($group == "licence")
-				{
-					$query2 = "UPDATE history SET registration = '$alter' WHERE serialno = '$index' AND email = '$direction'";
-					$ps2 = mysqli_query($c, $query2);
+				$query8 =  "SELECT * FROM accounts WHERE email = '$direction'";
+				$ps8 = mysqli_query($c, $query8);
 
-					if(!$ps2)
+
+				if(!$ps8)
+			    {
+			        die("Failed to retrieve data:" . mysqli_error($c));
+			        header("location: updateschedule.php");
+			        exit();
+			    }
+
+			    $feedback = mysqli_num_rows($ps8);
+
+			    if ($feedback != 0)
+			    {
+					$query7 = "SELECT * FROM vehicles WHERE registration = '$alter' AND email = '$direction'";
+
+				    $ps7 = mysqli_query($c, $query7);
+
+				    if(!$ps7)
 				    {
-				        die("Failed to update data:" . mysqli_error($c));
-				        header("location: updatehistory.php");
+				        die("Failed to retrieve data:" . mysqli_error($c));
+				        header("location: inserthistory.php");
 				        exit();
 				    }
-				    else
-				    {
-				    	header("location: history.php");
-				    	exit();
-				    }
-				}
-				elseif ($group == "period")
-				{
-					$query3 = "UPDATE history SET period = '$alter' WHERE serialno = '$index' AND email = '$direction'";
-					$ps3 = mysqli_query($c, $query3);
 
-					if(!$ps3)
-				    {
-				        die("Failed to update data:" . mysqli_error($c));
-				        header("location: updatehistory.php");
-				        exit();
-				    }
-				    else
-				    {
-				    	header("location: history.php");
-				    	exit();
-				    }
-				}
-				elseif ($group == "lapse")
-				{
-					$query4 = "UPDATE history SET lapse = '$alter' WHERE serialno = '$index' AND email = '$direction'";
-					$ps4 = mysqli_query($c, $query4);
+				    $review = mysqli_num_rows($ps7);
 
-					if(!$ps4)
+				    if($review != 0)
 				    {
-				        die("Failed to update data:" . mysqli_error($c));
-				        header("location: updatehistory.php");
-				        exit();
-				    }
-				    else
-				    {
-				    	header("location: history.php");
-				    	exit();
-				    }
-				}
-				elseif ($group == "report")
-				{
-					$query5 = "UPDATE history SET description = '$alter' WHERE serialno = '$index' AND email = '$direction'";
-					$ps5 = mysqli_query($c, $query5);
+						if($group == "licence")
+						{
+							$query2 = "UPDATE history SET registration = '$alter' WHERE serialno = '$index' AND email = '$direction'";
+							$ps2 = mysqli_query($c, $query2);
 
-					if(!$ps5)
-				    {
-				        die("Failed to update data:" . mysqli_error($c));
-				        header("location: updatehistory.php");
-				        exit();
-				    }
-				    else
-				    {
-				    	header("location: history.php");
-				    	exit();
-				    }
+							if(!$ps2)
+						    {
+						        die("Failed to update data:" . mysqli_error($c));
+						        header("location: updatehistory.php");
+						        exit();
+						    }
+						    else
+						    {
+						    	header("location: history.php");
+						    	exit();
+						    }
+						}
+						elseif ($group == "period")
+						{
+							$query3 = "UPDATE history SET period = '$alter' WHERE serialno = '$index' AND email = '$direction'";
+							$ps3 = mysqli_query($c, $query3);
+
+							if(!$ps3)
+						    {
+						        die("Failed to update data:" . mysqli_error($c));
+						        header("location: updatehistory.php");
+						        exit();
+						    }
+						    else
+						    {
+						    	header("location: history.php");
+						    	exit();
+						    }
+						}
+						elseif ($group == "lapse")
+						{
+							$query4 = "UPDATE history SET lapse = '$alter' WHERE serialno = '$index' AND email = '$direction'";
+							$ps4 = mysqli_query($c, $query4);
+
+							if(!$ps4)
+						    {
+						        die("Failed to update data:" . mysqli_error($c));
+						        header("location: updatehistory.php");
+						        exit();
+						    }
+						    else
+						    {
+						    	header("location: history.php");
+						    	exit();
+						    }
+						}
+						elseif ($group == "report")
+						{
+							$query5 = "UPDATE history SET description = '$alter' WHERE serialno = '$index' AND email = '$direction'";
+							$ps5 = mysqli_query($c, $query5);
+
+							if(!$ps5)
+						    {
+						        die("Failed to update data:" . mysqli_error($c));
+						        header("location: updatehistory.php");
+						        exit();
+						    }
+						    else
+						    {
+						    	header("location: history.php");
+						    	exit();
+						    }
+						}
+						else
+						{
+							$query6 = "UPDATE history SET expense = '$alter' WHERE serialno = '$index' AND email = '$direction'";
+							$ps6 = mysqli_query($c, $query6);
+
+							if(!$ps6)
+						    {
+						        die("Failed to update data:" . mysqli_error($c));
+						        header("location: updatehistory.php");
+						        exit();
+						    }
+						    else
+						    {
+						    	header("location: history.php");
+						    	exit();
+						    }
+						}
+					}
+					else
+					{
+						$negative = "*Vehicle Unavailable";
+					}
 				}
 				else
 				{
-					$query6 = "UPDATE history SET expense = '$alter' WHERE serialno = '$index' AND email = '$direction'";
-					$ps6 = mysqli_query($c, $query6);
-
-					if(!$ps6)
-				    {
-				        die("Failed to update data:" . mysqli_error($c));
-				        header("location: updatehistory.php");
-				        exit();
-				    }
-				    else
-				    {
-				    	header("location: history.php");
-				    	exit();
-				    }
+					$inventory = "*User Does Not Exist";
 				}
 			}
 			else
@@ -263,6 +307,9 @@
 					<div class="form-group">
 					<label>Update Value:</label>
 				    <input type="text" class="form-control" name = "updatevalue" id = "modify">
+					<div class = "text-danger">
+						<?php echo  $negative; ?>
+					</div>
 				  </div>
 					<div class="form-group">
 				    <label>Reference No.:</label>
@@ -271,6 +318,9 @@
 					<div class="form-group">
 				    <label>Email Address:</label>
 				    <input type="text" class="form-control" name = "direction" id = "modify">
+					<div class = "text-danger">
+						<?php echo  $inventory; ?>
+					</div>
 				  </div>
 				<button type="submit" class="btn btn-dark" name = "submit">Update</button>
 			</form>

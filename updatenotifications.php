@@ -48,13 +48,13 @@
 	$peculiar = "";
 	$clause = "";
 	$disconnect = "";
+	$fiction = "";
 
 
      if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
 		$report = mysqli_real_escape_string($c, $_POST['report']);
 		$group = mysqli_real_escape_string($c, $_POST['updatetype']);
-		$receive = mysqli_real_escape_string($c, $_POST['receive']);
 		$category = mysqli_real_escape_string($c, $_POST['nature']);
 		$importance = mysqli_real_escape_string($c, $_POST['importance']);
 		$alter = mysqli_real_escape_string($c, $_POST['updatevalue']);
@@ -62,58 +62,96 @@
 
 		if (isset($_POST['submit']))
 		{
-			$query4 =  "SELECT * FROM accounts WHERE email = '$direction'";
-			$ps4 = mysqli_query($c, $query4);
+			$query5 =  "SELECT * FROM accounts WHERE email = '$direction'";
+			$ps5 = mysqli_query($c, $query5);
 
 
-			if(!$ps4)
+			if(!$ps5)
 		    {
 		        die("Failed to retrieve data:" . mysqli_error($c));
 		        header("location: updateschedule.php");
 		        exit();
 		    }
 
-		    $feedback = mysqli_num_rows($ps4);
+		    $feedback = mysqli_num_rows($ps5);
 
 		    if ($feedback>0)
 		    {
-		    	while ($rs4 = mysqli_fetch_assoc($ps4))
+		    	while ($rs5 = mysqli_fetch_assoc($ps5))
 		    	{
-		    		$access = $rs4['usertype'];
+		    		$access = $rs5['usertype'];
 
 			    	if($access != "owner" || $access != "manager")
 			    	{
-						if(!empty($alter) && !empty($report))
+						if(!empty($report))
 						{
-							$query4 = "SELECT * FROM notifications WHERE reminder = '$report' AND email = '$direction'";
+							$query6 = "SELECT * FROM notifications WHERE reminder = '$report' AND email = '$direction'";
 
-							$ps4 = mysqli_query($c, $query4);
-							if(!$ps4)
+							$ps6 = mysqli_query($c, $query6);
+							if(!$ps6)
 						    {
 						        die("Failed to retrieve data:" . mysqli_error($c));
 						        header("location: notifications.php");
 						        exit();
 						    }
 
-						    $record = mysqli_num_rows($ps4);
+						    $record = mysqli_num_rows($ps6);
 
 						    if ($record != 0)
 						    {
-						     	while($rs2 = mysqli_fetch_assoc($ps3))
+						     	while($rs6 = mysqli_fetch_assoc($ps6))
 								{
-									$nature = $rs2['category'];
-								}
+									$nature = $rs6['category'];
 
-								if($nature != "payment" || $nature != "vehicle")
-								{
-									if($group == "report")
+									if($nature != "payment" && $nature != "vehicle" && $nature != "schedule")
 									{
-										if (!empty($alter))
+										if($group == "report")
 										{
-											$query2 = "UPDATE notifications SET reminder = '$alter' WHERE reminder = '$report' AND email = '$direction'";
-											$ps2 = mysqli_query($c, $query2);
+											if (!empty($alter))
+											{
+												$query2 = "UPDATE notifications SET reminder = '$alter' WHERE reminder = '$report' AND email = '$direction'";
+												$ps2 = mysqli_query($c, $query2);
 
-											if(!$ps2)
+												if(!$ps2)
+											    {
+											        die("Failed to update data:" . mysqli_error($c));
+											        header("location: updatenotifications.php");
+											        exit();
+											    }
+											    else
+											    {
+											    	header("location: notifications.php");
+											    	exit();
+											    }
+											}
+											else
+											{
+												$absent = "Reminder Required";
+											}
+										}
+										elseif($group == "category")
+										{
+											$query3 = "UPDATE notifications SET category = '$nature' WHERE reminder = '$report' AND email = '$direction'";
+											$ps3 = mysqli_query($c, $query3);
+
+											if(!$ps3)
+										    {
+										        die("Failed to update data:" . mysqli_error($c));
+										        header("location: updatenotifications.php");
+										        exit();
+										    }
+										    else
+										    {
+										    	header("location: notifications.php");
+										    	exit();
+										    }	
+										}
+										else
+										{
+											$query4 = "UPDATE notifications SET priority = '$importance' WHERE reminder = '$report' AND email = '$direction'";
+											$ps4 = mysqli_query($c, $query4);
+
+											if(!$ps4)
 										    {
 										        die("Failed to update data:" . mysqli_error($c));
 										        header("location: updatenotifications.php");
@@ -125,50 +163,16 @@
 										    	exit();
 										    }
 										}
-										else
-										{
-											$absent = "Reminder Required";
-										}
-									}
-									elseif($group == "category")
-									{
-										$query3 = "UPDATE notifications SET category = '$nature' WHERE reminder = '$report' AND email = '$direction'";
-										$ps3 = mysqli_query($c, $query3);
-
-										if(!$ps3)
-									    {
-									        die("Failed to update data:" . mysqli_error($c));
-									        header("location: updatenotifications.php");
-									        exit();
-									    }
-									    else
-									    {
-									    	header("location: notifications.php");
-									    	exit();
-									    }	
 									}
 									else
 									{
-										$query3 = "UPDATE notifications SET priority = '$importance' WHERE reminder = '$report' AND email = '$direction'";
-										$ps3 = mysqli_query($c, $query3);
-
-										if(!$ps3)
-									    {
-									        die("Failed to update data:" . mysqli_error($c));
-									        header("location: updatenotifications.php");
-									        exit();
-									    }
-									    else
-									    {
-									    	header("location: notifications.php");
-									    	exit();
-									    }
+										$clause = "*Cannot Update Record";
 									}
 								}
-								else
-								{
-									$peculiar = "Record Unavailabla";
-								}
+							}
+							else
+							{
+								$peculiar = "*Record Unavailable";
 							}
 						}
 						else
@@ -177,11 +181,15 @@
 							exit();
 						}
 					}
+					else
+					{
+						$disconnect = "*User is Not a Client";
+					}
 				}
 			}
 			else
 			{
-				$disconnect = "User is Not a Client";
+				$fiction = "*User Does Not Exist";
 			}
 		}
 	}
@@ -297,8 +305,7 @@
 				  </div>
 					<div class="form-group">
 					<label>Reminder Update:</label>
-				    <input type="text" class="form-control" name = "updatevalue" id = "modify">
-					<?php echo $peculiar; ?>
+				    <input type="text" class="form-control" name = "updatevalue" id = "modify">					
 				  </div>
 				<div class="form-group">
 				    <label>Category:</label>
@@ -318,12 +325,18 @@
 				<div class="form-group">
 					<label>Reminder:</label>
 				    <input type="text" class="form-control" name = "report" id = "modify">
+					<div class = "text-danger">
+						<?php echo $peculiar; ?>
+						<?php echo $clause; ?>
+					</div>
 				  </div>
 				<div class="form-group">
 				    <label>Email Address:</label>
 				    <input type="text" class="form-control" name = "direction" id = "modify">
-					<?php echo $clause; ?>
-					<?php echo $disconnect; ?>
+					<div class = "text-danger">
+						<?php echo $disconnect; ?>
+						<?php echo $fiction; ?>
+					</div>
 				  </div>
 					<button type="submit" class="btn btn-dark" name = "submit">Update</button>
 				</form>

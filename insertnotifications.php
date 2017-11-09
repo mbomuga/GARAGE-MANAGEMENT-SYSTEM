@@ -123,7 +123,7 @@
 			    }
 			    else
 			    {
-			    	$inventory = "User does not Exist";
+			    	$inventory = "*User does not Exist";
 			    }			    
 			}
 			else
@@ -257,8 +257,10 @@
 						<div class="form-group">
 					    <label>Email Address:</label>
 					    <input type="text" class="form-control" name = "direction" id = "modify">
-						<?php echo $inventory; ?>
-						<?php echo $disconnect; ?>
+						<div class = "text-danger">
+							<?php echo $inventory; ?>
+							<?php echo $disconnect; ?>
+						</div>
 					  </div>
 					  <button type="submit" class="btn btn-dark" name = "submit">Add</button>
 					</form>

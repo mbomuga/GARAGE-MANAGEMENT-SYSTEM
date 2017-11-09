@@ -38,6 +38,8 @@
 	    exit();
 	 }
     }
+
+    $missing = "";
     
     if($authority == "manager" || $authority == "owner")
     {
@@ -53,79 +55,84 @@
 
 		if (isset($_POST['submit']))
 		{
-			if ($group == "type")
+			
+			if(!empty($label) && !empty($alter))
 			{
-				if(!empty($alter) && !empty($label) && !empty($period))
-				{
-					$query2 = "UPDATE vehicles SET model = '$alter' WHERE registration = '$label' AND email = '$heading'";
-					$ps2 = mysqli_query($c, $query2);
+				$query5 = "SELECT * FROM vehicles WHERE registration = '$label' AND email = '$heading'";
 
-					if(!$ps2)
-				    {
-				        die("Failed to update data:" . mysqli_error($c));
-				        header("location: updatevehicles.php");
-				        exit();
-				    }
-				    else
-				    {
-				    	header("location: vehicles.php");
-				    	exit();
-				    }
+				$ps5 = mysqli_query($c, $query5);
+				if(!$ps5)
+			    {
+			        die("Failed to retrieve data:" . mysqli_error($c));
+			        header("location: viewvehicles.php");
+			        exit();
+			    }
+
+			    $instance = mysqli_num_rows($ps5);
+
+			    if($instance != 0)
+			    {
+					if ($group == "type")
+					{
+						$query2 = "UPDATE vehicles SET model = '$alter' WHERE registration = '$label' AND email = '$heading'";
+						$ps2 = mysqli_query($c, $query2);
+
+						if(!$ps2)
+					    {
+					        die("Failed to update data:" . mysqli_error($c));
+					        header("location: updatevehicles.php");
+					        exit();
+					    }
+					    else
+					    {
+					    	header("location: vehicles.php");
+					    	exit();
+					    }
+					}
+					elseif ($group == "duration")
+					{
+						$query3 = "UPDATE vehicles SET year = '$alter' WHERE registration = '$label' AND email = '$heading'";
+						$ps3 = mysqli_query($c, $query3);
+
+						if(!$ps3)
+					    {
+					        die("Failed to update data:" . mysqli_error($c));
+					        header("location: updatevehicles.php");
+					        exit();
+					    }
+					    else
+					    {
+					    	header("location: vehicles.php");
+					    	exit();
+					    }
+					}
+					else
+					{
+						$query4 = "UPDATE vehicles SET registration = '$alter' WHERE registration = '$label' AND email = '$heading'";
+						$ps4 = mysqli_query($c, $query4);
+
+						if(!$ps4)
+					    {
+					        die("Failed to update data:" . mysqli_error($c));
+					        header("location: updatevehicles.php");
+					        exit();
+					    }
+					    else
+					    {
+					    	header("location: vehicles.php");
+					    	exit();
+					    }
+					}
 				}
 				else
 				{
-					header("location: updatevehicles.php");
-				    exit();
-				}
-			}elseif ($group == "duration")
-			{
-				if(!empty($label))
-				{
-					$query2 = "UPDATE vehicles SET year = '$alter' WHERE registration = '$label' AND email = '$heading'";
-					$ps2 = mysqli_query($c, $query2);
-
-					if(!$ps2)
-				    {
-				        die("Failed to update data:" . mysqli_error($c));
-				        header("location: updatevehicles.php");
-				        exit();
-				    }
-				    else
-				    {
-				    	header("location: vehicles.php");
-				    	exit();
-				    }
-				}
-				else
-				{
-					header("location: updatevehicles.php");
-				    exit();
+					$missing = "*Vehicle Not Found";
 				}
 			}
 			else
 			{
-				if(!empty($period))
-				{
-					$query2 = "UPDATE vehicles SET registration = '$alter' WHERE registration = '$label' AND email = '$heading'";
-					$ps2 = mysqli_query($c, $query2);
-
-					if(!$ps2)
-				    {
-				        die("Failed to update data:" . mysqli_error($c));
-				        header("location: updatevehicles.php");
-				        exit();
-				    }
-				    else
-				    {
-				    	header("location: vehicles.php");
-				    	exit();
-				    }
-				}
-				else
-				{
-					header("location: updatevehicles.php");
-				    exit();
-				}
+				header("location: updatevehicles.php");
+			    exit();
 			}
 		}
 	}
@@ -246,6 +253,9 @@
 					<div class="form-group">
 				    <label>Vehicle Registration:</label>
 				    <input type="text" class="form-control" name = "label" id = "modify">
+					<div class = "text-danger">
+						<?php echo $missing; ?>
+					</div>
 				  </div>
 				<button type="submit" class="btn btn-dark" name = "submit">Update</button>
 			</form>

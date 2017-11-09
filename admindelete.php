@@ -48,27 +48,49 @@
 
 		if (isset($_POST['submit']))
 		{
-			if(!empty($label))
-			{
-				$query3 = "DELETE FROM vehicles WHERE registration = '$label' AND email = '$direction'";
-				$ps3 = mysqli_query($c, $query3);
+			$query4 =  "SELECT * FROM accounts WHERE email = '$direction'";
+		   	$ps4 = mysqli_query($c, $query4);
 
-				if(!$ps3)
-			    {
-			        die("Failed to delete data:" . mysqli_error($c));
-			        header("location: deletevehicles.php");
-			        exit();
-			    }
-			    else
-			    {
-			    	header("location: vehicles.php");
-			        exit();
-			    }
+		    if(!$ps4)
+		    {
+		        die("Failed to retrieve data:" . mysqli_error($c));
+		        header("location: login.php");
+		        exit();
+		    }
+
+		    $reading = mysqli_num_rows($ps4);
+
+		    if($reading>0)
+		    {
+		    	while ($rs4 = mysqli_fetch_assoc($ps4))
+		    	{
+					if(!empty($label))
+					{
+						$query3 = "DELETE FROM vehicles WHERE registration = '$label' AND email = '$direction'";
+						$ps3 = mysqli_query($c, $query3);
+
+						if(!$ps3)
+					    {
+					        die("Failed to delete data:" . mysqli_error($c));
+					        header("location: deletevehicles.php");
+					        exit();
+					    }
+					    else
+					    {
+					    	header("location: vehicles.php");
+					        exit();
+					    }
+					}
+					else
+					{
+						header("location: deletevehicles.php");
+					    exit();
+					}
+				}
 			}
 			else
 			{
-				header("location: deletevehicles.php");
-			    exit();
+				$fiction = "*User Does Not Exist";
 			}
 		}
 	}
@@ -181,7 +203,9 @@
 			<div class="form-group">
 			    <label>Email Address:</label>
 			    <input type="text" class="form-control" name = "direction" id = "modify">
-				<?php echo $fiction; ?>
+				<div class = "text-danger">
+					<?php echo $fiction; ?>
+				</div>
 			  </div>
 			<button type="submit" class="btn btn-dark" name = "submit">Delete</button>
 			</form>

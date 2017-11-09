@@ -1,93 +1,89 @@
 <!DOCTYPE html>
 <?php
 
-	if($_SERVER['REQUEST_METHOD'] = 'POST')
+	$server = "localhost";
+	$user = "root";
+	$password = "";
+	$db = "garage";
+
+	$c = mysqli_connect($server, $user, $password, $db);
+
+	if(mysqli_connect_errno())
 	{
-		
-		$server = "localhost";
-		$user = "root";
-		$password = "";
-		$db = "garage";
+		die("Connection error:" . mysqli_connect_error());
+		header("location: registration.php");
+		exit();
+	}	
 
-		$c = mysqli_connect($server, $user, $password, $db);
+	if ($_SERVER['REQUEST_METHOD'] == 'POST')
+	{
+		$first = mysqli_real_escape_string($c, $_POST['first']);
+		$last = mysqli_real_escape_string($c, $_POST['last']);
+		$email = mysqli_real_escape_string($c, $_POST['email']);
+		$prefix = mysqli_real_escape_string($c, $_POST['prefix']);
+		$phone = mysqli_real_escape_string($c, $_POST['phone']);
+		$p1 = mysqli_real_escape_string($c, $_POST['password1']);
+		$p2 = mysqli_real_escape_string($c, $_POST['password2']);
+		$usertype = "regular";
 
-		if(mysqli_connect_errno())
+		$line = $prefix . $phone;
+	
+		if(isset($_POST['submit']))
 		{
-			die("Connection error:" . mysqli_connect_error());
-			header("location: registration.php");
-			exit();
-		}
+			$query = "SELECT * FROM accounts WHERE email = '$email'";
+					
+			$ps = mysqli_query($c, $query);
 
-		if ($_SERVER['REQUEST_METHOD'] == 'POST')
-		{
-			$first = mysqli_real_escape_string($c, $_POST['first']);
-			$last = mysqli_real_escape_string($c, $_POST['last']);
-			$email = mysqli_real_escape_string($c, $_POST['email']);
-			$prefix = mysqli_real_escape_string($c, $_POST['prefix']);
-			$phone = mysqli_real_escape_string($c, $_POST['phone']);
-			$p1 = mysqli_real_escape_string($c, $_POST['password1']);
-			$p2 = mysqli_real_escape_string($c, $_POST['password2']);
-			$usertype = "regular";
-
-			$line = $prefix . $phone;
-		
-			if(isset($_POST['submit']))
+			if(!$ps)
 			{
-				$query = "SELECT * FROM accounts WHERE email = '$email'";
-						
-				$ps = mysqli_query($c, $query);
+				die("Failed to retrieve data:" . mysqli_error($c));
+				header("location: registration.php");
+				exit();
+			}
+			else
+			{
+				$rs = mysqli_fetch_assoc($ps);
 
-				if(!$ps)
+				$instance = mysqli_num_rows($ps);
+
+				if($instance == 0)
 				{
-					die("Failed to retrieve data:" . mysqli_error($c));
-					header("location: registration.php");
-					exit();
-				}
-				else
-				{
-					$rs = mysqli_fetch_assoc($ps);
 
-					$instance = mysqli_num_rows($ps);
-
-					if($instance == 0)
+					if(empty($first) || empty($last) || empty($email) || empty($prefix) || empty($phone) || empty($p1) || empty($p2) || $p1 != $p2)
 					{
+						header("location: registration.php");
+						exit();
+					}
+					else
+					{	
+						$query = "INSERT INTO `accounts` (`first`, `last`, `email`, `password1`, `password2`, `phone`, `usertype`) VALUES ('$first', '$last', '$email', '$p1', '$p2', '$line', '$usertype')";
+						
+						$ps = mysqli_query($c, $query);
 
-						if(empty($first) || empty($last) || empty($email) || empty($prefix) || empty($phone) || empty($p1) || empty($p2) || $p1 != $p2)
+						if(!$ps)
 						{
+							die("Failed to insert data:" . mysqli_error($c));
 							header("location: registration.php");
 							exit();
 						}
 						else
-						{	
-							$query = "INSERT INTO `accounts` (`first`, `last`, `email`, `password1`, `password2`, `phone`, `usertype`) VALUES ('$first', '$last', '$email', '$p1', '$p2', '$line', '$usertype')";
-							
-							$ps = mysqli_query($c, $query);
-
-							if(!$ps)
-							{
-								die("Failed to insert data:" . mysqli_error($c));
-								header("location: registration.php");
-								exit();
-							}
-							else
-							{
-								echo "Transaction Successful";
-								header("location: login.php");
-								exit();
-							}
+						{
+							echo "Transaction Successful";
+							header("location: login.php");
+							exit();
 						}
 					}
-					else
-					{
-						header("location: login.php");
-						exit();
-					}
+				}
+				else
+				{
+					header("location: login.php");
+					exit();
 				}
 			}
 		}
-
-		mysqli_close($c);
 	}
+
+	mysqli_close($c);
 ?>
 <html>
 <head>

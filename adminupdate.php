@@ -39,6 +39,8 @@
 	 }
     }
 
+    $fiction =  "";
+
      if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
 		$group = mysqli_real_escape_string($c, $_POST['updatetype']);
@@ -48,82 +50,87 @@
 
 		if (isset($_POST['submit']))
 		{
-			if ($group == "type")
+			if (!empty($direction))
 			{
-				if(!empty($alter) && !empty($label) && !empty($period))
-				{
-					$query2 = "UPDATE vehicles SET model = '$alter' WHERE registration = '$label' AND email = '$direction'";
-					$ps2 = mysqli_query($c, $query2);
+				$query5 =  "SELECT * FROM accounts WHERE email = '$direction'";
+			   	
+			   	$ps5 = mysqli_query($c, $query5);
 
-					if(!$ps2)
-				    {
-				        die("Failed to update data:" . mysqli_error($c));
-				        header("location: updatevehicles.php");
-				        exit();
-				    }
-				    else
-				    {
-				    	header("location: vehicles.php");
-				    	exit();
-				    }
+			    if(!$ps5)
+			    {
+			        die("Failed to retrieve data:" . mysqli_error($c));
+			        header("location: login.php");
+			        exit();
+			    }
+
+			    $audit = mysqli_num_rows($ps5);
+
+			    if ($audit>0)
+			    {
+					if ($group == "type")
+					{
+						$query2 = "UPDATE vehicles SET model = '$alter' WHERE registration = '$label' AND email = '$direction'";
+						$ps2 = mysqli_query($c, $query2);
+
+						if(!$ps2)
+					    {
+					        die("Failed to update data:" . mysqli_error($c));
+					        header("location: updatevehicles.php");
+					        exit();
+					    }
+					    else
+					    {
+					    	header("location: vehicles.php");
+					    	exit();
+					    }
+					}
+					elseif ($group == "duration")
+					{
+						$query3 = "UPDATE vehicles SET year = '$alter' WHERE registration = '$label' AND email = '$direction'";
+						$ps3 = mysqli_query($c, $query3);
+
+						if(!$ps3)
+					    {
+					        die("Failed to update data:" . mysqli_error($c));
+					        header("location: updatevehicles.php");
+					        exit();
+					    }
+					    else
+					    {
+					    	header("location: vehicles.php");
+					    	exit();
+					    }
+					}
+					else
+					{
+						$query4 = "UPDATE vehicles SET registration = '$alter' WHERE registration = '$label' AND email = '$direction'";
+						$ps4 = mysqli_query($c, $query4);
+
+						if(!$ps4)
+					    {
+					        die("Failed to update data:" . mysqli_error($c));
+					        header("location: updatevehicles.php");
+					        exit();
+					    }
+					    else
+					    {
+					    	header("location: vehicles.php");
+					    	exit();
+					    }
+					}
 				}
 				else
 				{
-					header("location: updatevehicles.php");
-				    exit();
-				}
-			}elseif ($group == "duration")
-			{
-				if(!empty($label))
-				{
-					$query2 = "UPDATE vehicles SET year = '$alter' WHERE registration = '$label' AND email = '$direction'";
-					$ps2 = mysqli_query($c, $query2);
-
-					if(!$ps2)
-				    {
-				        die("Failed to update data:" . mysqli_error($c));
-				        header("location: updatevehicles.php");
-				        exit();
-				    }
-				    else
-				    {
-				    	header("location: vehicles.php");
-				    	exit();
-				    }
-				}
-				else
-				{
-					header("location: updatevehicles.php");
-				    exit();
+					$fiction = "*User Does Not Exist";
 				}
 			}
 			else
 			{
-				if(!empty($period))
-				{
-					$query2 = "UPDATE vehicles SET registration = '$alter' WHERE registration = '$label' AND email = '$direction'";
-					$ps2 = mysqli_query($c, $query2);
-
-					if(!$ps2)
-				    {
-				        die("Failed to update data:" . mysqli_error($c));
-				        header("location: updatevehicles.php");
-				        exit();
-				    }
-				    else
-				    {
-				    	header("location: vehicles.php");
-				    	exit();
-				    }
-				}
-				else
-				{
-					header("location: updatevehicles.php");
-				    exit();
-				}
+				header("location: updatevehicles.php");
+				exit();	
 			}
-		}
-	}
+	    }
+	}		
 
 	mysqli_close($c);
 ?>
@@ -245,7 +252,9 @@
 				<div class="form-group">
 				    <label>Email Address:</label>
 				    <input type="text" class="form-control" name = "direction" id = "modify">
-					<?php echo $fiction; ?>
+					<div class = "text-danger">
+						<?php echo $fiction; ?>
+					</div>
 				  </div>
 				<button type="submit" class="btn btn-dark" name = "submit">Update</button>
 			</form>

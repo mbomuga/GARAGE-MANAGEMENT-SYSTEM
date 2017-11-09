@@ -58,18 +58,6 @@
     }
     $reading3 = mysqli_num_rows($ps4);
 
-	$query4 = "SELECT * FROM schedule";
-
-	$ps5 = mysqli_query($c, $query4);
-	if(!$ps5)
-    {
-        die("Failed to retrieve data:" . mysqli_error($c));
-        header("location: notifications.php");
-        exit();
-    }
-
-    $reading4 = mysqli_num_rows($ps5);
-
 	mysqli_close($c);
 ?>
 <html>
@@ -255,75 +243,6 @@
 								$archives = "No Entries Available";
 
 								echo "<tr><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives .  "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . "</center></td><td id = 'default'><center>" . $archives . "</center></td></tr>";
-							}
-						 ?>
-					</table>
-				</fieldset>
-			</center>
-		</div>
-		<div>
-			<br>
-		</div>
-		<div>
-			<h2><strong>Schedule</strong></h2>
-		</div>
-		<div>
-			<center>
-				<fieldset>
-					<table id = "primary" class = "table table-active table-hover">
-						<thead class = "thead-dark">
-							<th id = "default">
-							<center>
-								<strong>Date:</strong>
-							</center>
-							</th>
-							<th id = "default">
-								<center>
-									<strong>Time:</strong>
-								</center>
-							</th>
-							<th id = "default">
-								<center>
-									<strong>Status:</strong>
-								</center>
-							</th>
-							<th id = "default">
-								<center>
-									<strong>Name:</strong>
-								</center>
-							</th>
-							<th id = "default">
-								<center>
-									<strong>Phone Number:</strong>
-								</center>
-							</th>
-							<th id = "default">
-								<center>
-									<strong>Email Address:</strong>
-								</center>
-							</th>
-						</thead>
-						<?php 
-
-						    if($reading4>0)
-						    {
-								while($rs4 = mysqli_fetch_assoc($ps5))
-								{
-									$period = $rs4['period'];
-									$lapse = $rs4['lapse'];
-									$progress = $rs4['status'];
-									$initials = $rs4['username'];
-									$call = $rs4['phone'];
-									$beacon = $rs4['email'];
-
-									echo "<tr><td id = 'default'><center>" . $period . "</center></td><td id = 'default'><center>" . $lapse . "</center></td><td id = 'default'><center>" . $progress . "</center></td><td id = 'default'><center>" . $initials . "</center></td><td id = 'default'><center>" . $call . "</center></td><td id = 'default'><center>" . $beacon . "</center></td></tr>";
-								}
-							}
-							else
-							{
-								$archives = "No Entries Available";
-
-								echo "<tr><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>". $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td></tr>";
 							}
 						 ?>
 					</table>

@@ -43,6 +43,7 @@
 
     $inventory = "";
     $negative = "";
+    $peculiar = "";
 
      if ($authority != "manager")
      {
@@ -59,100 +60,132 @@
 		$quota = mysqli_real_escape_string($c, $_POST['quota']);
 		$arrears = "pending";
 		$direction = mysqli_real_escape_string($c, $_POST['direction']);
+		$headway = "approved";
 
 		if (isset($_POST['submit']))
 		{
 			if (!empty($label) && !empty($period) && !empty($lapse) && !empty($report) && !empty($quota) && !empty($direction))
 			{
-				$query4  = "SELECT * FROM history";
-
-				$ps5 = mysqli_query($c, $query4);
-
-				if(!$ps5)
-			    {
-			        die("Failed to retrieve data:" . mysqli_error($c));
-			        header("location: inserthistory.php");
-			        exit();
-			    }
-
-			    $rs4 = mysqli_fetch_assoc($ps5);
-
-			    $reference = $rs4['serialno'];
-			    $list = mysqli_num_rows($ps5);
-
-			    if($list == 0)
-			    {
-			    	$entry = 1;
-			    }
-			    else
-			    {
-			    	$entry = $list + 1;
-			    }
-
-			    $query6  = "SELECT * FROM accounts WHERE email = '$direction'";
+				$query6 = "SELECT * FROM schedule WHERE status = '$headway' AND email = '$direction'";
 
 				$ps7 = mysqli_query($c, $query6);
-
 				if(!$ps7)
 			    {
 			        die("Failed to retrieve data:" . mysqli_error($c));
-			        header("location: inserthistory.php");
+			        header("location: insertschedule.php");
 			        exit();
 			    }
+				
+				$rs6 = mysqli_fetch_assoc($ps7);
 
-			    $reading = mysqli_num_rows($ps7);
+				$instance = mysqli_num_rows($ps7);
 
-			    if($reading != 0)
-			    {
-				    while ($rs6 = mysqli_fetch_assoc($ps7))
+				if($instance != 0)
+				{
+			    	$query7 = "DELETE FROM schedule WHERE status = '$headway' AND (period = '$period' AND (lapse = '$lapse' AND email = '$direction'))";
+					$ps8 = mysqli_query($c, $query7);
+
+					if(!$ps8)
 				    {
-				    	$directory = $rs6['first'];
-				    	$surname = $rs6['last'];
-				    	$contact = $rs6['phone'];
-
-				    	$designate = $directory . " " . $surname;
+				        die("Failed to delete data:" . mysqli_error($c));
+				        header("location: insertschedule.php");
+				        exit();
 				    }
 
-				    $query7 = "SELECT * FROM vehicles WHERE registration = '$label'";
+					$query4  = "SELECT * FROM history";
 
-				    $ps8 = mysqli_query($c, $query7);
+					$ps5 = mysqli_query($c, $query4);
 
-				    if(!$ps7)
+					if(!$ps5)
 				    {
 				        die("Failed to retrieve data:" . mysqli_error($c));
 				        header("location: inserthistory.php");
 				        exit();
 				    }
 
-				    $review = mysqli_num_rows($ps8);
+				    $rs4 = mysqli_fetch_assoc($ps5);
 
-				    if($review != 0)
+				    $reference = $rs4['serialno'];
+				    $list = mysqli_num_rows($ps5);
+
+				    if($list == 0)
 				    {
-				    	$query5 = "INSERT INTO `history`(`serialno`, `registration`, `period`, `lapse`, `description`, `expense`, `charge`, `username`, `phone`, `email`) VALUES ('$entry', '$label', '$period', '$lapse', '$report', '$quota', '$arrears', '$designate', '$contact', '$direction')";
+				    	$entry = 1;
+				    }
+				    else
+				    {
+				    	$entry = $list + 1;
+				    }
 
-						$ps6 = mysqli_query($c, $query5);
+				    $query6  = "SELECT * FROM accounts WHERE email = '$direction'";
 
-						if(!$ps6)
+					$ps7 = mysqli_query($c, $query6);
+
+					if(!$ps7)
+				    {
+				        die("Failed to retrieve data:" . mysqli_error($c));
+				        header("location: inserthistory.php");
+				        exit();
+				    }
+
+				    $reading = mysqli_num_rows($ps7);
+
+				    if($reading != 0)
+				    {
+					    while ($rs6 = mysqli_fetch_assoc($ps7))
 					    {
-					        die("Failed to insert data:" . mysqli_error($c));
+					    	$directory = $rs6['first'];
+					    	$surname = $rs6['last'];
+					    	$contact = $rs6['phone'];
+
+					    	$designate = $directory . " " . $surname;
+					    }
+
+					    $query7 = "SELECT * FROM vehicles WHERE registration = '$label'";
+
+					    $ps8 = mysqli_query($c, $query7);
+
+					    if(!$ps8)
+					    {
+					        die("Failed to retrieve data:" . mysqli_error($c));
 					        header("location: inserthistory.php");
 					        exit();
 					    }
-					    else
+
+					    $review = mysqli_num_rows($ps8);
+
+					    if($review != 0)
 					    {
-					    	header("location: history.php");
-					    	exit();
-					    }
-					}
-					else
-					{
-						$negative = "Vehicle Unavailable";
-					}
-			    }
-			    else
-			    {
-			    	$inventory = "User does not Exist";
-			    }			
+					    	$query5 = "INSERT INTO `history`(`serialno`, `registration`, `period`, `lapse`, `description`, `expense`, `charge`, `username`, `phone`, `email`) VALUES ('$entry', '$label', '$period', '$lapse', '$report', '$quota', '$arrears', '$designate', '$contact', '$direction')";
+
+							$ps6 = mysqli_query($c, $query5);
+
+							if(!$ps6)
+						    {
+						        die("Failed to insert data:" . mysqli_error($c));
+						        header("location: inserthistory.php");
+						        exit();
+						    }
+						    else
+						    {
+						    	header("location: history.php");
+						    	exit();
+						    }
+						}
+						else
+						{
+							$negative = "Vehicle Unavailable";
+						}
+				    }
+				    else
+				    {
+				    	$inventory = "User does not Exist";
+				    }			
+				}
+				else
+				{
+					$peculiar = "*Schedule Entry Unavailable";
+				}
 			}
 			else
 			{
@@ -266,7 +299,9 @@
 				<div class="form-group">
 			    <label>Registration:</label>
 			    <input type="text" class="form-control" name = "label" id = "modify">
-				<?php echo $negative; ?>
+				<div class = "text-danger">
+					<?php echo $negative; ?>
+				</div>
 			  </div>
 			  <div class="form-group">
 			    <label>Date:</label>
@@ -275,6 +310,9 @@
 				<div class="form-group">
 			    <label>Time:</label>
 			    <input type="time" class="form-control" name = "lapse" id = "modify">
+				<div class = "text-danger">
+					<?php echo $peculiar; ?>
+				</div>
 			  </div>
 				<div class="form-group">
 			    <label>Description:</label>
@@ -287,7 +325,9 @@
 				<div class="form-group">
 			    <label>Email Address:</label>
 			    <input type="text" class="form-control" name = "direction" id = "modify">
-				<?php echo $inventory; ?>
+				<div class = "text-danger">
+					<?php echo $inventory; ?>
+				</div>
 				</div>
 			  <button type="submit" class="btn btn-dark" name = "submit">Add</button>
 			</form>

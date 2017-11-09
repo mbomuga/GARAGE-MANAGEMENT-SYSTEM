@@ -259,7 +259,7 @@ $server = "localhost";
 			<center>
 				<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 				  <ul class="navbar-nav">
-				    <li class="navbar-brand nav-item active">
+				    <li class="navbar-brand">
 				    <a class="nav-link" href="home.php">
 						<img src = "home.png" alt = "home" id = "scale" class = "rounded">
 						Home

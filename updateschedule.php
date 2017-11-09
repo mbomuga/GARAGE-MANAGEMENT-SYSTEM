@@ -45,7 +45,7 @@
         exit();
      }
 
-     $disconnect = "";
+     $inventory = "";
 
      if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
@@ -54,21 +54,40 @@
 
 		if (isset($_POST['submit']))
 		{	
+			$query4 =  "SELECT * FROM accounts WHERE email = '$direction'";
+			$ps4 = mysqli_query($c, $query4);
 
-    		$query3 = "UPDATE schedule SET status = '$progress' WHERE email = '$direction'";
-			$ps3 = mysqli_query($c, $query3);
 
-			if(!$ps3)
+			if(!$ps4)
 		    {
-		        die("Failed to update data:" . mysqli_error($c));
+		        die("Failed to retrieve data:" . mysqli_error($c));
 		        header("location: updateschedule.php");
 		        exit();
 		    }
-		    else
+
+		    $feedback = mysqli_num_rows($ps4);
+
+		    if ($feedback != 0)
 		    {
-		    	header("location: schedule.php");
-		        exit();
-		    }
+	    		$query3 = "UPDATE schedule SET status = '$progress' WHERE email = '$direction'";
+				$ps3 = mysqli_query($c, $query3);
+
+				if(!$ps3)
+			    {
+			        die("Failed to update data:" . mysqli_error($c));
+			        header("location: updateschedule.php");
+			        exit();
+			    }
+			    else
+			    {
+			    	header("location: schedule.php");
+			        exit();
+			    }
+			}
+			else
+			{
+				$inventory = "*User does not Exist";
+			}
 		}
 	}
 
@@ -184,7 +203,9 @@
 							<div class="form-group">
 						    <label>Email Address:</label>
 						    <input type="text" class="form-control" name = "direction" id = "modify">
-							<?php echo $disconnect; ?>
+							<div class = "text-danger">
+								<?php echo $inventory; ?>
+							</div>
 						  </div>
 						<button type="submit" class="btn btn-dark" name = "submit">Update</button>
 					</form>

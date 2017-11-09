@@ -252,7 +252,7 @@
 		<div>
 			<center>
 				<fieldset id = "drape">
-					<form method = "post" action = "adminsearch.php" onsubmit = "return searchadmin()">
+					<form method = "post" action = "searchhistory.php" onsubmit = "return searchadmin()">
 						<div class = "form-group">
 							<h2><strong><center>Vehicle History</center></strong></h2>
 						</div>

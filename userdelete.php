@@ -39,33 +39,54 @@
 	 }
     }
 
+    $missing = "";
+
      if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
 		$label = mysqli_real_escape_string($c, $_POST['label']);
 
 		if (isset($_POST['submit']))
 		{
-			if(!empty($label))
-			{
-				$query3 = "DELETE FROM vehicles WHERE registration = '$label' AND email = '$heading'";
-				$ps3 = mysqli_query($c, $query3);
+			$query5 = "SELECT * FROM vehicles WHERE registration = '$label' AND email = '$heading'";
 
-				if(!$ps3)
-			    {
-			        die("Failed to delete data:" . mysqli_error($c));
-			        header("location: deletevehicles.php");
-			        exit();
-			    }
-			    else
-			    {
-			    	header("location: vehicles.php");
-			        exit();
-			    }
+			$ps5 = mysqli_query($c, $query5);
+			if(!$ps5)
+		    {
+		        die("Failed to retrieve data:" . mysqli_error($c));
+		        header("location: viewvehicles.php");
+		        exit();
+		    }
+
+		    $instance = mysqli_num_rows($ps5);
+
+		    if($instance != 0)
+		    {
+				if(!empty($label))
+				{
+					$query3 = "DELETE FROM vehicles WHERE registration = '$label' AND email = '$heading'";
+					$ps3 = mysqli_query($c, $query3);
+
+					if(!$ps3)
+				    {
+				        die("Failed to delete data:" . mysqli_error($c));
+				        header("location: deletevehicles.php");
+				        exit();
+				    }
+				    else
+				    {
+				    	header("location: vehicles.php");
+				        exit();
+				    }
+				}
+				else
+				{
+					header("location: deletevehicles.php");
+				    exit();
+				}
 			}
 			else
 			{
-				header("location: deletevehicles.php");
-			    exit();
+				$missing = "*Vehicle Not Found";
 			}
 		}
 	}
@@ -174,6 +195,9 @@
 					<div class="form-group">
 				    <label>Vehicle Registration:</label>
 				    <input type="text" class="form-control" name = "label" id = "modify">
+					<div class = "text-danger">
+						<?php echo $missing; ?>
+					</div>
 				  </div>
 				<button type="submit" class="btn btn-dark" name = "submit">Delete</button>
 			</form>

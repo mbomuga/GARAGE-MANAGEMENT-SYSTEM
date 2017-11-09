@@ -51,6 +51,7 @@
 
     $futile = "";
     $fiction = "";
+    $complete = "";
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
@@ -112,7 +113,7 @@
 								if(!$ps7)
 							    {
 							        die("Failed to retrieve data:" . mysqli_error($c));
-							        header("location: userinsert.php");
+							        header("location: payment.php");
 							        exit();
 							    }
 							    
@@ -134,7 +135,7 @@
 								if(!$ps8)
 							    {
 							        die("Failed to retrieve data:" . mysqli_error($c));
-							        header("location: insertnotifications.php");
+							        header("location: payment.php");
 							        exit();
 							    }
 							    
@@ -144,7 +145,6 @@
 							    {
 							    	while ($rs7 = mysqli_fetch_assoc($ps8))
 							    	{
-								    	$reference = $rs7['serialno'];
 								    	$directory = $rs7['first'];
 								    	$surname = $rs7['last'];
 								    	$beacon = $rs7['email'];
@@ -153,30 +153,26 @@
 								    	$designate = $directory . " " . $surname;
 								    }
 
-									$query8 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','New Vehicle', 'vehicle', 'high', '$designate', '$contact' ,'$beacon')";
+									$query8 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','New Vehicle', 'payment', 'high', '$designate', '$contact' ,'$beacon')";
 											
 									$ps9 = mysqli_query($c, $query8);
 
 									if(!$ps9)
 									{
 										die("Failed to insert data:" . mysqli_error($c));
-										header("location: userinsert.php");
+										header("location: payment.php");
 										exit();
 									}
-
-									header("location: vehicles.php");
-							    	exit();
 							    }
 			    			}
 			    			else
 			    			{
-			    				$futile = "Transaction Failed";
+			    				$futile = "*Transaction Failed";
 			    			}
 			    		}
 			    		else
 			    		{
-			    			header("location: history.php");
-							exit();
+			    			$complete = "*No Outstanding Balance";
 			    		}
 			    	}
 			    }
@@ -286,9 +282,12 @@
 					<div class="form-group">
 				    <label>Reference No:</label>
 				    <input type="text" class="form-control" name = "scenario" id = "modify">
-					<?php echo $futile; ?>
-					<?php echo $fiction; ?>
-					<br>
+					<div class = "text-danger">
+						<?php echo $futile; ?>
+						<?php echo $fiction; ?>
+						<?php echo $complete; ?>
+					</div>
+					</div>
 				  <button type="submit" class="btn btn-warning" name = "submit">
 					<img src = "paypal icon.png" alt = "paypal icon" id = "scale" class = "rounded">
 					Transact

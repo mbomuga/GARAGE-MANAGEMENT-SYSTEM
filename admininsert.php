@@ -46,6 +46,7 @@
     }
 
     $fiction = "";
+    $present = "";
 
      if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
@@ -58,107 +59,125 @@
 		{
 			if (!empty($label) && !empty($type) && !empty($duration) && !empty($direction))
 			{
-				$query6 =  "SELECT * FROM accounts WHERE email = '$direction'";
-			   	$ps7 = mysqli_query($c, $query6);
+				$query9 = "SELECT * FROM vehicles WHERE registration = '$label'";
 
-			    if(!$ps7)
+				$ps10 = mysqli_query($c, $query9);
+				if(!$ps10)
 			    {
 			        die("Failed to retrieve data:" . mysqli_error($c));
-			        header("location: login.php");
+			        header("location: viewvehicles.php");
 			        exit();
 			    }
 
-			    $reading = mysqli_num_rows($ps7);
+			    $instance = mysqli_num_rows($ps10);
 
-			    if($reading>0)
+			    if($instance == 0)
 			    {
-			    	while ($rs6 = mysqli_fetch_assoc($ps7))
-			    	{
-			    		$reference = $rs6['serialno'];
-				    	$directory = $rs6['first'];
-				    	$surname = $rs6['last'];
-				    	$contact = $rs6['phone'];
+					$query6 =  "SELECT * FROM accounts WHERE email = '$direction'";
+				   	$ps7 = mysqli_query($c, $query6);
 
-				    	$designate = $directory . " " . $surname;
+				    if(!$ps7)
+				    {
+				        die("Failed to retrieve data:" . mysqli_error($c));
+				        header("location: login.php");
+				        exit();
+				    }
 
-				    	$query5 = "INSERT INTO `vehicles`(`registration`, `model`, `year`, `username`, `phone`, `email`) VALUES ('$label','$type','$duration', '$designate', '$contact', '$direction')";
-						$ps6 = mysqli_query($c, $query5);
+				    $reading = mysqli_num_rows($ps7);
 
-						if(!$ps6)
-					    {
-					        die("Failed to insert data:" . mysqli_error($c));
-					        header("location: insertvehicles.php");
-					        exit();
-					    }
-						else
-						{
-							$query6 = "SELECT * FROM notifications";
+				    if($reading>0)
+				    {
+				    	while ($rs6 = mysqli_fetch_assoc($ps7))
+				    	{
+				    		$reference = $rs6['serialno'];
+					    	$directory = $rs6['first'];
+					    	$surname = $rs6['last'];
+					    	$contact = $rs6['phone'];
 
-							$ps7 = mysqli_query($c, $query6);
-							if(!$ps7)
+					    	$designate = $directory . " " . $surname;
+
+					    	$query5 = "INSERT INTO `vehicles`(`registration`, `model`, `year`, `username`, `phone`, `email`) VALUES ('$label','$type','$duration', '$designate', '$contact', '$direction')";
+							$ps6 = mysqli_query($c, $query5);
+
+							if(!$ps6)
 						    {
-						        die("Failed to retrieve data:" . mysqli_error($c));
-						        header("location: userinsert.php");
+						        die("Failed to insert data:" . mysqli_error($c));
+						        header("location: insertvehicles.php");
 						        exit();
 						    }
-						    $iteration = mysqli_num_rows($ps7);
+							else
+							{
+								$query6 = "SELECT * FROM notifications";
 
-						    if($iteration == 0)
-						    {
-						    	$source = 1;
-						    }
-						    else
-						    {
-						    	$source = $iteration + 1;
-						    }
+								$ps7 = mysqli_query($c, $query6);
+								if(!$ps7)
+							    {
+							        die("Failed to retrieve data:" . mysqli_error($c));
+							        header("location: userinsert.php");
+							        exit();
+							    }
+							    $iteration = mysqli_num_rows($ps7);
 
-						    $query7  = "SELECT * FROM accounts WHERE email = '$direction'";
-
-							$ps8 = mysqli_query($c, $query7);
-
-							if(!$ps8)
-						    {
-						        die("Failed to retrieve data:" . mysqli_error($c));
-						        header("location: insertnotifications.php");
-						        exit();
-						    }
-						    
-						    $reading = mysqli_num_rows($ps8);
-
-						    if($reading != 0)
-						    {
-						    	while ($rs7 = mysqli_fetch_assoc($ps8))
-						    	{
-							    	$reference = $rs7['serialno'];
-							    	$directory = $rs7['first'];
-							    	$surname = $rs7['last'];
-							    	$beacon = $rs7['email'];
-							    	$contact = $rs7['phone'];
-
-							    	$designate = $directory . " " . $surname;
+							    if($iteration == 0)
+							    {
+							    	$source = 1;
+							    }
+							    else
+							    {
+							    	$source = $iteration + 1;
 							    }
 
-								$query7 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','New Vehicle', 'vehicle', 'high', '$designate', '$contact' ,'$beacon')";
-										
+							    $query7  = "SELECT * FROM accounts WHERE email = '$direction'";
+
 								$ps8 = mysqli_query($c, $query7);
 
 								if(!$ps8)
-								{
-									die("Failed to insert data:" . mysqli_error($c));
-									header("location: userinsert.php");
-									exit();
-								}
+							    {
+							        die("Failed to retrieve data:" . mysqli_error($c));
+							        header("location: insertnotifications.php");
+							        exit();
+							    }
+							    
+							    $reading = mysqli_num_rows($ps8);
 
-								header("location: vehicles.php");
-						    	exit();
-						    }
-						}
+							    if($reading != 0)
+							    {
+							    	while ($rs7 = mysqli_fetch_assoc($ps8))
+							    	{
+								    	$directory = $rs7['first'];
+								    	$surname = $rs7['last'];
+								    	$beacon = $rs7['email'];
+								    	$contact = $rs7['phone'];
+
+								    	$designate = $directory . " " . $surname;
+								    }
+
+									$query7 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','New Vehicle', 'vehicle', 'high', '$designate', '$contact' ,'$beacon')";
+											
+									$ps8 = mysqli_query($c, $query7);
+
+									if(!$ps8)
+									{
+										die("Failed to insert data:" . mysqli_error($c));
+										header("location: userinsert.php");
+										exit();
+									}
+
+									header("location: vehicles.php");
+							    	exit();
+							    }
+							}
+					    }
 				    }
-			    }
-			    else
-			    {
-			    	$fiction = "*User Does Not Exist";
-			    }					
+				    else
+				    {
+				    	$fiction = "*User Does Not Exist";
+				    }
+				}
+				else
+				{
+					$present = "*Vehicle Already Available";
+				}
 			}
 			else
 			{
@@ -272,6 +291,7 @@
 						<div class="form-group">
 					    <label>Registration:</label>
 					    <input type="text" class="form-control" name = "label" id = "modify">
+						<?php echo $present; ?>
 					  </div>
 					  <div class="form-group">
 					    <label>Model:</label>

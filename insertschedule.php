@@ -122,7 +122,7 @@
 				    }
 				    else
 				    {
-				    	$query8 = "SELECT * FROM schedule WHERE (status = 'pending' AND status = 'approved') AND email = '$heading'";
+				    	$query8 = "SELECT * FROM schedule WHERE (status = 'pending' OR status = 'approved') AND email = '$heading'";
 
 						$ps9 = mysqli_query($c, $query8);
 						if(!$ps9)
@@ -166,6 +166,63 @@
 						    }
 						    else
 						    {
+						    	$query9 = "SELECT * FROM notifications";
+
+								$ps10 = mysqli_query($c, $query9);
+								if(!$ps10)
+							    {
+							        die("Failed to retrieve data:" . mysqli_error($c));
+							        header("location: userinsert.php");
+							        exit();
+							    }
+							    $iteration = mysqli_num_rows($ps10);
+
+							    if($iteration == 0)
+							    {
+							    	$source = 1;
+							    }
+							    else
+							    {
+							    	$source = $iteration + 1;
+							    }
+
+							    $query10  = "SELECT * FROM accounts WHERE email = '$heading'";
+
+								$ps11 = mysqli_query($c, $query10);
+
+								if(!$ps11)
+							    {
+							        die("Failed to retrieve data:" . mysqli_error($c));
+							        header("location: insertnotifications.php");
+							        exit();
+							    }
+							    
+							    $reading = mysqli_num_rows($ps11);
+
+							    if($reading != 0)
+							    {
+							    	while ($rs10 = mysqli_fetch_assoc($ps11))
+							    	{
+								    	$directory = $rs10['first'];
+								    	$surname = $rs10['last'];
+								    	$beacon = $rs10['email'];
+								    	$contact = $rs10['phone'];
+
+								    	$designate = $directory . " " . $surname;
+								    }
+
+									$query11 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','New Appointment Request', 'schedule', 'high', '$designate', '$contact' ,'$beacon')";
+											
+									$ps12 = mysqli_query($c, $query11);
+
+									if(!$ps12)
+									{
+										die("Failed to insert data:" . mysqli_error($c));
+										header("location: userinsert.php");
+										exit();
+									}
+								}
+
 						    	header("location: schedule.php");
 						    	exit();
 						    }
@@ -298,9 +355,11 @@
 					  <div class="form-group">
 					    <label>Time:</label>
 					    <input type="time" class="form-control" name = "lapse" id = "modify">
-						<?php echo $reservation; ?>
-						<?php echo $present; ?>
-						<?php echo $disconnect; ?>
+						<div class = "text-danger">
+							<?php echo $reservation; ?>
+							<?php echo $present; ?>
+							<?php echo $disconnect; ?>
+						</div>
 					  </div>
 				  	<button type="submit" class="btn btn-dark" name = "submit">Add</button>
 					</form>
