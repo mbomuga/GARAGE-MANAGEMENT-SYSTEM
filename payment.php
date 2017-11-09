@@ -128,7 +128,7 @@
 							    	$source = $iteration + 1;
 							    }
 
-							    $query7  = "SELECT * FROM accounts WHERE email = '$heading'";
+							    $query7  = "SELECT * FROM accounts WHERE usertype = 'manager'";
 
 								$ps8 = mysqli_query($c, $query7);
 
@@ -153,7 +153,7 @@
 								    	$designate = $directory . " " . $surname;
 								    }
 
-									$query8 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','New Vehicle', 'payment', 'high', '$designate', '$contact' ,'$beacon')";
+									$query8 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','New Payment', 'payment', 'high', '$designate', '$contact' ,'$beacon')";
 											
 									$ps9 = mysqli_query($c, $query8);
 
