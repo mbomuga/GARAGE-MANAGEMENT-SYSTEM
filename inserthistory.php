@@ -174,12 +174,12 @@
 						}
 						else
 						{
-							$negative = "Vehicle Unavailable";
+							$negative = "*Vehicle Unavailable";
 						}
 				    }
 				    else
 				    {
-				    	$inventory = "User does not Exist";
+				    	$inventory = "*User does not Exist";
 				    }			
 				}
 				else

@@ -138,10 +138,10 @@
 								header("location: userinsert.php");
 								exit();
 							}
-
-							header("location: vehicles.php");
-					    	exit();
 					    }
+
+					    header("location: vehicles.php");
+					    exit();
 					}	
 				}
 				else
@@ -261,7 +261,9 @@
 						<div class="form-group">
 					    <label>Registration:</label>
 					    <input type="text" class="form-control" name = "label" id = "modify">
+						<div class = "text-danger">
 						<?php echo $present; ?>
+						</div>
 					  </div>
 					  <div class="form-group">
 					    <label>Model:</label>

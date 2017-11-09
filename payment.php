@@ -103,66 +103,66 @@
 							    }
 							    else
 							    {
-							    	header("location: history.php");
-							    	exit();
-							    }
+							    	$query6 = "SELECT * FROM notifications";
 
-							    $query6 = "SELECT * FROM notifications";
+									$ps7 = mysqli_query($c, $query6);
+									if(!$ps7)
+								    {
+								        die("Failed to retrieve data:" . mysqli_error($c));
+								        header("location: payment.php");
+								        exit();
+								    }
+								    
+								    $iteration = mysqli_num_rows($ps7);
 
-								$ps7 = mysqli_query($c, $query6);
-								if(!$ps7)
-							    {
-							        die("Failed to retrieve data:" . mysqli_error($c));
-							        header("location: payment.php");
-							        exit();
-							    }
-							    
-							    $iteration = mysqli_num_rows($ps7);
-
-							    if($iteration == 0)
-							    {
-							    	$source = 1;
-							    }
-							    else
-							    {
-							    	$source = $iteration + 1;
-							    }
-
-							    $query7  = "SELECT * FROM accounts WHERE usertype = 'manager'";
-
-								$ps8 = mysqli_query($c, $query7);
-
-								if(!$ps8)
-							    {
-							        die("Failed to retrieve data:" . mysqli_error($c));
-							        header("location: payment.php");
-							        exit();
-							    }
-							    
-							    $reading = mysqli_num_rows($ps8);
-
-							    if($reading != 0)
-							    {
-							    	while ($rs7 = mysqli_fetch_assoc($ps8))
-							    	{
-								    	$directory = $rs7['first'];
-								    	$surname = $rs7['last'];
-								    	$beacon = $rs7['email'];
-								    	$contact = $rs7['phone'];
-
-								    	$designate = $directory . " " . $surname;
+								    if($iteration == 0)
+								    {
+								    	$source = 1;
+								    }
+								    else
+								    {
+								    	$source = $iteration + 1;
 								    }
 
-									$query8 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','New Payment', 'payment', 'high', '$designate', '$contact' ,'$beacon')";
-											
-									$ps9 = mysqli_query($c, $query8);
+								    $query7  = "SELECT * FROM accounts WHERE usertype = 'manager'";
 
-									if(!$ps9)
-									{
-										die("Failed to insert data:" . mysqli_error($c));
-										header("location: payment.php");
-										exit();
-									}
+									$ps8 = mysqli_query($c, $query7);
+
+									if(!$ps8)
+								    {
+								        die("Failed to retrieve data:" . mysqli_error($c));
+								        header("location: payment.php");
+								        exit();
+								    }
+								    
+								    $reading = mysqli_num_rows($ps8);
+
+								    if($reading != 0)
+								    {
+								    	while ($rs7 = mysqli_fetch_assoc($ps8))
+								    	{
+									    	$directory = $rs7['first'];
+									    	$surname = $rs7['last'];
+									    	$beacon = $rs7['email'];
+									    	$contact = $rs7['phone'];
+
+									    	$designate = $directory . " " . $surname;
+									    }
+
+										$query8 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','New Payment', 'payment', 'high', '$designate', '$contact' ,'$beacon')";
+												
+										$ps9 = mysqli_query($c, $query8);
+
+										if(!$ps9)
+										{
+											die("Failed to insert data:" . mysqli_error($c));
+											header("location: payment.php");
+											exit();
+										}
+								    }
+
+							    	header("location: history.php");
+							    	exit();
 							    }
 			    			}
 			    			else
@@ -178,7 +178,7 @@
 			    }
 			    else
 			    {
-			    	$fiction = "Entry Unavailable";
+			    	$fiction = "*Entry Unavailable";
 			    }
 			}
 			else

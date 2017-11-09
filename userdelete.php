@@ -74,8 +74,65 @@
 				    }
 				    else
 				    {
-				    	header("location: vehicles.php");
-				        exit();
+				    	$query6 = "SELECT * FROM notifications";
+
+						$ps6 = mysqli_query($c, $query6);
+						if(!$ps6)
+					    {
+					        die("Failed to retrieve data:" . mysqli_error($c));
+					        header("location: userinsert.php");
+					        exit();
+					    }
+					    $iteration = mysqli_num_rows($ps6);
+
+					    if($iteration == 0)
+					    {
+					    	$source = 1;
+					    }
+					    else
+					    {
+					    	$source = $iteration + 1;
+					    }
+
+					    $query7  = "SELECT * FROM accounts WHERE usertype = 'manager'";
+
+						$ps7 = mysqli_query($c, $query7);
+
+						if(!$ps7)
+					    {
+					        die("Failed to retrieve data:" . mysqli_error($c));
+					        header("location: insertnotifications.php");
+					        exit();
+					    }
+					    
+					    $reading = mysqli_num_rows($ps7);
+
+					    if($reading != 0)
+					    {
+					    	while ($rs7 = mysqli_fetch_assoc($ps7))
+					    	{
+						    	$directory = $rs7['first'];
+						    	$surname = $rs7['last'];
+						    	$beacon = $rs7['email'];
+						    	$contact = $rs7['phone'];
+
+						    	$designate = $directory . " " . $surname;
+						    }
+
+							$query8 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','Vehicle Deleted', 'vehicle', 'high', '$designate', '$contact' ,'$beacon')";
+									
+							$ps8 = mysqli_query($c, $query8);
+
+							if(!$ps8)
+							{
+								die("Failed to insert data:" . mysqli_error($c));
+								header("location: userinsert.php");
+								exit();
+							}
+
+							header("location: vehicles.php");
+				        	exit();
+						}				    	
 				    }
 				}
 				else
