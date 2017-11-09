@@ -42,6 +42,7 @@ $server = "localhost";
 	   {
         $group = mysqli_real_escape_string($c, $_POST['updatetype']);
         $alter = mysqli_real_escape_string($c, $_POST['updatevalue']);
+        $prefix = mysqli_real_escape_string($c, $_POST['prefix']);
 
         if (isset($_POST['submit']))
         {
@@ -422,11 +423,11 @@ $server = "localhost";
                       exit();
                   }
 
-                  $reading27 = mysqli_num_rows($ps27);
+                  $reading26 = mysqli_num_rows($ps26);
 
-                  if ($reading27>0)
+                  if ($reading26>0)
                   {
-                    while ($rs27 = mysqli_fetch_assoc($ps27))
+                    while ($rs26 = mysqli_fetch_assoc($ps26))
                     {
                       $query27 = "UPDATE notifications SET email = '$alter' WHERE email = '$heading'";
                       $ps27 = mysqli_query($c, $query27);
@@ -507,7 +508,9 @@ $server = "localhost";
             {
               if($authority != "manager" && $authority != "owner")
               {
-                $query5 = "UPDATE accounts SET phone = '$alter' WHERE email = '$heading'";
+                $call = $prefix . $alter;
+
+                $query5 = "UPDATE accounts SET phone = '$call' WHERE email = '$heading'";
                 $ps5 = mysqli_query($c, $query5);
 
                 if(!$ps5)
@@ -533,9 +536,9 @@ $server = "localhost";
 
                   if ($reading32>0)
                   {
-                    while ($rs32 = mysqli_fetch_assoc($ps34))
+                    while ($rs32 = mysqli_fetch_assoc($ps32))
                     {
-                      $query33 = "UPDATE vehicles SET phone = '$alter' WHERE email = '$heading'";
+                      $query33 = "UPDATE vehicles SET phone = '$call' WHERE email = '$heading'";
                       $ps33 = mysqli_query($c, $query33);
 
                       if(!$ps33)
@@ -564,7 +567,7 @@ $server = "localhost";
                   {
                     while ($rs34 = mysqli_fetch_assoc($ps34))
                     {
-                      $query35 = "UPDATE notifications SET phone = '$alter' WHERE email = '$heading'";
+                      $query35 = "UPDATE notifications SET phone = '$call' WHERE email = '$heading'";
                       $ps35 = mysqli_query($c, $query35);
 
                       if(!$ps35)
@@ -587,13 +590,13 @@ $server = "localhost";
                       exit();
                   }
 
-                  $reading36 = mysqli_num_rows($ps36);
+                  $reading35 = mysqli_num_rows($ps35);
 
-                  if ($reading36>0)
+                  if ($reading35>0)
                   {
-                    while ($rs36 = mysqli_fetch_assoc($ps36))
+                    while ($rs35 = mysqli_fetch_assoc($ps35))
                     {
-                      $query36 = "UPDATE schedule SET phone = '$alter' WHERE email = '$heading'";
+                      $query36 = "UPDATE schedule SET phone = '$call' WHERE email = '$heading'";
                       $ps36 = mysqli_query($c, $query36);
 
                       if(!$ps36)
@@ -622,7 +625,7 @@ $server = "localhost";
                   {
                     while ($rs37 = mysqli_fetch_assoc($ps37))
                     {
-                      $query38 = "UPDATE history SET phone = '$alter' WHERE email = '$heading'";
+                      $query38 = "UPDATE history SET phone = '$call' WHERE email = '$heading'";
                       $ps38 = mysqli_query($c, $query38);
 
                       if(!$ps38)
@@ -642,7 +645,7 @@ $server = "localhost";
           }
           else
           {
-            header("location:editprofile.php");
+            header("location:updateprofile.php");
             exit();
           }
         }
@@ -757,6 +760,16 @@ $server = "localhost";
               <option value = "phone">Phone</option>
             </select>
             </div>
+            <div class="form-group">
+            <label>Mobile Prefix:</label>
+              <select name = "prefix" id = "modify" class = "form-control">
+              <option value = "+254">+254</option>
+              <option value = "+255">+255</option>
+              <option value = "+256">+256</option>
+              <option value = "+1">+1</option>
+              <option value = "+44">+44</option>
+            </select>
+            </div>
             <div class="form-group">
             <label>Update Value:</label>
               <input type="text" class="form-control" id = "modify" name = "updatevalue">

@@ -57,7 +57,7 @@
             if(!$ps2 || !$ps3)
             {
                 die("Failed to update data:" . mysqli_error($c));
-                header("location: editpassword.php");
+                header("location: updatepassword.php");
                 exit();
             }
             else

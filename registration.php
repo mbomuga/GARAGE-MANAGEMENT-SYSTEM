@@ -145,9 +145,9 @@
 						  <select name = "prefix" id = "dimensions" class = "form-control">
 							<option value = "+254">+254</option>
 							<option value = "+255">+255</option>
-							<option value = "+254">+256</option>
-							<option value = "+254">+1</option>
-							<option value = "+254">+44</option>
+							<option value = "+256">+256</option>
+							<option value = "+1">+1</option>
+							<option value = "+44">+44</option>
 						</select>
 						</div>
 						<div class="form-group">

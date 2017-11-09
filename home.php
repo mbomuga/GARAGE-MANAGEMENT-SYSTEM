@@ -68,7 +68,7 @@
 				    <?php 
 						if(!isset($_SESSION['name']) && !isset($_SESSION['email']) && !isset($_SESSION['conduct']) && !isset($_SESSION['line']))
 						{
-							echo "<div class = 'dropdown-menu'><a class = 'dropdown-item' href = 'login.php'><img src = 'unlock.png' alt = 'unlock' id = 'scale' class = 'rounded'>Login</a><a class = 'dropdown-item' href = 'registration.php'><img src = 'registration.jpg' alt = 'register' id = 'scale' class = 'rounded'>Register</a></div>";
+							echo "<div class = 'dropdown-menu'><a class = 'dropdown-item' href = 'login.php'><img src = 'unlock.png' alt = 'unlock' id = 'scale' class = 'rounded'>Login</a><a class = 'dropdown-item' href = 'registration.php'><img src = 'registration.jpg' alt = 'register' id = 'scale' class = 'rounded'>Sign Up</a></div>";
 						}
 						else
 						{

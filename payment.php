@@ -115,6 +115,7 @@
 							        header("location: userinsert.php");
 							        exit();
 							    }
+							    
 							    $iteration = mysqli_num_rows($ps7);
 
 							    if($iteration == 0)
@@ -126,7 +127,7 @@
 							    	$source = $iteration + 1;
 							    }
 
-							    $query7  = "SELECT * FROM accounts WHERE usertype = 'manager'";
+							    $query7  = "SELECT * FROM accounts WHERE email = '$heading'";
 
 								$ps8 = mysqli_query($c, $query7);
 
