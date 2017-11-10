@@ -29,7 +29,6 @@
 			    }
 
 			    $reading2 = mysqli_num_rows($ps3);
-
 			}
 		}
 	 }

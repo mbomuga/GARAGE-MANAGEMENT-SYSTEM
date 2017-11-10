@@ -80,6 +80,25 @@
 			    	$index = $recording + 1;
 			    }
 
+			    $query12 = "SELECT * FROM notifications WHERE serialno = '$source'";
+
+				$ps13 = mysqli_query($c, $query12);
+				if(!$ps13)
+			    {
+			        die("Failed to retrieve data:" . mysqli_error($c));
+			        header("location: userinsert.php");
+			        exit();
+			    }
+			    $valid = mysqli_num_rows($ps13);
+
+			    if($valid != 0)
+			    {
+			    	while ($rs13 = mysqli_fetch_assoc($ps13))
+			    	{
+			    		$source = $rs13['serialno'] + 1;
+			    	}
+			    }
+
 				$query6  = "SELECT * FROM accounts WHERE email = '$direction'";
 
 				$ps7 = mysqli_query($c, $query6);

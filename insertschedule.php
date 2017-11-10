@@ -48,6 +48,7 @@
     $reservation = "";
     $present = "";
     $disconnect = "";
+    $deficit = "";
 
      if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
@@ -155,6 +156,25 @@
 						    	$index = $recording + 1;
 						    }
 
+						    $query13 = "SELECT * FROM schedule WHERE serialno = '$index'";
+
+							$ps14 = mysqli_query($c, $query13);
+							if(!$ps14)
+						    {
+						        die("Failed to retrieve data:" . mysqli_error($c));
+						        header("location: schedule.php");
+						        exit();
+						    }
+						    $precise = mysqli_num_rows($ps14);
+
+						    if ($precise != 0)
+						    {
+						    	while ($rs13 = mysqli_fetch_assoc($ps14))
+						    	{
+						    		$index = $rs13['serialno'] + 1;
+						    	}
+						    }
+
 							$query5 = "INSERT INTO `schedule`(`serialno`,`period`, `lapse`, `status`, `username`, `phone`, `email`) VALUES ('$index','$period','$lapse','$progress','$identity', '$line','$heading')";
 							$ps6 = mysqli_query($c, $query5);
 
@@ -184,6 +204,25 @@
 							    else
 							    {
 							    	$source = $iteration + 1;
+							    }
+
+							    $query12 = "SELECT * FROM notifications WHERE serialno = '$source'";
+
+								$ps13 = mysqli_query($c, $query12);
+								if(!$ps13)
+							    {
+							        die("Failed to retrieve data:" . mysqli_error($c));
+							        header("location: userinsert.php");
+							        exit();
+							    }
+							    $valid = mysqli_num_rows($ps13);
+
+							    if($valid != 0)
+							    {
+							    	while ($rs12 = mysqli_fetch_assoc($ps13))
+							    	{
+							    		$source = $rs12['serialno'] + 1;
+							    	}
 							    }
 
 							    $query10  = "SELECT * FROM accounts WHERE email = '$heading'";
@@ -235,8 +274,7 @@
 				}
 				else
 				{
-					header("location: payment.php");
-			    	exit();
+					$deficit = "*Clear Outstanding Balance";
 				}
 			}
 			else
@@ -359,6 +397,7 @@
 							<?php echo $reservation; ?>
 							<?php echo $present; ?>
 							<?php echo $disconnect; ?>
+							<?php echo $deficit; ?>
 						</div>
 					  </div>
 				  	<button type="submit" class="btn btn-dark" name = "submit">Add</button>

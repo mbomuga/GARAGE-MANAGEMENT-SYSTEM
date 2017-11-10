@@ -141,11 +141,11 @@
 					    	$designate = $directory . " " . $surname;
 					    }
 
-					    $query7 = "SELECT * FROM vehicles WHERE registration = '$label'";
+					    $query8 = "SELECT * FROM vehicles WHERE registration = '$label'";
 
-					    $ps8 = mysqli_query($c, $query7);
+					    $ps9 = mysqli_query($c, $query9);
 
-					    if(!$ps8)
+					    if(!$ps9)
 					    {
 					        die("Failed to retrieve data:" . mysqli_error($c));
 					        header("location: inserthistory.php");
@@ -168,6 +168,82 @@
 						    }
 						    else
 						    {
+						    	$query9 = "SELECT * FROM notifications";
+
+								$ps10 = mysqli_query($c, $query9);
+								if(!$ps10)
+							    {
+							        die("Failed to retrieve data:" . mysqli_error($c));
+							        header("location: userinsert.php");
+							        exit();
+							    }
+							    $iteration = mysqli_num_rows($ps10);
+
+							    if($iteration == 0)
+							    {
+							    	$source = 1;
+							    }
+							    else
+							    {
+							    	$source = $iteration + 1;
+							    }
+
+							    $query10 = "SELECT * FROM notifications WHERE serialno = '$source'";
+
+								$ps11 = mysqli_query($c, $query10);
+								if(!$ps11)
+							    {
+							        die("Failed to retrieve data:" . mysqli_error($c));
+							        header("location: userinsert.php");
+							        exit();
+							    }
+							    $valid = mysqli_num_rows($ps11);
+
+							    if($valid != 0)
+							    {
+							    	while ($rs11 = mysqli_fetch_assoc($ps11))
+							    	{
+							    		$source = $rs11['serialno'] + 1;
+							    	}
+							    }
+
+							    $query11  = "SELECT * FROM accounts WHERE email = '$direction'";
+
+								$ps12 = mysqli_query($c, $query11);
+
+								if(!$ps12)
+							    {
+							        die("Failed to retrieve data:" . mysqli_error($c));
+							        header("location: insertnotifications.php");
+							        exit();
+							    }
+							    
+							    $reading = mysqli_num_rows($ps12);
+
+							    if($reading != 0)
+							    {
+							    	while ($rs11 = mysqli_fetch_assoc($ps12))
+							    	{
+								    	$directory = $rs11['first'];
+								    	$surname = $rs11['last'];
+								    	$beacon = $rs11['email'];
+								    	$contact = $rs11['phone'];
+
+								    	$designate = $directory . " " . $surname;
+								    }
+
+									$query12 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','New Entry', 'payment', 'high', '$designate', '$contact' ,'$beacon')";
+											
+									$ps13 = mysqli_query($c, $query12);
+
+									if(!$ps13)
+									{
+										die("Failed to insert data:" . mysqli_error($c));
+										header("location: userinsert.php");
+										exit();
+									}
+							    }
+
 						    	header("location: history.php");
 						    	exit();
 						    }

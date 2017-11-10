@@ -103,6 +103,34 @@
 							    }
 							    else
 							    {
+							    	$query10 = "SELECT * FROM notifications WHERE category = 'payment' AND (email = '$heading' AND (reminder = 'New Entry' OR reminder = 'New Balance'))";
+
+									$ps11 = mysqli_query($c, $query10);
+									if(!$ps11)
+								    {
+								        die("Failed to retrieve data:" . mysqli_error($c));
+								        header("location: userinsert.php");
+								        exit();
+								    }
+								    $lead = mysqli_num_rows($ps10);
+
+								    if($lead != 0)
+								    {
+								    	while ($rs10 = mysqli_fetch_assoc($ps11))
+								    	{
+								    		$query11 = "DELETE FROM notifications WHERE reminder = '$report' AND email = '$direction'";
+
+											$ps12 = mysqli_query($c, $query11);
+
+											if(!$ps12)
+										    {
+										        die("Failed to delete data:" . mysqli_error($c));
+										        header("location: deletenotifications.php");
+										        exit();
+										    }
+								    	}
+								    }
+
 							    	$query6 = "SELECT * FROM notifications";
 
 									$ps7 = mysqli_query($c, $query6);
@@ -122,6 +150,25 @@
 								    else
 								    {
 								    	$source = $iteration + 1;
+								    }
+
+								    $query9 = "SELECT * FROM notifications WHERE serialno = '$source'";
+
+									$ps10 = mysqli_query($c, $query9);
+									if(!$ps10)
+								    {
+								        die("Failed to retrieve data:" . mysqli_error($c));
+								        header("location: userinsert.php");
+								        exit();
+								    }
+								    $valid = mysqli_num_rows($ps10);
+
+								    if($valid != 0)
+								    {
+								    	while ($rs9 = mysqli_fetch_assoc($ps10))
+								    	{
+								    		$source = $rs9['serialno'] + 1;
+								    	}
 								    }
 
 								    $query7  = "SELECT * FROM accounts WHERE usertype = 'manager'";
