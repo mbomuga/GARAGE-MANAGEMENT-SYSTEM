@@ -103,7 +103,7 @@
 								{
 									$nature = $rs6['category'];
 
-									if($nature != "payment" && $nature != "vehicle" && $nature != "schedule")
+									if($nature != "payment" && $nature != "vehicle" && $nature != "schedule" && $nature != "account")
 									{
 										if($group == "report")
 										{

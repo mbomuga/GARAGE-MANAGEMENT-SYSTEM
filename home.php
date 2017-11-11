@@ -142,30 +142,134 @@
 			</center>
 		</div>
 		<div>
-			<h1><strong>Welcome to GMS</strong></h1>
+			<center>
+				<h1><strong>Welcome to GMS</strong></h1>
+			</center>
+		</div>
+		<div id="demo" class="carousel slide" data-ride="carousel">
+		  <ul class="carousel-indicators">
+		    <li data-target="#demo" data-slide-to="0" class="active"></li>
+		    <li data-target="#demo" data-slide-to="1"></li>
+		    <li data-target="#demo" data-slide-to="2"></li>
+			<li data-target="#demo" data-slide-to="3"></li>
+			<li data-target="#demo" data-slide-to="4"></li>
+			<li data-target="#demo" data-slide-to="5"></li>
+		  </ul>
+		  <div class="carousel-inner">
+		    <div class="carousel-item active">
+			<center>
+				<a href = "userprofile.php" target = "_self">
+			      <img src="personal details.png" alt="personal details" id = "extend">
+					<div class="carousel-caption">
+						<div class="text-dark">
+						    <h1>Profile</h1>
+						</div>
+				  </div>
+				</a>
+			</center>
+		    </div>
+		    <div class="carousel-item">
+				<center>
+			      <img src="vehicle photo.jpg" alt="vehicle photo" id = "extend">
+					<div class="carousel-caption">
+						<div class="text-dark">
+					    	<h1>Vehicles</h1>
+						</div>
+				  	</div>
+				</center>
+		    </div>
+			<div class="carousel-item">
+				<center>
+					<a href = "notifications.php" target = "_self">
+				      <img src="notification photo.png" alt="notification photo" id = "extend">
+						<div class="carousel-caption">
+							<div class="text-dark">
+							    <h1>Notifications</h1>
+							</div>
+					  </div>
+					</a>
+				</center>
+		    </div>
+			<div class="carousel-item">
+				<center>
+					<a href = "schedule.php" target = "_self">
+				      <img src="schedule photo.jpg" alt="schedule photo" id = "extend">
+						<div class="carousel-caption">
+							<div class="text-dark">
+							    <h1>Schedule</h1>
+							</div>
+					  </div>
+					</a>
+				</center>
+		    </div>
+			<div class="carousel-item">
+				<center>
+					<a href = "payment.php" target = "_self">
+				      <img src="payment photo.jpg" alt="Chicago" id = "extend">
+						<div class="carousel-caption">
+							<div class="text-dark">
+							    <h1>Payment</h1>
+							</div>
+					  </div>
+					</a>
+				</center>
+		    </div>
+			<div class="carousel-item">
+				<center>
+					<a href = "history.php" target = "_self">
+				      <img src="history photo.jpg" alt="history photo" id = "extend">
+						<div class="carousel-caption">
+							<div class="text-dark">
+						    	<h1>Service History</h1>
+							</div>
+					  </div>
+					</a>
+				</center>
+		    </div>
+		  </div>
+		  <a class="carousel-control-prev" href="#demo" data-slide="prev">
+		    <span class="carousel-control-prev-icon"></span>
+		  </a>
+		  <a class="carousel-control-next" href="#demo" data-slide="next">
+		    <span class="carousel-control-next-icon"></span>
+		  </a>
 		</div>
 		<div>
 			<center>
 				<fieldset>
-					<table class = "table" id = "primary">
-						<tr>
-							<td id = "misc">
-							<center>
-								<a href = "vehicles.php" target = "_self">
-									<img src = "vehicle icon.png" alt = "vehicle" id = "scale" class = "rounded">
-									Vehicles
-								</a>
-							</center>
-							</td>
-							<td id = "misc">
-								<center>
-									<a href = "userprofile.php" target = "_self">
-										<img src = "details.png" alt = "profile" id = "scale" class = "rounded">
-										Profile
-									</a>
-								</center>
-							</td>
-							<td id = "misc">
+						<table id = "primary">
+							<tr>
+								<td id = "lounge">
+									<center>
+										<a href = "userprofile.php" target = "_self">
+											<img src = "details.png" alt = "profile" id = "scale" class = "rounded">
+											Profile
+										</a>
+									</center>
+								</td>
+								<td id = "lounge">
+									<center>
+										<a href = "vehicles.php" target = "_self">
+											<img src = "vehicle icon.png" alt = "vehicle" id = "scale" class = "rounded">
+											Vehicles
+										</a>
+									</center>
+								</td>
+							</tr>
+							<tr>
+								<td id = "lounge">
+									<center>
+										<p class = "lead">View your Personal details and Edit them</p>
+									</center>
+								</td>
+								<td id = "lounge">
+									<center>
+										<p class = "lead">View Vehicles and Modify their Information</p>
+									</center>
+								</td>
+							</tr>
+						</tr>
+							<td id = "lounge">
 								<center>
 									<a href = "notifications.php" target = "_self">
 										<img src = "notifications.png" alt = "notification" id = "scale" class = "rounded">
@@ -173,31 +277,55 @@
 									</a>
 								</center>
 							</td>
+							<td id = "lounge">
+								<center>
+									<a href = "schedule.php" target = "_self">
+										<img src = "schedule icon.png" alt = "schedule" id = "scale" class = "rounded">
+										Schedule
+									</a>
+								</center>
+							</td>
+						</tr>
+							<td id = "lounge">
+								<center>
+									<p class = "lead">See Notifications that you've Received</p>
+								</center>
+							</td>
+							<td id = "lounge">
+								<center>
+									<p class = "lead">Request Service Appointments to the Garage and Receive Feedbeck</p>
+								</center>
+							</td>
 						</tr>
 						<tr>
-							<td id = "misc">
-							<center>
-								<a href = "schedule.php" target = "_self">
-									<img src = "schedule icon.png" alt = "schedule" id = "scale" class = "rounded">
-									Schedule
-								</a>
-							</center>
-						</td>
-						<td id = "misc">
-							<center>
-								<a href = "payment.php" target = "_self">
-									<img src = "payment icon.png" alt = "payment" id = "scale" class = "rounded">
-									Payment
-								</a>
-							</center>
-						</td>
-						<td id = "misc">
-							<center>
-								<a href = "history.php" target = "_self" class = "rounded">
-									<img src = "history icon.png" alt = "history" id = "scale" class = "rounded">
-									Service History
-								</a>
-							</center>
+							<td id = "lounge">
+								<center>
+									<a href = "payment.php" target = "_self">
+										<img src = "payment icon.png" alt = "payment" id = "scale" class = "rounded">
+										Payment
+									</a>
+								</center>
+							</td>
+							<td id = "lounge">
+								<center>
+									<a href = "history.php" target = "_self" class = "rounded">
+										<img src = "history icon.png" alt = "history" id = "scale" class = "rounded">
+										Service History
+									</a>
+								</center>
+							</td>
+						</tr>
+						<tr>
+							<td id = "lounge">
+								<center>
+									<p class = "lead">Perform Payments for Garage Services Received</p>
+								</center>
+							</td>
+							<td id = "lounge">
+								<center>
+									<p class = "lead">Shows Service Information of Vehicles from the Garage</p>
+								</center>
+							</td>
 						</tr>
 					</table>
 				</fieldset>

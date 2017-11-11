@@ -40,17 +40,65 @@
 
     $archives = "";
 
-  if ($authority == "regular")
- {
-  require 'usersearch.php';
- }
- elseif ($authority == "manager")
- {
-    require 'adminsearch.php'; 
- }
- else
+  if($_SERVER['REQUEST_METHOD'] == 'POST')
   {
-    header("location:home.php");
-    exit();
+    if (isset($_POST['usage']))
+    {
+      $key = mysqli_real_escape_string($c, $_POST['key']);
+
+      if(!empty($key))
+      {       
+        $query2 = "SELECT * FROM history WHERE email = '$heading' AND registration = '$key'";
+
+        $ps3 = mysqli_query($c, $query2);
+        if(!$ps3)
+          {
+              die("Failed to retrieve data:" . mysqli_error($c));
+              header("location: usersearch.php");
+              exit();
+          }
+
+          $reading2 = mysqli_num_rows($ps3);
+
+          require 'usersearch.php';
+      }
+      else
+      {
+        header("location: uservehicles.php");
+        exit();
+      }
+    }
+    elseif (isset($_POST['regulate'])) 
+    {
+      $key = mysqli_real_escape_string($c, $_POST['key']);
+
+      if(!empty($key))
+      {       
+        $query3 = "SELECT * FROM history WHERE registration = '$key'";
+
+        $ps4 = mysqli_query($c, $query3);
+        
+        if(!$ps4)
+        {
+            die("Failed to retrieve data:" . mysqli_error($c));
+            header("location: viewschedule.php");
+            exit();
+        }
+
+        $reading3 = mysqli_num_rows($ps4);
+
+        require 'adminsearch.php';
+      }
+      else
+      {
+        header("location: adminvehicles.php");
+        exit();
+      }
+    }
+    else
+    {
+      header("location: home.php");
+      exit();
+    }
   }
 ?>

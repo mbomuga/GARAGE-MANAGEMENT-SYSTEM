@@ -508,7 +508,8 @@ $server = "localhost";
             {
               if($authority != "manager" && $authority != "owner")
               {
-                $call = $prefix . $alter;
+                $contact = ltrim($alter, "0");
+                $call = $prefix . $contact;
 
                 $query5 = "UPDATE accounts SET phone = '$call' WHERE email = '$heading'";
                 $ps5 = mysqli_query($c, $query5);

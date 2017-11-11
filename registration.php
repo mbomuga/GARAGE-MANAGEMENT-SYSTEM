@@ -13,7 +13,9 @@
 		die("Connection error:" . mysqli_connect_error());
 		header("location: registration.php");
 		exit();
-	}	
+	}
+
+	$reservation = "";	
 
 	if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
@@ -26,7 +28,10 @@
 		$p2 = mysqli_real_escape_string($c, $_POST['password2']);
 		$usertype = "regular";
 
-		$line = $prefix . $phone;
+		$call = ltrim($phone, "0");
+		$line = $prefix . $call;
+		$encrypt = strlen($p1);
+		$reinforce = strlen($p2);
 	
 		if(isset($_POST['submit']))
 		{
@@ -48,8 +53,7 @@
 
 				if($instance == 0)
 				{
-
-					if(empty($first) || empty($last) || empty($email) || empty($prefix) || empty($phone) || empty($p1) || empty($p2) || $p1 != $p2)
+					if(empty($first) && empty($last) && empty($email) && empty($prefix) && empty($phone) && empty($p1) && empty($p2) && $p1 != $p2 && $encrypt < 6 && $reinforce < 6)
 					{
 						header("location: registration.php");
 						exit();
@@ -68,7 +72,88 @@
 						}
 						else
 						{
-							echo "Transaction Successful";
+							$query2 = "SELECT * FROM notifications";
+
+							$ps2 = mysqli_query($c, $query2);
+							if(!$ps2)
+						    {
+						        die("Failed to retrieve data:" . mysqli_error($c));
+						        header("location: registration.php");
+						        exit();
+						    }
+						    $recording = mysqli_num_rows($ps2);
+
+						    if($recording == 0)
+						    {
+						    	$index = 1;
+						    }
+						    else
+						    {
+						    	$index = $recording + 1;
+						    }
+
+						    $query3 = "SELECT * FROM notifications WHERE serialno = '$index'";
+
+							$ps3 = mysqli_query($c, $query3);
+							if(!$ps3)
+						    {
+						        die("Failed to retrieve data:" . mysqli_error($c));
+						        header("location: registration.php");
+						        exit();
+						    }
+						    $valid = mysqli_num_rows($ps3);
+
+						    if($valid != 0)
+						    {
+						    	while ($rs3 = mysqli_fetch_assoc($ps3))
+						    	{
+						    		$index = $rs3['serialno'] + 1;
+						    	}
+						    }
+
+							$query4  = "SELECT * FROM accounts WHERE email = '$email'";
+
+							$ps4 = mysqli_query($c, $query4);
+
+							if(!$ps4)
+						    {
+						        die("Failed to retrieve data:" . mysqli_error($c));
+						        header("location: insertnotifications.php");
+						        exit();
+						    }
+						    
+						    $reading = mysqli_num_rows($ps4);
+
+						    if($reading != 0)
+						    {
+						    	while ($rs4 = mysqli_fetch_assoc($ps4))
+						    	{
+							    	$reference = $rs4['serialno'];
+							    	$directory = $rs4['first'];
+							    	$surname = $rs4['last'];
+							    	$direction = $rs4['email'];
+							    	$contact = $rs4['phone'];
+
+							    	$designate = $directory . " " . $surname;
+							    }
+
+						    	$query5 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$index','New Account', 'account', 'high', '$designate', '$contact' ,'$direction')";
+									
+								$ps5 = mysqli_query($c, $query5);
+
+								if(!$ps5)
+								{
+									die("Failed to insert data:" . mysqli_error($c));
+									header("location: insertnotifications.php");
+									exit();
+								}
+								else
+								{
+									header("location: notifications.php");
+									exit();
+								}
+						    }
+
 							header("location: login.php");
 							exit();
 						}
@@ -76,8 +161,7 @@
 				}
 				else
 				{
-					header("location: login.php");
-					exit();
+					$reservation = "*You Already have an Account";
 				}
 			}
 		}
@@ -127,6 +211,9 @@
 						<div class="form-group">
 					    <label>Email Address:</label>
 					    <input type="text" class="form-control" name="email" id = "dimensions">
+						<div class = "text-danger">
+							<?php echo $reservation; ?>
+						</div>
 					  </div>
 					  <div class="form-group">
 					    <label>Password:</label>

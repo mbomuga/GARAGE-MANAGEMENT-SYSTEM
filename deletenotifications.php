@@ -73,23 +73,23 @@
 
 			    if ($record != 0)
 			    {
-					$query4 = "SELECT * FROM notifications WHERE reminder = '$report'";
+					$query5 = "SELECT * FROM notifications WHERE reminder = '$report'";
 
-					$ps4 = mysqli_query($c, $query4);
-					if(!$ps4)
+					$ps5 = mysqli_query($c, $query4);
+					if(!$ps5)
 				    {
 				        die("Failed to retrieve data:" . mysqli_error($c));
 				        header("location: notifications.php");
 				        exit();
 				    }
 
-				    $reading = mysqli_num_rows($ps4);
+				    $reading = mysqli_num_rows($ps5);
 
 				    if ($reading != 0)
 				    {
-				     	while($rs2 = mysqli_fetch_assoc($ps4))
+				     	while($rs5 = mysqli_fetch_assoc($ps5))
 						{
-							$nature = $rs2['category'];
+							$nature = $rs5['category'];
 						}
 
 						if(!empty($report))
@@ -98,10 +98,10 @@
 							{
 								if(!empty($direction))
 								{
-									$query4 = "DELETE FROM notifications WHERE reminder = '$report' AND email = '$direction'";
-									$ps4 = mysqli_query($c, $query4);
+									$query6 = "DELETE FROM notifications WHERE reminder = '$report' AND email = '$direction'";
+									$ps6 = mysqli_query($c, $query6);
 
-									if(!$ps4)
+									if(!$ps6)
 								    {
 								        die("Failed to delete data:" . mysqli_error($c));
 								        header("location: deletenotifications.php");

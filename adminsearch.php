@@ -18,34 +18,6 @@
      	header("location:home.php");
         exit();
      }
-	
-	if($_SERVER['REQUEST_METHOD'] == 'POST')
-	{
-	 	$key = mysqli_real_escape_string($c, $_POST['key']);
-
-	 	if (isset($_POST['submit']))
-		{
-			if(!empty($key))
-			{				
-				$query2 = "SELECT * FROM history WHERE registration = '$key'";
-
-				$ps3 = mysqli_query($c, $query2);
-				if(!$ps3)
-			    {
-			        die("Failed to retrieve data:" . mysqli_error($c));
-			        header("location: viewschedule.php");
-			        exit();
-			    }
-
-			    $reading2 = mysqli_num_rows($ps3);
-			}
-		}
-	}
-	else
-	{
-		header("location: adminvehicles.php");
-		exit();
-	}
 
 	mysqli_close($c);
 ?>
@@ -244,24 +216,24 @@
 
 							if ($_SERVER['REQUEST_METHOD'] == 'POST')
 							{
-								if(isset($_POST['submit']))
+								if(isset($_POST['regulate']))
 								{
 									if(!empty($key))
 									{
-										if($reading2>0)
+										if($reading3>0)
 									    {
-											while($rs2 = mysqli_fetch_assoc($ps3))
+											while($rs3 = mysqli_fetch_assoc($ps4))
 											{
-												$entry = $rs2['serialno'];
-												$label = $rs2['registration'];
-												$period = $rs2['period'];
-												$lapse = $rs2['lapse'];
-												$report = $rs2['description'];
-												$quota = $rs2['expense'];
-												$tender = $rs2['charge'];
-												$title = $rs2['username'];
-												$contact = $rs2['phone'];
-												$tag = $rs2['email'];
+												$entry = $rs3['serialno'];
+												$label = $rs3['registration'];
+												$period = $rs3['period'];
+												$lapse = $rs3['lapse'];
+												$report = $rs3['description'];
+												$quota = $rs3['expense'];
+												$tender = $rs3['charge'];
+												$title = $rs3['username'];
+												$contact = $rs3['phone'];
+												$tag = $rs3['email'];
 												$manner = $currency . " " . $quota;
 
 												echo "<tr><td id = 'log'><center>" . $entry . "</center></td><td id = 'log'><center>" . $label . "</center></td><td id = 'log'><center>" . $period . "</center></td><td id = 'log'><center>" . $lapse . "</center></td><td id = 'narrative'><center>" . $report . "</center></td><td id = 'log'><center>" . $manner . "</center></td><td id = 'log'><center>" . $tender . "</center></td><td id = 'log'><center>" . $title . "</center></td><td id = 'log'><center>" . $contact . "</center></td><td id = 'log'><center>" .  $tag . "</center></td></tr>";

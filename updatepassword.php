@@ -38,33 +38,61 @@
      }
     }
 
+    $denied = "";
+
      if($_SERVER['REQUEST_METHOD'] == 'POST')
 	   {
         $regulate = mysqli_real_escape_string($c, $_POST['regulate']);
         $adjust = mysqli_real_escape_string($c, $_POST['adjust']);
         $examine = mysqli_real_escape_string($c, $_POST['examine']);
 
+        $encrypt = strlen($regulate);
+        $reinforce = strlen($adjust);
+        $secure = strlen($examine);
+
         if (isset($_POST['submit']))
         {
-          if (!empty($regulate) && !empty($adjust) && !empty($examine) && $adjust == $examine && $regulate != $adjust)
+          if (!empty($regulate) && !empty($adjust) && !empty($examine) && $adjust == $examine && $regulate != $adjust && $encrypt>=6 && $reinforce>=6 && $secure>=6)
           {
-            $query2 = "UPDATE accounts SET password1 = '$adjust' WHERE password1 = '$regulate' AND email = '$heading'";
-            $ps2 = mysqli_query($c, $query2);
+            $query4 =  "SELECT * FROM accounts WHERE email = '$heading' AND (password1 = '$regulate' AND password2 = '$regulate')";
+            
+            $ps4 = mysqli_query($c, $query4);
 
-            $query3 = "UPDATE accounts SET password2 = '$examine' WHERE password1 = '$regulate' AND email = '$heading'";
-            $ps3 = mysqli_query($c, $query2);
-
-            if(!$ps2 || !$ps3)
+            if(!$ps4)
             {
-                die("Failed to update data:" . mysqli_error($c));
-                header("location: updatepassword.php");
+                die("Failed to retrieve data:" . mysqli_error($c));
+                header("location: login.php");
                 exit();
+            }
+
+            $index = mysqli_num_rows($ps4);
+
+            if ($index != 0)
+            {
+              $query2 = "UPDATE accounts SET password1 = '$adjust' WHERE password1 = '$regulate' AND email = '$heading'";
+              
+              $ps2 = mysqli_query($c, $query2);
+
+              $query3 = "UPDATE accounts SET password2 = '$examine' WHERE password1 = '$regulate' AND email = '$heading'";
+              
+              $ps3 = mysqli_query($c, $query2);
+
+              if(!$ps2 || !$ps3)
+              {
+                  die("Failed to update data:" . mysqli_error($c));
+                  header("location: updatepassword.php");
+                  exit();
+              }
+              else
+              {
+                header("location: logout.php");
+                exit();
+              }
             }
             else
             {
-              header("location: logout.php");
-              exit();
-            }
+              $denied = "*Incorrect Password";
+            }            
           }
           else
           {
@@ -178,6 +206,9 @@
           <div class="form-group">
           <label>Current Password:</label>
             <input type="password" class="form-control" id = "modify" name = "regulate">
+            <div class = "text-danger">
+              <?php echo $denied; ?>
+            </div>
           </div>
           <div class="form-group">
           <label>New Password:</label>

@@ -47,7 +47,7 @@
 		exit();
 	}
     
-	$query2 = "SELECT * FROM notifications WHERE email = '$heading' AND (NOT category = 'schedule' AND (NOT category = 'payment'))";
+	$query2 = "SELECT * FROM notifications WHERE email = '$heading' AND (NOT category = 'schedule' AND (NOT category = 'payment' AND NOT category = 'account'))";
 
 	$ps3 = mysqli_query($c, $query2);
 	if(!$ps3)

@@ -260,7 +260,7 @@
 					    <label>Vehicle Registration:</label>
 					    <input type="text" class="form-control" name = "key" id = "modify">
 					  </div>
-					<button type="submit" class="btn btn-dark" name = "submit">Search History</button>
+					<button type="submit" class="btn btn-dark" name = "regulate">Search History</button>
 				</fieldset>
 			</center>
 		</div>

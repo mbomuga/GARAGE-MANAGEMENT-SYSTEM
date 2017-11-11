@@ -10,34 +10,6 @@
 		exit();
 	}
 
-	 if($_SERVER['REQUEST_METHOD'] == 'POST')
-	 {
-	 	$key = mysqli_real_escape_string($c, $_POST['key']);
-
-	 	if (isset($_POST['submit']))
-		{
-			if(!empty($key))
-			{				
-				$query2 = "SELECT * FROM history WHERE email = '$heading' AND registration = '$key'";
-
-				$ps3 = mysqli_query($c, $query2);
-				if(!$ps3)
-			    {
-			        die("Failed to retrieve data:" . mysqli_error($c));
-			        header("location: usersearch.php");
-			        exit();
-			    }
-
-			    $reading2 = mysqli_num_rows($ps3);
-			}
-		}
-	 }
-	 else
-	 {
-	 	header("location: uservehicles.php");
-		exit();
-	 }
-
 	 mysqli_close($c);
 
  ?>
@@ -181,7 +153,7 @@
 
 							if ($_SERVER['REQUEST_METHOD'] == 'POST')
 							{
-								if(isset($_POST['submit']))
+								if(isset($_POST['usage']))
 								{
 									if(!empty($key))
 									{

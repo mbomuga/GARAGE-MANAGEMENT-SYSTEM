@@ -80,7 +80,7 @@
 			    	$index = $recording + 1;
 			    }
 
-			    $query12 = "SELECT * FROM notifications WHERE serialno = '$source'";
+			    $query12 = "SELECT * FROM notifications WHERE serialno = '$index'";
 
 				$ps13 = mysqli_query($c, $query12);
 				if(!$ps13)
@@ -95,7 +95,7 @@
 			    {
 			    	while ($rs13 = mysqli_fetch_assoc($ps13))
 			    	{
-			    		$source = $rs13['serialno'] + 1;
+			    		$index = $rs13['serialno'] + 1;
 			    	}
 			    }
 

@@ -266,6 +266,34 @@
 					    }
 					    else
 					    {
+					    	$query18 = "SELECT * FROM history WHERE email = '$direction'";
+
+							$ps18 = mysqli_query($c, $query18);
+							if(!$ps18)
+						    {
+						        die("Failed to retrieve data:" . mysqli_error($c));
+						        header("location: userhistory.php");
+						        exit();
+						    }
+						    $exhibit = mysqli_num_rows($ps18);
+
+						    if($exhibit>0)
+						    {
+						    	while ($rs18 = mysqli_fetch_assoc($ps18))
+						    	{
+						    		$query19 = "UPDATE history SET registration = '$alter' WHERE registration = '$label' AND email = '$direction'";
+									
+									$ps19 = mysqli_query($c, $query19);
+
+									if(!$ps19)
+								    {
+								        die("Failed to update data:" . mysqli_error($c));
+								        header("location: updatehistory.php");
+								        exit();
+								    }
+						    	}
+						    }
+
 					    	$query14 = "SELECT * FROM notifications";
 
 							$ps14 = mysqli_query($c, $query14);
