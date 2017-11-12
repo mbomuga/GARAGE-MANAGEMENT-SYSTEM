@@ -206,7 +206,7 @@
 							    {
 							    	while ($rs10 = mysqli_fetch_assoc($ps10))
 							    	{
-							    		$source = $rs0['serialno'] + 1;
+							    		$source = $rs10['serialno'] + 1;
 							    	}
 							    }
 
@@ -227,10 +227,10 @@
 							    {
 							    	while ($rs11 = mysqli_fetch_assoc($ps11))
 							    	{
-								    	$directory = $rs7['first'];
-								    	$surname = $rs7['last'];
-								    	$beacon = $rs7['email'];
-								    	$contact = $rs7['phone'];
+								    	$directory = $rs11['first'];
+								    	$surname = $rs11['last'];
+								    	$beacon = $rs11['email'];
+								    	$contact = $rs11['phone'];
 
 								    	$designate = $directory . " " . $surname;
 								    }

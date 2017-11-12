@@ -52,6 +52,7 @@
 	{
 		$progress = mysqli_real_escape_string($c, $_POST['progress']);
 		$direction = mysqli_real_escape_string($c, $_POST['direction']);
+		$criterion = mysqli_real_escape_string($c, $_POST['criterion']);
 
 		if (isset($_POST['submit']))
 		{	
@@ -70,7 +71,7 @@
 
 		    if ($feedback != 0)
 		    {
-		    	$query9 = "SELECT * FROM schedule WHERE email = '$direction'";
+		    	$query9 = "SELECT * FROM schedule WHERE email = '$direction' AND serialno = '$criterion'";
 
 				$ps9 = mysqli_query($c, $query9);
 				if(!$ps9)
@@ -84,7 +85,7 @@
 
 			    if ($instance>0)
 			    {
-			    	$query3 = "UPDATE schedule SET status = '$progress' WHERE email = '$direction'";
+			    	$query3 = "UPDATE schedule SET status = '$progress' WHERE email = '$direction' AND serialno = '$criterion'";
 					
 					$ps3 = mysqli_query($c, $query3);
 
@@ -173,7 +174,7 @@
 								exit();
 							}
 
-							header("location: schedule.php");
+							header("location: adminschedule2.php");
 		        			exit();
 						}
 					}
@@ -287,7 +288,7 @@
 		<div id = "drape">
 			<center>
 				<fieldset>
-					<form method = "post" action = "updateschedule.php" onsubmit = "return updateschedule()">
+					<form method = "post" action = "updateschedule2.php" onsubmit = "return updateschedule()">
 					<div class = "form-group">
 						<h1><strong><center>Update Entry</center></strong></h1>
 					</div>
@@ -300,13 +301,17 @@
 								</select>
 							  </div>
 							<div class="form-group">
-						    <label>Email Address:</label>
-						    <input type="text" class="form-control" name = "direction" id = "modify">
-							<div class = "text-danger">
-								<?php echo $inventory; ?>
-								<?php echo $peculiar; ?>
-							</div>
-						  </div>
+							    <label>Serial No.:</label>
+							    <input type="text" class="form-control" name = "criterion" id = "modify">
+						  	</div>
+							<div class="form-group">
+							    <label>Email Address:</label>
+							    <input type="text" class="form-control" name = "direction" id = "modify">
+								<div class = "text-danger">
+									<?php echo $inventory; ?>
+									<?php echo $peculiar; ?>
+								</div>
+						  	</div>
 						<button type="submit" class="btn btn-dark" name = "submit">Update</button>
 					</form>
 				</fieldset>
