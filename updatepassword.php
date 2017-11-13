@@ -97,7 +97,7 @@
           else
           {
             header("location: updatepassword.php");
-            exit(); 
+            exit();
           }
         }
       }

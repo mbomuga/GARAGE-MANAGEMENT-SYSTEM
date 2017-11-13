@@ -178,6 +178,11 @@
 						<thead class = "thead-dark">
 							<th id = "default">
 							<center>
+								<strong>Serial No.:</strong>
+							</center>
+							</th>
+							<th id = "default">
+							<center>
 								<strong>Date:</strong>
 							</center>
 							</th>
@@ -213,6 +218,7 @@
 						    {
 								while($rs3 = mysqli_fetch_assoc($ps4))
 								{
+									$index = $rs3['serialno'];
 									$period = $rs3['period'];
 									$lapse = $rs3['lapse'];
 									$progress = $rs3['status'];
@@ -220,14 +226,14 @@
 									$contact = $rs3['phone'];
 									$beacon = $rs3['email'];
 
-									echo "<tr><td id = 'default'><center>" . $period . "</center></td><td id = 'default'><center>" . $lapse . "</center></td><td id = 'default'><center>" . $progress . "</center></td><td id = 'default'><center>" . $initials . "</center></td><td id = 'default'><center>" . $contact . "</center></td><td id = 'default'><center>" . $beacon . "</center></td></tr>";
+									echo "<tr><td id = 'default'><center>" . $index . "</center></td><td id = 'default'><center>" . $period . "</center></td><td id = 'default'><center>" . $lapse . "</center></td><td id = 'default'><center>" . $progress . "</center></td><td id = 'default'><center>" . $initials . "</center></td><td id = 'default'><center>" . $contact . "</center></td><td id = 'default'><center>" . $beacon . "</center></td></tr>";
 								}
 							}
 							else
 							{
 								$archives = "No Entries Available";
 
-								echo "<tr><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td></tr>";
+								echo "<tr><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td><td id = 'default'><center>" . $archives . "</center></td></tr>";
 							}
 						 ?>
 					</table>

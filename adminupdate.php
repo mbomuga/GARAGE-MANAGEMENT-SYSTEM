@@ -386,7 +386,7 @@
 				exit();	
 			}
 	    }
-	}		
+	}
 
 	mysqli_close($c);
 ?>

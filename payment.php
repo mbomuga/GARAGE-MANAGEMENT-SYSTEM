@@ -52,7 +52,7 @@
     $futile = "";
     $fiction = "";
     $complete = "";
-    $revenue = "";
+    $finance = "";
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
@@ -82,6 +82,14 @@
 			    		$instance = $rs4['serialno'];
 			    		$revenue = $rs4['expense'];
 			    		$phase = $rs4['charge'];
+
+			    		$fund = $revenue / 103;
+
+			    		$incur = strpos($fund, ".");
+
+			    		$limit = $incur + 3;
+
+			    		$finance = substr($fund, 0, $limit) + 0.01;
 
 			    		if ($phase != "confirmed")
 			    		{
@@ -335,8 +343,8 @@
 						<?php echo $fiction; ?>
 						<?php echo $complete; ?>
 					</div>
-					<div id = "#paypal-button">
-						<?php echo $revenue; ?>
+					<div>
+						<?php echo $finance; ?>
 					</div>
 					</div>
 				  <button type="submit" id = "remit" class="btn btn-warning" name = "submit">
