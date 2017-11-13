@@ -63,6 +63,7 @@ $server = "localhost";
    	if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
 		$decision = mysqli_real_escape_string($c, $_POST['decision']);
+		$prefix = mysqli_real_escape_string($c, $_POST['prefix']);
 		$index = mysqli_real_escape_string($c, $_POST['index']);
 		$privilege = mysqli_real_escape_string($c, $_POST['privilege']);
 
@@ -117,7 +118,11 @@ $server = "localhost";
 				}
 				elseif ($decision == "phone" && $privilege != "none")
 				{
-					$query6 = "SELECT * FROM accounts WHERE phone = '$index' AND usertype = '$privilege'";
+					$dial = ltrim($index, "0");
+
+					$call = $prefix . $dial;
+
+					$query6 = "SELECT * FROM accounts WHERE phone = '$call' AND usertype = '$privilege'";
 
 					$ps = mysqli_query($c, $query6);
  	
@@ -192,7 +197,11 @@ $server = "localhost";
 				}
 				elseif ($decision == "phone" && $privilege == "none")
 				{
-					$query11 = "SELECT * FROM accounts WHERE phone = '$index'";
+					$dial = ltrim($index, "0");
+
+					$call = $prefix . $dial;
+
+					$query11 = "SELECT * FROM accounts WHERE phone = '$call'";
 
 					$ps = mysqli_query($c, $query11);
  	
@@ -326,6 +335,14 @@ $server = "localhost";
 					<option value = "email">Email Address</option>
 					<option value = "phone">Phone Number</option>
 					<option value = "none">None</option>
+					</select>
+					<label>Prefix:</label>
+				     <select name = "prefix" class = "form-control">
+					<option value = "+254">+254</option>
+					<option value = "+255">+255</option>
+					<option value = "+256">+256</option>
+					<option value = "+1">+1</option>
+					<option value = "+44">+44</option>
 					</select>
 					<label>Keyword:</label>
 				   <input type="text" class="form-control" name = "index">
