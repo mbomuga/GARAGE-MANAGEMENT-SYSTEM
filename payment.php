@@ -52,6 +52,7 @@
     $futile = "";
     $fiction = "";
     $complete = "";
+    $revenue = "";
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
@@ -334,8 +335,11 @@
 						<?php echo $fiction; ?>
 						<?php echo $complete; ?>
 					</div>
+					<div id = "#paypal-button">
+						<?php echo $revenue; ?>
 					</div>
-				  <button type="submit" class="btn btn-warning" name = "submit">
+					</div>
+				  <button type="submit" id = "remit" class="btn btn-warning" name = "submit">
 					<img src = "paypal icon.png" alt = "paypal icon" id = "scale" class = "rounded">
 					Transact
 				</button>
@@ -344,24 +348,6 @@
 		</center>
 	</div>
 	<div>
-		<?php 
-			if ($_SERVER['REQUEST_METHOD'] == 'POST')
-			{
-				if (isset($_POST['submit']))
-				{
-					if (!empty($scenario))
-					{
-						if($total != 0)
-			    		{
-							while ($rs4 = mysqli_fetch_assoc($ps5))
-			    			{
-								$amount = $revenue;
-							}
-						}
-					}
-				}
-			}
-		 ?>
 	</div>
 	<div>
 		<footer id = "footnote">
