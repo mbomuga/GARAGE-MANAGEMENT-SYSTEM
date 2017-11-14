@@ -3,6 +3,7 @@
 #lounge{column-span: 1; height: 50px;}
 #sector{width: 50%; float: left; position: absolute; top: 50%;}
 #position{width: 50%; background-color: #C0C0C0;}
+#shift{left: 50%;}
 #stationary{width: 50%; left: 50%; position: absolute;}
 #primary{width: 100%; border: 0;}
 #extend{height: 50px; width: 50%; border: 0;}

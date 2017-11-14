@@ -52,7 +52,8 @@
     $futile = "";
     $fiction = "";
     $complete = "";
-    $finance = "";
+    $currency = "$";
+    $finance = "-";
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
@@ -74,168 +75,7 @@
 			    }
 			    
 			    $total = mysqli_num_rows($ps5);
-
-			    if($total != 0)
-			    {
-			    	while ($rs4 = mysqli_fetch_assoc($ps5))
-			    	{
-			    		$instance = $rs4['serialno'];
-			    		$revenue = $rs4['expense'];
-			    		$phase = $rs4['charge'];
-
-			    		$fund = $revenue / 103;
-
-			    		$incur = strpos($fund, ".");
-
-			    		$limit = $incur + 3;
-
-			    		$finance = substr($fund, 0, $limit) + 0.01;
-
-			    		if ($phase != "confirmed")
-			    		{
-			    			/* Perform call to Paypal at this point. Use the variable '$revenue' as the amount */
-
-			    			$state = "";
-
-			    			/* The variable '$state' and the subsequent block is a templete to execute the Transaction is sucessful. You'll perfoem the neccessary modifications on your side */
-
-			    			if($state == "successful")
-			    			{
-			    				$query5 = "UPDATE history SET charge = 'confirmed' WHERE serialno = '$scenario' AND email = '$heading'";
-								$ps6 = mysqli_query($c, $query5);
-
-								if(!$ps6)
-							    {
-							        die("Failed to update data:" . mysqli_error($c));
-							        header("location: updatehistory.php");
-							        exit();
-							    }
-							    else
-							    {
-							    	$query10 = "SELECT * FROM notifications WHERE category = 'payment' AND (email = '$heading' AND (reminder = 'New Entry' OR reminder = 'New Balance'))";
-
-									$ps11 = mysqli_query($c, $query10);
-									if(!$ps11)
-								    {
-								        die("Failed to retrieve data:" . mysqli_error($c));
-								        header("location: userinsert.php");
-								        exit();
-								    }
-								    $lead = mysqli_num_rows($ps10);
-
-								    if($lead != 0)
-								    {
-								    	while ($rs10 = mysqli_fetch_assoc($ps11))
-								    	{
-								    		$query11 = "DELETE FROM notifications WHERE reminder = '$report' AND email = '$direction'";
-
-											$ps12 = mysqli_query($c, $query11);
-
-											if(!$ps12)
-										    {
-										        die("Failed to delete data:" . mysqli_error($c));
-										        header("location: deletenotifications.php");
-										        exit();
-										    }
-								    	}
-								    }
-
-							    	$query6 = "SELECT * FROM notifications";
-
-									$ps7 = mysqli_query($c, $query6);
-									if(!$ps7)
-								    {
-								        die("Failed to retrieve data:" . mysqli_error($c));
-								        header("location: payment.php");
-								        exit();
-								    }
-								    
-								    $iteration = mysqli_num_rows($ps7);
-
-								    if($iteration == 0)
-								    {
-								    	$source = 1;
-								    }
-								    else
-								    {
-								    	$source = $iteration + 1;
-								    }
-
-								    $query9 = "SELECT * FROM notifications WHERE serialno = '$source'";
-
-									$ps10 = mysqli_query($c, $query9);
-									if(!$ps10)
-								    {
-								        die("Failed to retrieve data:" . mysqli_error($c));
-								        header("location: userinsert.php");
-								        exit();
-								    }
-								    $valid = mysqli_num_rows($ps10);
-
-								    if($valid != 0)
-								    {
-								    	while ($rs9 = mysqli_fetch_assoc($ps10))
-								    	{
-								    		$source = $rs9['serialno'] + 1;
-								    	}
-								    }
-
-								    $query7  = "SELECT * FROM accounts WHERE usertype = 'manager'";
-
-									$ps8 = mysqli_query($c, $query7);
-
-									if(!$ps8)
-								    {
-								        die("Failed to retrieve data:" . mysqli_error($c));
-								        header("location: payment.php");
-								        exit();
-								    }
-								    
-								    $reading = mysqli_num_rows($ps8);
-
-								    if($reading != 0)
-								    {
-								    	while ($rs7 = mysqli_fetch_assoc($ps8))
-								    	{
-									    	$directory = $rs7['first'];
-									    	$surname = $rs7['last'];
-									    	$beacon = $rs7['email'];
-									    	$contact = $rs7['phone'];
-
-									    	$designate = $directory . " " . $surname;
-									    }
-
-										$query8 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','New Payment', 'payment', 'high', '$designate', '$contact' ,'$beacon')";
-												
-										$ps9 = mysqli_query($c, $query8);
-
-										if(!$ps9)
-										{
-											die("Failed to insert data:" . mysqli_error($c));
-											header("location: payment.php");
-											exit();
-										}
-								    }
-
-							    	header("location: history.php");
-							    	exit();
-							    }
-			    			}
-			    			else
-			    			{
-			    				$futile = "*Transaction Failed";
-			    			}
-			    		}
-			    		else
-			    		{
-			    			$complete = "*No Outstanding Balance";
-			    		}
-			    	}
-			    }
-			    else
-			    {
-			    	$fiction = "*Entry Unavailable";
-			    }
+			    			
 			}
 			else
 			{
@@ -336,22 +176,83 @@
 						<h1><strong><center>Payment</center></strong></h1>
 					</div>
 					<div class="form-group">
-				    <label>Reference No:</label>
-				    <input type="text" class="form-control" name = "scenario" id = "modify">
-					<div class = "text-danger">
-						<?php echo $futile; ?>
-						<?php echo $fiction; ?>
-						<?php echo $complete; ?>
+					    <label>Reference No:</label>
+					    <input type="text" class="form-control" name = "scenario" id = "modify">
+						<div class = "text-danger">
+							<?php echo $futile; ?>
+						</div>
+						 <button type="submit" id = "remit" class="btn btn-dark" name = "submit">
+							Search
+						</button>
 					</div>
-					<div>
-						<?php echo $finance; ?>
-					</div>
-					</div>
-				  <button type="submit" id = "remit" class="btn btn-warning" name = "submit">
-					<img src = "paypal icon.png" alt = "paypal icon" id = "scale" class = "rounded">
-					Transact
-				</button>
 				</form>
+				<div>
+					<center>
+						<fieldset>
+							<table id = "frame" class = "table table-active table-hover">
+								<thead class = "thead-dark">
+									<th id = "default">
+									<center>
+										<strong>Amount:</strong>
+									</center>
+									</th>
+								</thead>
+								<?php 
+									if ($_SERVER['REQUEST_METHOD'] == 'POST')
+									{
+										if (isset($_POST["submit"]))
+										{
+											if (!empty($scenario))
+											{
+												if($total != 0)
+			    								{
+											    	while ($rs4 = mysqli_fetch_assoc($ps5))
+			    									{
+			    										$instance = $rs4['serialno'];
+											    		
+											    		$revenue = $rs4['expense'];
+											    		$phase = $rs4['charge'];
+
+											    		$fund = $revenue / 103;
+
+											    		$incur = strpos($fund, ".");
+
+											    		$limit = $incur + 3;
+
+											    		$finance = substr($fund, 0, $limit) + 0.01;
+
+														if ($phase != "confirmed")
+					    								{
+					    									$complete = "*No Outstanding Balance";
+
+					    									echo "<tr><td id = 'default'><center><div class = 'text-danger'>" . $complete .  "</div></center></td></tr>";
+					    								}
+					    								else
+					    								{
+					    									$factor = $currency . " " . $finance;
+
+					    									echo "<tr><td id = 'default'><center>" . $factor .  "</center></td></tr>";
+					    								}
+					    							}
+					    						}
+					    						else
+												{
+													$fiction = "*Entry Unavailable";
+
+													echo "<tr><td id = 'default'><center><div class = 'text-danger'>" . $fiction .  "</div></center></td></tr>";
+												}
+											}
+										}
+									}
+									else
+									{
+										echo "<tr><td id = 'default'><center>" . $finance .  "</center></td></tr>";
+									}
+								 ?>
+								 </table>
+							</fieldset>
+						</center>
+					</div>
 			</fieldset>
 		</center>
 	</div>

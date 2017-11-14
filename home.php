@@ -159,7 +159,7 @@
 		    <div class="carousel-item active">
 			<center>
 				<a href = "userprofile.php" target = "_self">
-			      <img src="personal details.png" alt="personal details" id = "extend">
+			      <img src="personal details.jpg" alt="personal details" id = "extend">
 					<div class="carousel-caption">
 						<div class="text-dark">
 						    <h1>Profile</h1>
