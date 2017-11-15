@@ -232,7 +232,7 @@
 								    	$designate = $directory . " " . $surname;
 								    }
 
-									$query12 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','New Entry', 'payment', 'high', '$designate', '$contact' ,'$beacon')";
+									$query12 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','New Entry', 'history', 'high', '$designate', '$contact' ,'$beacon')";
 											
 									$ps13 = mysqli_query($c, $query12);
 
@@ -368,7 +368,7 @@
 		<div id = "drape">
 			<center>
 			<fieldset>
-			<form method = "post" action = "inserthistory.php" onsubmit = "return inserthistory()">
+			<form name = "inserthistory" method = "post" action = "inserthistory.php" onsubmit = "return(inserthistory());">
 				<div class = "form-group">
 					<h1><strong><center>Insert Entry</center></strong></h1>
 				</div>

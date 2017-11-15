@@ -327,7 +327,7 @@ $server = "localhost";
 		</div>
 		<div>
 			<fieldset>
-				<form class="form-inline" method = "post" action = "adminprofile.php" onsubmit = "return adminhistory()">
+				<form name = "adminprofile" class="form-inline" method = "post" action = "adminprofile.php" onsubmit = "return(adminprofile());">
 				  <label>Category:</label>
 				  <select name = "decision" class = "form-control">
 					<option value = "first">First Name</option>

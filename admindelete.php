@@ -268,7 +268,7 @@
 		<div>
 			<center>
 			<fieldset id = "drape">
-			<form method = "post" action = "admindelete.php" onsubmit = "return deletevehicles()">
+			<form name = "admindelete" method = "post" action = "admindelete.php" onsubmit = "return(admindelete());">
 			<div class = "form-group">
 				<h1><strong><center>Delete Vehicle</center></strong></h1>
 			</div>

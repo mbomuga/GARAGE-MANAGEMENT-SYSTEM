@@ -47,10 +47,7 @@
 	    exit();
 	 }
 
-	 /*Prevents the admin from accessing the page*/
-
     $futile = "";
-    $fiction = "";
     $complete = "";
     $currency = "$";
     $finance = "-";
@@ -59,7 +56,7 @@
 	{
 		$scenario = mysqli_real_escape_string($c, $_POST['scenario']);
 
-		if (isset($_POST['submit']))
+		if (isset($_POST['search']))
 		{
 			if (!empty($scenario))
 			{
@@ -83,6 +80,137 @@
 				exit();
 			}
 		}
+		elseif (isset($_POST['budget'])) 
+		{
+			if (!empty($scenario))
+			{
+				$query5 = "UPDATE history SET charge = 'confirmed' WHERE serialno = '$scenario' AND email = '$heading'";
+	
+				$ps6 = mysqli_query($c, $query5);
+
+				if(!$ps6)
+			    {
+			        die("Failed to update data:" . mysqli_error($c));
+			        header("location: updatehistory.php");
+			        exit();
+			    }
+			    else
+			    {
+			    	$query10 = "SELECT * FROM notifications WHERE category = 'history' AND (email = '$heading' AND (reminder = 'New Entry' OR reminder = 'New Balance'))";
+
+					$ps11 = mysqli_query($c, $query10);
+					if(!$ps11)
+				    {
+				        die("Failed to retrieve data:" . mysqli_error($c));
+				        header("location: userinsert.php");
+				        exit();
+				    }
+				    $lead = mysqli_num_rows($ps10);
+
+				    if($lead != 0)
+				    {
+				    	while ($rs10 = mysqli_fetch_assoc($ps11))
+				    	{
+				    		$query11 = "DELETE FROM notifications WHERE category = 'history' AND email = '$direction'";
+
+							$ps12 = mysqli_query($c, $query11);
+
+							if(!$ps12)
+						    {
+						        die("Failed to delete data:" . mysqli_error($c));
+						        header("location: deletenotifications.php");
+						        exit();
+						    }
+				    	}
+				    }
+
+			    	$query6 = "SELECT * FROM notifications";
+
+					$ps7 = mysqli_query($c, $query6);
+					if(!$ps7)
+				    {
+				        die("Failed to retrieve data:" . mysqli_error($c));
+				        header("location: payment.php");
+				        exit();
+				    }
+				    
+				    $iteration = mysqli_num_rows($ps7);
+
+				    if($iteration == 0)
+				    {
+				    	$source = 1;
+				    }
+				    else
+				    {
+				    	$source = $iteration + 1;
+				    }
+
+				    $query9 = "SELECT * FROM notifications WHERE serialno = '$source'";
+
+					$ps10 = mysqli_query($c, $query9);
+					if(!$ps10)
+				    {
+				        die("Failed to retrieve data:" . mysqli_error($c));
+				        header("location: userinsert.php");
+				        exit();
+				    }
+				    $valid = mysqli_num_rows($ps10);
+
+				    if($valid != 0)
+				    {
+				    	while ($rs9 = mysqli_fetch_assoc($ps10))
+				    	{
+				    		$source = $rs9['serialno'] + 1;
+				    	}
+				    }
+
+				    $query7  = "SELECT * FROM accounts WHERE usertype = 'manager'";
+
+					$ps8 = mysqli_query($c, $query7);
+
+					if(!$ps8)
+				    {
+				        die("Failed to retrieve data:" . mysqli_error($c));
+				        header("location: payment.php");
+				        exit();
+				    }
+				    
+				    $reading = mysqli_num_rows($ps8);
+
+				    if($reading != 0)
+				    {
+				    	while ($rs7 = mysqli_fetch_assoc($ps8))
+				    	{
+					    	$directory = $rs7['first'];
+					    	$surname = $rs7['last'];
+					    	$beacon = $rs7['email'];
+					    	$contact = $rs7['phone'];
+
+					    	$designate = $directory . " " . $surname;
+					    }
+
+						$query8 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$source','New Payment', 'payment', 'high', '$designate', '$contact' ,'$beacon')";
+								
+						$ps9 = mysqli_query($c, $query8);
+
+						if(!$ps9)
+						{
+							die("Failed to insert data:" . mysqli_error($c));
+							header("location: payment.php");
+							exit();
+						}
+				    }
+				
+					header("location: history.php");
+			    	exit();
+		    	}
+			}
+		}
+		else
+		{
+			header("location: payment.php");
+			exit();
+		}
 	}
 
 	mysqli_close($c);
@@ -92,6 +220,7 @@
 	<title>Payment</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="gms.css">
+	<script src="checkout.js"></script>
 	<script src="gms.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
@@ -181,8 +310,11 @@
 						<div class = "text-danger">
 							<?php echo $futile; ?>
 						</div>
-						 <button type="submit" id = "remit" class="btn btn-dark" name = "submit">
+						 <button type="submit" class="btn btn-dark" name = "search">
 							Search
+						</button>
+						<button type = "submit" class = "btn btn-dark" name = "budget">
+							Update
 						</button>
 					</div>
 				</form>
@@ -200,7 +332,7 @@
 								<?php 
 									if ($_SERVER['REQUEST_METHOD'] == 'POST')
 									{
-										if (isset($_POST["submit"]))
+										if (isset($_POST["search"]))
 										{
 											if (!empty($scenario))
 											{
@@ -208,38 +340,37 @@
 			    								{
 											    	while ($rs4 = mysqli_fetch_assoc($ps5))
 			    									{
-			    										$instance = $rs4['serialno'];
-											    		
+			    										$instance = $rs4['serialno'];											    		
 											    		$revenue = $rs4['expense'];
 											    		$phase = $rs4['charge'];
 
 											    		$fund = $revenue / 103;
 
-											    		$incur = strpos($fund, ".");
-
-											    		$limit = $incur + 3;
-
-											    		$finance = substr($fund, 0, $limit) + 0.01;
-
 														if ($phase != "confirmed")
 					    								{
-					    									$complete = "*No Outstanding Balance";
+					    									$incur = strpos($fund, ".");
 
-					    									echo "<tr><td id = 'default'><center><div class = 'text-danger'>" . $complete .  "</div></center></td></tr>";
+												    		$limit = $incur + 3;
+
+												    		$finance = substr($fund, 0, $limit) + 0.01;
+
+					    									$factor = $currency . " " . $finance;
+
+					    									echo "<tr><td id = 'default'><center><div class = 'text-success'>" . $factor .  "</div></center></td></tr>";
 					    								}
 					    								else
 					    								{
-					    									$factor = $currency . " " . $finance;
+					    									$factor = "*No Outstanding Balance";
 
-					    									echo "<tr><td id = 'default'><center>" . $factor .  "</center></td></tr>";
+					    									echo "<tr><td id = 'default'><center><div class = 'text-danger'>" . $factor .  "</div></center></td></tr>";
 					    								}
 					    							}
 					    						}
 					    						else
 												{
-													$fiction = "*Entry Unavailable";
+													$factor = "*Entry Unavailable";
 
-													echo "<tr><td id = 'default'><center><div class = 'text-danger'>" . $fiction .  "</div></center></td></tr>";
+													echo "<tr><td id = 'default'><center><div class = 'text-danger'>" . $factor .  "</div></center></td></tr>";
 												}
 											}
 										}
@@ -250,13 +381,49 @@
 									}
 								 ?>
 								 </table>
-							</fieldset>
+                        	</fieldset>
 						</center>
 					</div>
+					<div>
+                        <div id="#paypal-button">
+                        </div>
+                        <input type=hidden id="finance" readonly value=" <?php echo "$finance" ?>"/>
+                        <script>
+                            const amt=parseFloat(document.body.querySelector('input#finance').value);
+                            //const val = $('#payment').val();
+                            console.log("Value", amt);
+                            paypal.Button.render({
+                                    env: 'sandbox', // Or 'production',
+                                    client: {
+                                        sandbox: 'AejrggEzCKEPzTh0627wz1OmcIscvtLpMWGS0Rfesn9mzb8G-q0hKsEYSCwJr5TmesKtDGnLYLmqbiJs'
+                                    },
+                                    commit: true, // Show a 'Pay Now' button
+                                    payment: function (data, actions) {
+                                        // Set up the payment here
+                                        return actions.payment.create({
+                                            payment: {
+                                                transactions: [
+                                                    {
+                                                        amount: {total: amt, currency: 'USD'}
+                                                    }
+                                                ]
+                                            }
+                                        });
+                                    },
+                                    onAuthorize: function (data, actions) {
+                                        return actions.payment.execute().then(function (payment) {
+                                            alert("Payment is Successful");
+                                            // The payment is complete!
+                                            console.log(payment)
+                                        });
+                                    }
+                                },
+                                '#paypal-button'
+                            );
+                        </script>
+				</div>
 			</fieldset>
 		</center>
-	</div>
-	<div>
 	</div>
 	<div>
 		<footer id = "footnote">

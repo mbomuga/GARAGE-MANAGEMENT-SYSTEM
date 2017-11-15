@@ -235,7 +235,7 @@
 		<div>
 			<center>
 				<fieldset id = "drape">
-					<form method = "post" action = "searchhistory.php" onsubmit = "return searchhistory()">
+					<form name = "usersearch" method = "post" action = "searchhistory.php" onsubmit = "return(usersearch());">
 						<div class = "form-group">
 							<h1><strong><center>Vehicle History</center></strong></h1>
 						</div>

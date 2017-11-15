@@ -561,7 +561,7 @@
 		</div>
 		<div>
 			<fieldset>
-				<form class="form-inline" method = "post" action = "adminhistory.php" onsubmit = "return adminhistory()">
+				<form name = "adminhistory" class="form-inline" method = "post" action = "adminhistory.php" onsubmit = "return(adminhistory());">
 				  <label>Category:</label>
 				  <select name = "group" class = "form-control">
 					<option value = "registration">Registration</option>

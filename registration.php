@@ -6,7 +6,7 @@
 	$password = "";
 	$db = "garage";
 
-	$c = mysqli_connect($server, $user, $password, $db);
+	$c = new mysqli($server, $user, $password, $db);
 
 	if(mysqli_connect_errno())
 	{
@@ -35,9 +35,15 @@
 	
 		if(isset($_POST['submit']))
 		{
-			$query = "SELECT * FROM accounts WHERE email = '$email'";
+			$query = "SELECT * FROM accounts WHERE email = ?";
 					
-			$ps = mysqli_query($c, $query);
+			$ps = $c->prepare($query);
+
+			$ps->bind_param("s", $email);
+
+			$ps->execute();
+
+			$ps->store_result();
 
 			if(!$ps)
 			{
@@ -47,9 +53,7 @@
 			}
 			else
 			{
-				$rs = mysqli_fetch_assoc($ps);
-
-				$instance = mysqli_num_rows($ps);
+				$instance = $ps->num_rows;
 
 				if($instance == 0)
 				{
@@ -59,12 +63,21 @@
 						exit();
 					}
 					else
-					{	
-						$query = "INSERT INTO `accounts` (`first`, `last`, `email`, `password1`, `password2`, `phone`, `usertype`) VALUES ('$first', '$last', '$email', '$p1', '$p2', '$line', '$usertype')";
-						
-						$ps = mysqli_query($c, $query);
+					{
 
-						if(!$ps)
+						$ps->close();
+
+						$query2 = "INSERT INTO `accounts` (`first`, `last`, `email`, `password1`, `password2`, `phone`, `usertype`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+						$ps2 = $c->prepare($query2);
+
+						$ps2->bind_param("sssssss", $first, $last, $email, $p1, $p2, $line, $usertype);
+
+						$ps2->execute();
+
+						$ps2->close();
+
+						if(!$ps2)
 						{
 							die("Failed to insert data:" . mysqli_error($c));
 							header("location: registration.php");
@@ -72,16 +85,22 @@
 						}
 						else
 						{
-							$query2 = "SELECT * FROM notifications";
+							$query3 = "SELECT * FROM notifications";
 
-							$ps2 = mysqli_query($c, $query2);
-							if(!$ps2)
+							$ps3 = $c->prepare($query3);
+
+							$ps3->execute();
+							
+							if(!$ps3)
 						    {
 						        die("Failed to retrieve data:" . mysqli_error($c));
 						        header("location: registration.php");
 						        exit();
 						    }
-						    $recording = mysqli_num_rows($ps2);
+
+							$ps3->store_result();
+
+						    $recording = $ps3->num_rows;
 
 						    if($recording == 0)
 						    {
@@ -92,54 +111,78 @@
 						    	$index = $recording + 1;
 						    }
 
-						    $query3 = "SELECT * FROM notifications WHERE serialno = '$index'";
+						    $query4 = "SELECT * FROM notifications WHERE serialno = ?";
 
-							$ps3 = mysqli_query($c, $query3);
-							if(!$ps3)
+							$ps4 = $c->prepare($query4);
+
+							$ps4->bind_param("s", $index);
+
+							$ps4->execute();
+							
+							if(!$ps4)
 						    {
 						        die("Failed to retrieve data:" . mysqli_error($c));
 						        header("location: registration.php");
 						        exit();
 						    }
-						    $valid = mysqli_num_rows($ps3);
+
+						    $ps4->store_result();
+
+						    $valid = $ps4->num_rows;
+
+						    $ps4->bind_result($key, $nature, $entry, $credentials, $contact, $tag);
 
 						    if($valid != 0)
 						    {
-						    	while ($rs3 = mysqli_fetch_assoc($ps3))
+						    	while ($ps4->fetch())
 						    	{
-						    		$index = $rs3['serialno'] + 1;
+						    		$index = $key + 1;
 						    	}
 						    }
 
-							$query4  = "SELECT * FROM accounts WHERE email = '$email'";
+						    $ps4->close();
 
-							$ps4 = mysqli_query($c, $query4);
+							$query5  = "SELECT * FROM accounts WHERE email = ?";
 
-							if(!$ps4)
+							$ps5 = $c->prepare($query5);
+
+							$ps5->bind_param("s", $email);
+
+							$ps5->execute();
+
+							if(!$ps5)
 						    {
 						        die("Failed to retrieve data:" . mysqli_error($c));
 						        header("location: insertnotifications.php");
 						        exit();
 						    }
 						    
-						    $reading = mysqli_num_rows($ps4);
+						    $ps5->store_result();
+
+						    $reading = $ps5->num_rows;
+
+						    $ps5->bind_result($directory, $surname, $direction, $encrypt, $reinforce, $contact, $access);
 
 						    if($reading != 0)
 						    {
-						    	while ($rs4 = mysqli_fetch_assoc($ps4))
+						    	while ($ps5->fetch())
 						    	{
-							    	$reference = $rs4['serialno'];
-							    	$directory = $rs4['first'];
-							    	$surname = $rs4['last'];
-							    	$direction = $rs4['email'];
-							    	$contact = $rs4['phone'];
-
 							    	$designate = $directory . " " . $surname;
 							    }
 
-						    	$query5 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES ('$index','New Account', 'account', 'high', '$designate', '$contact' ,'$direction')";
+							    $report = "New Account";
+							    $beacon = "";
+							    $relevance = "high";
+
+							    $ps5->close();
+
+						    	$query6 = "INSERT INTO `notifications` (`serialno`,`reminder`, `category`, `priority`, `username`, `phone`, `email`) VALUES (?,?, ?, ?, ?, ?, ?)";
 									
-								$ps5 = mysqli_query($c, $query5);
+								$ps6 = $c->prepare($query6);
+
+								$ps6->bind_param("ssssss", $index, $report, $beacon, $relevance, $designate, $contact, $direction);
+
+								$ps6->execute();
 
 								if(!$ps5)
 								{
@@ -151,6 +194,8 @@
 								{
 									header("location: notifications.php");
 									exit();
+
+									$ps6->close();
 								}
 						    }
 
@@ -167,7 +212,7 @@
 		}
 	}
 
-	mysqli_close($c);
+	$c->close();
 ?>
 <html>
 <head>
@@ -199,7 +244,7 @@
 					<div class = "form-group">
 						<h4><center>Registration Details</center></h4>
 					</div>
-					<form method = "post" action = "registration.php" onsubmit = "return register()">
+					<form name = "registration" method = "post" action = "registration.php" onsubmit = "return(register());">
 						<div class="form-group">
 					    <label>First Name:</label>
 					    <input type="text" class="form-control" name="first" id = "dimensions">

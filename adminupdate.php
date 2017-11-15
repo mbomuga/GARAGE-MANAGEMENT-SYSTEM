@@ -485,7 +485,7 @@
 		<div>
 			<center>
 			<fieldset id = "drape">
-			<form method = "post" action = "adminupdate.php" onsubmit = "return updatevehicles()">
+			<form name = "adminupdate" method = "post" action = "adminupdate.php" onsubmit = "return(adminupdate());">
 					<div class = "form-group">
 						<h1><strong><center>Update Vehicle</center></strong></h1>
 					</div>

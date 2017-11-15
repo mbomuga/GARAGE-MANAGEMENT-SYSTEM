@@ -6,7 +6,7 @@
 	$password = "";
 	$db = "garage";
 
-	$c = mysqli_connect($server, $user, $password, $db);
+	$c = new mysqli($server, $user, $password, $db);
 
 	if(mysqli_connect_errno())
 	{
@@ -37,9 +37,15 @@
 					}
 					else
 					{
-						$query = "SELECT * FROM accounts WHERE email = '$email' AND password1 = '$p'";
+						$query = "SELECT * FROM accounts WHERE email = ? AND password1 = ?";
 						
-						$ps = mysqli_query($c, $query);
+						$ps = $c->prepare($query);
+
+						$ps->bind_param("ss", $email, $p);
+
+						$ps->execute();
+
+						$ps->store_result();
 
 						if(!$ps)
 						{
@@ -50,39 +56,43 @@
 						else
 						{
 
-							$tally = mysqli_num_rows($ps);
+							$tally = $ps->num_rows;
+
+							$ps->bind_result($precede, $succeed, $address, $p1, $p2, $call, $index);
 
 							if($tally == 1)
 							{
-								while ($rs = mysqli_fetch_assoc($ps))
+								while ($ps->fetch())
 								{
-									$authority = $rs['usertype'];
+									$authority = $index;
 
 									if($authority == "manager")
 									{
 										$_SESSION['name'] = "Garage Manager";
-										$_SESSION['email'] = $rs['email'];
-										$_SESSION['line'] = $rs['phone'];
+										$_SESSION['email'] = $address;
+										$_SESSION['line'] = $call;
 										$_SESSION['conduct'] = $authority;
 									}
 									elseif ($authority == "owner")
 									{
 										$_SESSION['name'] = "Owner";
-										$_SESSION['email'] = $rs['email'];
-										$_SESSION['line'] = $rs['phone'];
+										$_SESSION['email'] = $address;
+										$_SESSION['line'] = $call;
 										$_SESSION['conduct'] = $authority;
 									}
 									else
 									{
-										$first = $rs['first'];
-										$last =  $rs['last'];
+										$first = $precede;
+										$last =  $succeed;
 										$credentials = $first . " " . $last;
 										$_SESSION['name'] = $credentials;
-										$_SESSION['email'] = $rs['email'];
-										$_SESSION['line'] = $rs['phone'];
+										$_SESSION['email'] = $address;
+										$_SESSION['line'] = $call;
 										$_SESSION['conduct'] = $authority;
 									}
 								}
+
+								$ps->close();
 								
 								header("location: home.php");
 								exit();
@@ -103,7 +113,7 @@
 		}
 	}
 
-	mysqli_close($c);
+	$c->close();
 ?>
 <html>
 <head>
@@ -125,7 +135,7 @@
 		</div>
 		<div>
 			<center>
-				<form method = "post" action="login.php" onsubmit = "return login()">
+				<form name = "login" method = "post" action="login.php" onsubmit = "return(login());">
 					<fieldset id = "position">
 						<div class = "form-group">
 							<table class = "table" id = "frame">

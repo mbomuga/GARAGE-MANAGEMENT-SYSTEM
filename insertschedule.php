@@ -382,7 +382,7 @@
 		<div id = "drape">
 			<center>
 				<fieldset>
-					<form method = "post" action = "insertschedule.php" onsubmit = "return insertschedule()">
+					<form name = "insertschedule" method = "post" action = "insertschedule.php" onsubmit = "return(insertschedule());">
 						<div class = "form-group">
 							<h1><strong><center>Insert Entry</center></strong></h1>
 						</div>

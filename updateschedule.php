@@ -288,7 +288,7 @@
 		<div id = "drape">
 			<center>
 				<fieldset>
-					<form method = "post" action = "updateschedule.php" onsubmit = "return updateschedule()">
+					<form name = "updateschedule" method = "post" action = "updateschedule.php" onsubmit = "return(updateschedule());">
 					<div class = "form-group">
 						<h1><strong><center>Update Entry</center></strong></h1>
 					</div>

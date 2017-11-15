@@ -103,7 +103,7 @@
 								{
 									$nature = $rs6['category'];
 
-									if($nature != "payment" && $nature != "vehicle" && $nature != "schedule" && $nature != "account")
+									if($nature != "payment" && $nature != "vehicle" && $nature != "schedule" && $nature != "account" && $nature != "history")
 									{
 										if($group == "report")
 										{
@@ -291,7 +291,7 @@
 		<div id = "drape">
 			<center>
 				<fieldset>
-				<form method = "post" action = "updatenotifications.php" onsubmit = "return updatenotifications()">
+				<form name = "updatenotifications" method = "post" action = "updatenotifications.php" onsubmit = "return(updatenotifications());">
 					<div class = "form-group">
 						<h1><strong><center>Update Notification</center></strong></h1>
 					</div>

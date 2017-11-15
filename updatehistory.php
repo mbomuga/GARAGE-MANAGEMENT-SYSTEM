@@ -52,6 +52,7 @@
 	{
 		$group = mysqli_real_escape_string($c, $_POST['updatetype']);
 		$alter = mysqli_real_escape_string($c, $_POST['updatevalue']);
+		$remarks = mysqli_real_escape_string($c, $_POST['remarks']);
 		$index = mysqli_real_escape_string($c, $_POST['index']);
 		$direction = mysqli_real_escape_string($c, $_POST['direction']);
 
@@ -142,7 +143,7 @@
 						}
 						elseif ($group == "report")
 						{
-							$query5 = "UPDATE history SET description = '$alter' WHERE serialno = '$index' AND email = '$direction'";
+							$query5 = "UPDATE history SET description = '$remarks' WHERE serialno = '$index' AND email = '$direction'";
 							$ps5 = mysqli_query($c, $query5);
 
 							if(!$ps5)
@@ -367,7 +368,7 @@
 		<div id = "drape">
 			<center>
 			<fieldset>
-			<form method = "post" action = "updatehistory.php" onsubmit = "return updatehistory()">
+			<form name = "updatehistory" method = "post" action = "updatehistory.php" onsubmit = "return(updatehistory());">
 					<div class = "form-group">
 						<h1><strong><center>Update Entry</center></strong></h1>
 					</div>
@@ -384,6 +385,13 @@
 					<div class="form-group">
 					<label>Update Value:</label>
 				    <input type="text" class="form-control" name = "updatevalue" id = "modify">
+					<div class = "text-danger">
+						<?php echo  $negative; ?>
+					</div>
+					<div class="form-group">
+					<label>Description:</label>
+				    <textarea class="form-control" id = "extent" name = "remarks">
+					</textarea>
 					<div class = "text-danger">
 						<?php echo  $negative; ?>
 					</div>

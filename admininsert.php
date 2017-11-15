@@ -303,7 +303,7 @@
 		<div id = "drape">
 			<center>
 				<fieldset>
-					<form method = "post" action = "admininsert.php" onsubmit = "return insertvehicles()">
+					<form name = "admininsert" method = "post" action = "admininsert.php" onsubmit = "return(admininsert());">
 						<div class = "form-group">
 							<h1><strong><center>Insert Vehicle</center></strong></h1>
 						</div>

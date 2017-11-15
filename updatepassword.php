@@ -4,7 +4,7 @@
   $password = "";
   $db = "garage";
 
-  $c = mysqli_connect($server, $user, $password, $db);
+  $c = new mysqli($server, $user, $password, $db);
 
   if(mysqli_connect_errno())
   {
@@ -54,9 +54,15 @@
         {
           if (!empty($regulate) && !empty($adjust) && !empty($examine) && $adjust == $examine && $regulate != $adjust && $encrypt>=6 && $reinforce>=6 && $secure>=6)
           {
-            $query4 =  "SELECT * FROM accounts WHERE email = '$heading' AND (password1 = '$regulate' AND password2 = '$regulate')";
+            $query4 =  "SELECT * FROM accounts WHERE email = ? AND (password1 = ? AND password2 = ?)";
             
-            $ps4 = mysqli_query($c, $query4);
+            $ps4 = $c->prepare($query4);
+
+            $ps4->bind_param("sss", $heading, $regulate, $regulate);
+
+            $ps4->execute();
+
+            $ps4->store_result();
 
             if(!$ps4)
             {
@@ -65,17 +71,31 @@
                 exit();
             }
 
-            $index = mysqli_num_rows($ps4);
+            $index = $ps4->num_rows;
 
             if ($index != 0)
             {
-              $query2 = "UPDATE accounts SET password1 = '$adjust' WHERE password1 = '$regulate' AND email = '$heading'";
-              
-              $ps2 = mysqli_query($c, $query2);
+              $ps4->close();
 
-              $query3 = "UPDATE accounts SET password2 = '$examine' WHERE password1 = '$regulate' AND email = '$heading'";
+              $query2 = "UPDATE accounts SET password1 = ? WHERE password1 = ? AND email = ?";
               
-              $ps3 = mysqli_query($c, $query2);
+              $ps2 = $c->prepare($query2);
+
+              $ps2->bind_param("sss", $adjust, $regulate, $heading);
+
+              $ps2->execute();
+
+              $ps2->close();
+
+              $query3 = "UPDATE accounts SET password2 = ? WHERE password1 = ? AND email = ?";
+              
+              $ps3 = $c->prepare($query3);
+
+              $ps3->bind_param("sss", $examine, $regulate, $heading);
+
+              $ps3->execute();
+
+              $ps3->close();
 
               if(!$ps2 || !$ps3)
               {
@@ -102,7 +122,7 @@
         }
       }
 
-  mysqli_close($c);
+  $c->close();
 ?>
 <html>
 <head>
@@ -199,7 +219,7 @@
     <div id = "drape">
       <center>
       <fieldset>
-      <form method = "post" action = "updatepassword.php" onsubmit = "return updatepassword()">
+      <form name = "updatepassword" method = "post" action = "updatepassword.php" onsubmit = "return(updatepassword());">
           <div class = "form-group">
             <h1><strong><center>Update Password</center></strong></h1>
           </div>

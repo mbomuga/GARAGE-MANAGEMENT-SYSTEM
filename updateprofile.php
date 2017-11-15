@@ -748,7 +748,7 @@ $server = "localhost";
     <div id = "drape">
       <center>
       <fieldset>
-        <form method = "post" action = "updateprofile.php" onsubmit = "return updateprofile()">
+        <form name = "updateprofile" method = "post" action = "updateprofile.php" onsubmit = "return(updateprofile());">
             <div class = "form-group">
               <h1><strong><center>Update Profile</center></strong></h1>
             </div>

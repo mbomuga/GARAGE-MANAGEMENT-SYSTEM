@@ -273,7 +273,7 @@
 		<div id = "drape">
 			<center>
 				<fieldset>
-					<form method = "post" action = "userinsert.php" onsubmit = "return insertvehicles()">
+					<form name = "userinsert" method = "post" action = "userinsert.php" onsubmit = "return(userinsert();">
 						<div class = "form-group">
 							<h1><strong><center>Insert Vehicle</center></strong></h1>
 						</div>

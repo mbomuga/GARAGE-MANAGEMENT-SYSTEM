@@ -94,7 +94,7 @@
 
 						if(!empty($report))
 						{
-							if($nature != "payment")
+							if($nature != "payment" && $nature != "history")
 							{
 								if(!empty($direction))
 								{
@@ -235,7 +235,7 @@
 		<div id = "drape">
 			<center>
 				<fieldset>
-					<form method = "post" action = "deletenotifications.php" onsubmit = "return deletenotifications()">
+					<form name = "deletenotifications" method = "post" action = "deletenotifications.php" onsubmit = "return(deletenotifications());">
 						<div class = "form-group">
 							<h1><strong><center>Delete Notification</center></strong></h1>
 						</div>

@@ -250,7 +250,7 @@
 		<div id = "drape">
 			<center>
 				<fieldset>
-					<form method = "post" action = "insertnotifications.php" onsubmit = "return insertnotifications()">
+					<form name = "insertnotifications" method = "post" action = "insertnotifications.php" onsubmit = "return(insertnotifications());">
 						<div class = "form-group">
 						<h1><strong><center>Insert Notification</center></strong></h1>
 						</div>

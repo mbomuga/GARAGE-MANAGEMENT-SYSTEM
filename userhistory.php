@@ -382,7 +382,7 @@
 		</div>
 		<div>
 			<fieldset>
-				<form class="form-inline" method = "post" action = "userhistory.php" onsubmit = "return userhistory()">
+				<form name = "userhistory" class="form-inline" method = "post" action = "userhistory.php" onsubmit = "return(userhistory());">
 				  <label>Category:</label>
 				  <select name = "group" class = "form-control">
 					<option value = "registration">Registration</option>
