@@ -170,12 +170,14 @@
 		    </div>
 		    <div class="carousel-item">
 				<center>
-			      <img src="vehicle photo.jpg" alt="vehicle photo" id = "extend">
-					<div class="carousel-caption">
-						<div class="text-dark">
-					    	<h1>Vehicles</h1>
-						</div>
-				  	</div>
+					<a href = "vehicles.php" target = "_self">
+				      <img src="vehicle photo.jpg" alt="vehicle photo" id = "extend">
+						<div class="carousel-caption">
+							<div class="text-dark">
+						    	<h1>Vehicles</h1>
+							</div>
+					  	</div>
+					</a>
 				</center>
 		    </div>
 			<div class="carousel-item">
